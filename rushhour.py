@@ -2,13 +2,20 @@
 Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 10669744, 10001228, 10543988
 '''
+<<<<<<< HEAD
+=======
+
+>>>>>>> e31dc118b4f4e1359cd25357eee1427cb8499e8d
 
 import math
 import random
 import pylab
 import numpy
 
+# ([id, position, orientation, length], [etc])
+chupachups = ([1, [0, 0], Z, 2])
 int counter = 0
+exit = []
 
 class Position(object):
 	def __init__(self, x, y):
@@ -68,12 +75,18 @@ class room(object):
 		x = post.getX()
 		y = pos.getY()
 		self.posit[x,y] = 0
+'''
+	def exit (height, width):
+if
+			gap = height/2
+			exit = bullshit
+'''
 
 # =================================== #
 
 class car(object):
 	#orientation is NS, EW
-	def __init__(self, lenght, position, orientation):
+	def __init__(self, chupachups):
 		self.lenght = lenght
 		self.position = position
 		self.orientation = orientation
@@ -85,19 +98,6 @@ class car(object):
 	# 		id +=1
 	# 		i +=1
 
-
-	def move(self, direction, position):
-		if direction == N:
-			new_position.y = position.y + 1
-		elif direction == S:
-			new_position.y = position.y - 1
-		elif direction == W:
-			new_position.x = position.x - 1
-		elif direction == E:
-			new_position.x = position.x + 1
-		else:
-			raise ValueError
-
 	def positioncheck(self, position):
 		if isoccupied(new_position):
 			invalidmove()
@@ -108,3 +108,30 @@ class car(object):
 
 	def invalidmove():
 		raise ValueError
+
+# =================================== #
+
+
+def runSimulation(chupachups, width, height, exit,):
+    width = width
+    height = height
+    num = num_trials
+    totaltime = 0
+    while num > 0:
+#        anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
+        i = len(chupachups)
+        room = room(width, height)
+        cars = []
+        while i > 0:
+            cars.append(car(chupachups))
+            i -= 1
+		'''
+        while simulation is not done
+            for robot in robots:
+                robot.updatePositionAndClean()
+            totaltime += 1
+#            anim.update(room, robots)
+		'''
+        num -= 1
+#        anim.done()
+    return (totaltime/num_trials)

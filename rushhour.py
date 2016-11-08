@@ -1,7 +1,7 @@
 ''''
 Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 10669744, 10001228, 10543988
-''''
+'''
 
 import math
 import random
@@ -84,19 +84,6 @@ class car(object):
 	# 	for i in range(0, ):
 	# 		id +=1
 	# 		i +=1
-
-
-	def move(self, direction, position):
-		if direction == N:
-			new_position.y = position.y + 1
-		elif direction == S:
-			new_position.y = position.y - 1
-		elif direction == W:
-			new_position.x = position.x - 1
-		elif direction == E:
-			new_position.x = position.x + 1
-		else:
-			raise ValueError
 
 	def positioncheck(self, position):
 		if isoccupied(new_position):

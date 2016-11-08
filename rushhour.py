@@ -24,6 +24,7 @@ class Position(object):
 	def move(self, direction, position):
 		if direction == N:
 			new_position.y = position.y + 1
+			position.x = position.x
 		elif direction == S:
 			new_position.y = position.y - 1
 			new_position.x = position.x
@@ -35,6 +36,9 @@ class Position(object):
 			new_position.y = position.y
 		else:
 			raise ValueError
+
+		boundarycheck(new_position)
+		positioncheck(new_position)
 		return new_position
 
 # =================================== #
@@ -87,13 +91,6 @@ class car(object):
 		self.position = chupachups[1]
 		self.orientation = chupachups[2]
 		self.lenght = chupachups[3]
-
-	# def getId(self):
-	# 	int total_cars =
-	# 	int id = 0
-	# 	for i in range(0, ):
-	# 		id +=1
-	# 		i +=1
 
 	def positioncheck(self, position):
 		if isoccupied(new_position):

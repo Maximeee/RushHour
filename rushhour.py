@@ -28,6 +28,7 @@ class Position(object):
 	def move(self, direction, position):
 		if direction == N:
 			new_position.y = position.y + 1
+			position.x = position.x
 		elif direction == S:
 			new_position.y = position.y - 1
 			new_position.x = position.x
@@ -115,13 +116,13 @@ class car(object):
 # =================================== #
 
 
-def runSimulation(chupachups, width, height, exit,):
+def runSimulation(chupachups, width, height, exit):
     width = width
     height = height
     num = num_trials
     totaltime = 0
     while num > 0:
-#        anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
+#        anim = rushhour_visualize.RushHourVisualization(chupachups, width, height, exit)
         i = len(chupachups)
         room = room(width, height)
         cars = []

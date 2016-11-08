@@ -1,25 +1,25 @@
 # RushHour
 
 class move:
-	grootte, en dimensie aanmaken
-	exit creeren
+	grootte, en dimensie aanmaken;
+	exit creeren;
 	updaten van de room na een move
 
 class car:
-	id
+	id;
 	move -> counter
 			lengte
-			orientatie
+			orientatie;
 	boundary and collision check
 
 visualisatie:
-	chupachups
-	exit
+	chupachups;
+	exit;
 	update room + cars
 
 algoritme:
-	oplossen van de puzzel
-	counter
+	oplossen van de puzzel;
+	counter;
 	update room + cars ?
 
 verslag:

@@ -7,6 +7,7 @@ import math
 import random
 import pylab
 import numpy
+import time
 
 # ([id, position, orientation, length], [etc])
 # position = x, y; orientation: nz = 1 ew = 2
@@ -126,7 +127,7 @@ def runSimulation(chupachups, width, height, exit):
     while (car.id == 1) and (car.position != exit):
         for entry in cars:
             entry.move()
-        totaltime += 1
+        start_time = time.time()
         #anim.update(room, robots)
     #anim.done()
-    return (totaltime/num)
+    return (time.time() - start_time)

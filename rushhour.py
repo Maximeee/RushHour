@@ -1,6 +1,6 @@
 ''''
 Maxime Weekhout, Daniel Jacob, Jobber Bekkers
-10669744, 10543988, 10001228
+10669744, 10001228, 10543988
 ''''
 
 import math
@@ -10,8 +10,33 @@ import numpy
 
 int counter = 0
 
-class room(object):
+class Position(object):
+	def __init__(self, x, y):
+		self.x = x
+		self.y = y
+	def getX(self):
+		return self.x
+	def getY(self):
+		return self.y
+	def move(self, direction, position):
+		if direction == N:
+			new_position.y = position.y + 1
+		elif direction == S:
+			new_position.y = position.y - 1
+			new_position.x = position.x
+		elif direction == W:
+			new_position.x = position.x - 1
+			new_position.y = position.y
+		elif direction == E:
+			new_position.x = position.x + 1
+			new_position.y = position.y
+		else:
+			raise ValueError
+		return new_position
 
+# =================================== #
+
+class room(object):
 	def __init__(self, width, height):
 		self.width = width
 		self.height = height
@@ -36,29 +61,19 @@ class room(object):
 		y = pos.getY()
 		self.posit[x,y] = 1
 
-	def releaseplace(self,pos)
+	def releaseplace(self,pos):
 		x = post.getX()
 		y = pos.getY()
 		self.posit[x,y] = 0
 
+# =================================== #
+
 class car(object):
 	#orientation is NS, EW
-	def __init__(self, lenght, position, orientation)
+	def __init__(self, lenght, position, orientation):
 		self.lenght = lenght
 		self.position = position
 		self.orientation = orientation
-
-	def move(self, direction, position):
-		if direction == N:
-			new_position.y = position.y + 1
-		elif direction == S:
-			new_position.y = position.y - 1
-		elif direction == W:
-			new_position.x = position.x - 1
-		elif direction == E:
-			new_position.x = position.x + 1
-		else:
-			raise ValueError
 
 		positioncheck(new_position)
 		boundarycheck(new_position)

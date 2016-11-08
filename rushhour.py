@@ -28,6 +28,7 @@ class Position(object):
 	def move(self, direction, position):
 		if direction == N:
 			new_position.y = position.y + 1
+			position.x = position.x
 		elif direction == S:
 			new_position.y = position.y - 1
 			new_position.x = position.x
@@ -39,6 +40,13 @@ class Position(object):
 			new_position.y = position.y
 		else:
 			raise ValueError
+
+		boundarycheck(new_position)
+		positioncheck(new_position)
+		
+		if boundarycheck == True and positioncheck == True:
+			releaseplace(position)
+
 		return new_position
 
 # =================================== #
@@ -91,20 +99,24 @@ class car(object):
 		self.position = position
 		self.orientation = orientation
 
-	# def getId(self):
-	# 	int total_cars =
-	# 	int id = 0
-	# 	for i in range(0, ):
-	# 		id +=1
-	# 		i +=1
+	def getId(self):
+		int total_cars = len(chupachups)
+		int id = 0
+		for i in range(0, total_cars):
+			id +=1
+			i +=1
 
 	def positioncheck(self, position):
 		if isoccupied(new_position):
 			invalidmove()
+		elif:
+			return True
 
 	def boundarycheck(self, position, room):
 		if new_position.x < room.x or new_position.x > room.x or new_position.y < room.y or new_position.y > room.y:
 			invalidmove()
+		elif:
+			return True
 
 	def invalidmove():
 		raise ValueError
@@ -112,13 +124,13 @@ class car(object):
 # =================================== #
 
 
-def runSimulation(chupachups, width, height, exit,):
+def runSimulation(chupachups, width, height, exit):
     width = width
     height = height
     num = num_trials
     totaltime = 0
     while num > 0:
-#        anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
+#        anim = rushhour_visualize.RushHourVisualization(chupachups, width, height, exit)
         i = len(chupachups)
         room = room(width, height)
         cars = []

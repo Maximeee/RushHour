@@ -1,9 +1,10 @@
-
 import math
 import random
 
 import pylab
 import numpy
+
+
 
 class room(object):
 
@@ -17,8 +18,13 @@ class room(object):
 		y = []
 		x = pos.getX()
 		y = pos.getY()
+		array = []
+		if self.posit[x,y] != 0:
+			posarray.append(self.posit[x,y])
 
-		self.pos = [x,y]
+
+
+		return x,y
 
 	def isoccupied(self, x, y):
 		
@@ -35,27 +41,11 @@ class room(object):
 		y = pos.getY()
 		self.posit[x,y] = 0
 		
-class car:
-	#orientation is NS, EW
-	def __init__(self, lenght, position, orientation)
-		self.lenght = lenght
-		self.position = position
-		self.orientation = orientation
 
-	def move(self, direction):
 
-		if direction == N:
-			position.y += 1
-		elif direction == S:
-			position.y -= 1
-		elif direction == W:
-			position.x -= 1
-		elif direction == E:
-			position.x += 1
-		else:
-			raise ValueError
 
-	def postionabsolute(self):
+
+
 
 
 

@@ -10,7 +10,7 @@ import numpy
 
 # ([id, position, orientation, length], [etc])
 chupachups = ([1, [0, 0], Z, 2])
-int counter = 0
+counter = 0
 exit = []
 
 class Position(object):
@@ -39,7 +39,7 @@ class Position(object):
 
 		boundarycheck(new_position)
 		positioncheck(new_position)
-		
+
 		if boundarycheck == True and positioncheck == True:
 			releaseplace(position)
 
@@ -99,13 +99,13 @@ class car(object):
 	def positioncheck(self, position):
 		if isoccupied(new_position):
 			invalidmove()
-		elif:
+		else:
 			return True
 
 	def boundarycheck(self, position, room):
 		if new_position.x < room.x or new_position.x > room.x or new_position.y < room.y or new_position.y > room.y:
 			invalidmove()
-		elif:
+		else:
 			return True
 
 	def invalidmove():
@@ -113,21 +113,18 @@ class car(object):
 
 # =================================== #
 
-
 def runSimulation(chupachups, width, height, exit):
-    width = width
-    height = height
-    totaltime = 0
 	num = 0
+    totaltime = 0
     while True:
-#        anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
+		anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
         i = len(chupachups)
         room = room(width, height)
         cars = []
         while i > 0:
             cars.append(car(chupachups))
             i -= 1
-        while car.id ==1 and car.position != exit
+        while (car.id == 1) and (car.position != exit):
             for entry in cars:
                 entry.move()
             totaltime += 1

@@ -2,10 +2,6 @@
 Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 10669744, 10001228, 10543988
 '''
-<<<<<<< HEAD
-=======
-
->>>>>>> e31dc118b4f4e1359cd25357eee1427cb8499e8d
 
 import math
 import random

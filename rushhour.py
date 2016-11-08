@@ -2,10 +2,6 @@
 Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 10669744, 10001228, 10543988
 '''
-<<<<<<< HEAD
-=======
-
->>>>>>> e31dc118b4f4e1359cd25357eee1427cb8499e8d
 
 import math
 import random
@@ -75,21 +71,22 @@ class room(object):
 		x = post.getX()
 		y = pos.getY()
 		self.posit[x,y] = 0
-'''
+
 	def exit (height, width):
-if
-			gap = height/2
-			exit = bullshit
-'''
+		if (height % 2):
+			return height/2
+		else:
+			return (height/2 +1)
 
 # =================================== #
 
 class car(object):
 	#orientation is NS, EW
 	def __init__(self, chupachups):
-		self.lenght = lenght
-		self.position = position
-		self.orientation = orientation
+		self.id = chupachups[0]
+		self.position = chupachups[1]
+		self.orientation = chupachups[2]
+		self.lenght = chupachups[3]
 
 	# def getId(self):
 	# 	int total_cars =
@@ -112,12 +109,12 @@ class car(object):
 # =================================== #
 
 
-def runSimulation(chupachups, width, height, exit,):
+def runSimulation(chupachups, width, height, exit):
     width = width
     height = height
-    num = num_trials
     totaltime = 0
-    while num > 0:
+	num = 0
+    while True:
 #        anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
         i = len(chupachups)
         room = room(width, height)
@@ -125,13 +122,11 @@ def runSimulation(chupachups, width, height, exit,):
         while i > 0:
             cars.append(car(chupachups))
             i -= 1
-		'''
-        while simulation is not done
-            for robot in robots:
-                robot.updatePositionAndClean()
+        while car.id ==1 and car.position != exit
+            for entry in cars:
+                entry.move()
             totaltime += 1
 #            anim.update(room, robots)
-		'''
-        num -= 1
+        num += 1
 #        anim.done()
-    return (totaltime/num_trials)
+    return (totaltime/num)

@@ -47,13 +47,13 @@ class car(object):
 
 	def move(self, direction, position):
 		if direction == N:
-			new_position = position.y + 1
+			new_position.y = position.y + 1
 		elif direction == S:
-			new_position = position.y - 1
+			new_position.y = position.y - 1
 		elif direction == W:
-			new_position = position - 1
+			new_position.x = position.x - 1
 		elif direction == E:
-			new_position = position + 1
+			new_position.x = position.x + 1
 		else:
 			raise ValueError
 
@@ -61,7 +61,7 @@ class car(object):
 		boundarycheck(new_position)
 		counter++
 
-	def positioncheck(self, ):
+	# def positioncheck(self, position):
 		
 
 	def boundarycheck(self, position, room):

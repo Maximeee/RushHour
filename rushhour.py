@@ -48,7 +48,10 @@ class room(object):
 		y = []
 		x = pos.getX()
 		y = pos.getY()
-		self.pos = [x,y]
+		array = []
+		if self.posit[x,y] != 0:
+			posarray.append(self.posit[x,y])
+		return x,y
 
 	def isoccupied(self, x, y):
 		if (x, y) in self.pos:
@@ -75,16 +78,32 @@ class car(object):
 		self.position = position
 		self.orientation = orientation
 
-		positioncheck(new_position)
-		boundarycheck(new_position)
-		counter++
+	# def getId(self):
+	# 	int total_cars =
+	# 	int id = 0
+	# 	for i in range(0, ):
+	# 		id +=1
+	# 		i +=1
+
+
+	def move(self, direction, position):
+		if direction == N:
+			new_position.y = position.y + 1
+		elif direction == S:
+			new_position.y = position.y - 1
+		elif direction == W:
+			new_position.x = position.x - 1
+		elif direction == E:
+			new_position.x = position.x + 1
+		else:
+			raise ValueError
 
 	def positioncheck(self, position):
 		if isoccupied(new_position):
 			invalidmove()
 
 	def boundarycheck(self, position, room):
-		if new_position.x < room.x || new_position.x > room.x || new_position.y < room.y || new_position.y > room.y:
+		if new_position.x < room.x or new_position.x > room.x or new_position.y < room.y or new_position.y > room.y:
 			invalidmove()
 
 	def invalidmove():

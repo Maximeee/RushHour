@@ -7,6 +7,7 @@ import math
 import random
 import pylab
 import numpy
+import time
 
 # ([id, position, orientation, length], [etc])
 chupachups = ([1, [0, 0], Z, 2])
@@ -130,8 +131,8 @@ def runSimulation(chupachups, width, height, exit):
         while car.id ==1 and car.position != exit
             for entry in cars:
                 entry.move()
-            totaltime += 1
+            start_time = time.time()
 #            anim.update(room, robots)
-        num += 1
+        	print ": %s seconds" % time.time()
 #        anim.done()
-    return (totaltime/num)
+    return (time.time() - start_time)

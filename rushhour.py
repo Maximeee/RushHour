@@ -1,7 +1,10 @@
+''''
+Maxime Weekhout, Daniel Jacob, Jobber Bekkers
+10669744, 10543988, 10001228
+''''
 
 import math
 import random
-
 import pylab
 import numpy
 
@@ -12,6 +15,7 @@ class room(object):
 	def __init__(self, width, height):
 		self.width = width
 		self.height = height
+		# 0 is empty, if not 0 car id
 		self.posit = numpy.zeros(shape = (width, height))
 
 	def getposition(self, pos):
@@ -19,11 +23,10 @@ class room(object):
 		y = []
 		x = pos.getX()
 		y = pos.getY()
-
 		self.pos = [x,y]
 
 	def isoccupied(self, x, y):
-		if(x, y) in self.pos:
+		if (x, y) in self.pos:
 			return True
 		else:
 			return False
@@ -37,7 +40,7 @@ class room(object):
 		x = post.getX()
 		y = pos.getY()
 		self.posit[x,y] = 0
-		
+
 class car(object):
 	#orientation is NS, EW
 	def __init__(self, lenght, position, orientation)

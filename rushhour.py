@@ -26,7 +26,7 @@ class Position(object):
 	def move(self, direction, position):
 		if direction == 'N':
 			new_position.y = position.y + 1
-			position.x = position.x
+			new_position.x = position.x
 		elif direction == 'S':
 			new_position.y = position.y - 1
 			new_position.x = position.x

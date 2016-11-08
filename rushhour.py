@@ -45,6 +45,9 @@ class car(object):
 		self.position = position
 		self.orientation = orientation
 
+	def getId(self):
+		
+
 	def move(self, direction, position):
 		if direction == N:
 			new_position.y = position.y + 1
@@ -59,14 +62,14 @@ class car(object):
 
 		positioncheck(new_position)
 		boundarycheck(new_position)
-		counter++
+		counter += 1
 
 	def positioncheck(self, position):
 		if isoccupied(new_position):
 			invalidmove()
 
 	def boundarycheck(self, position, room):
-		if new_position.x < room.x || new_position.x > room.x || new_position.y < room.y || new_position.y > room.y:
+		if new_position.x < room.x or new_position.x > room.x or new_position.y < room.y or new_position.y > room.y:
 			invalidmove()
 
 	def invalidmove():

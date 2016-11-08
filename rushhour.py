@@ -48,7 +48,7 @@ class room(object):
 		self.width = width
 		self.height = height
 		# 0 is empty, if not 0 car id
-		self.posit = numpy.zeros(shape = (width, height))
+		self.posit = numpy.zeros(shape = (width + 1, height))
 
 	def getposition(self, pos):
 		x = []

@@ -79,8 +79,14 @@ class car(object):
 		self.position = position
 		self.orientation = orientation
 
-	def getId(self):
-		
+
+	# def getId(self):
+	# 	int total_cars = 
+	# 	int id = 0
+	# 	for i in range(0, ):
+	# 		id +=1
+	# 		i +=1
+
 
 	def move(self, direction, position):
 		if direction == N:

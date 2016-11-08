@@ -9,7 +9,8 @@ import pylab
 import numpy
 
 # ([id, position, orientation, length], [etc])
-chupachups = ([1, [0, 0], Z, 2])
+# position = x, y; orientation: nz = 1 ew = 2
+chupachups = ([1, [0, 0], 2, 2])
 counter = 0
 exit = []
 
@@ -22,16 +23,16 @@ class Position(object):
 	def getY(self):
 		return self.y
 	def move(self, direction, position):
-		if direction == N:
+		if direction == 'N':
 			new_position.y = position.y + 1
 			position.x = position.x
-		elif direction == S:
+		elif direction == 'S':
 			new_position.y = position.y - 1
 			new_position.x = position.x
-		elif direction == W:
+		elif direction == 'W':
 			new_position.x = position.x - 1
 			new_position.y = position.y
-		elif direction == E:
+		elif direction == 'E':
 			new_position.x = position.x + 1
 			new_position.y = position.y
 		else:
@@ -108,27 +109,24 @@ class car(object):
 		else:
 			return True
 
+	# tell algorithem move is a death end
 	def invalidmove():
 		raise ValueError
 
 # =================================== #
 
 def runSimulation(chupachups, width, height, exit):
-	num = 0
-    totaltime = 0
-    while True:
-		anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
-        i = len(chupachups)
-        room = room(width, height)
-        cars = []
-        while i > 0:
-            cars.append(car(chupachups))
-            i -= 1
-        while (car.id == 1) and (car.position != exit):
-            for entry in cars:
-                entry.move()
-            totaltime += 1
-#            anim.update(room, robots)
-        num += 1
-#        anim.done()
+    # anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
+    i = len(chupachups)
+    room = room(width, height)
+    cars = []
+    while i > 0:
+        cars.append(car(chupachups))
+        i -= 1
+    while (car.id == 1) and (car.position != exit):
+        for entry in cars:
+            entry.move()
+        totaltime += 1
+        #anim.update(room, robots)
+    #anim.done()
     return (totaltime/num)

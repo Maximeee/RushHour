@@ -4,10 +4,11 @@ import time
 from Tkinter import *
 
 class RushHourVisualization:
-    def __init__(self, chupachups, width, height, exit, delay = 0.2):
+    def __init__(self, chupachups, width, height, exit, delay = 0.2, moves = 0):
         "Initializes a visualization with the specified parameters."
         # Number of seconds to pause after each frame
         self.delay = delay
+        self.moves = moves
 
         self.max_dim = max(width, height)
         self.width = width
@@ -24,7 +25,7 @@ class RushHourVisualization:
         x2, y2 = self._map_coords(width, height)
         self.w.create_rectangle(x1, y1, x2, y2, fill = "white")
 
-        # Draw gray squares for dirty tiles
+        # Draw gray squares for empty tiles
         self.tiles = {}
         for i in range(width):
             for j in range(height):
@@ -52,16 +53,15 @@ class RushHourVisualization:
 
     def _status_string(self, time, num_clean_tiles):
         "Returns an appropriate status string to print."
-        percent_clean = 100 * num_clean_tiles / (self.width * self.height)
-        return "Time: %04d; %d tiles (%d%%) cleaned" % \
-            (time, num_clean_tiles, percent_clean)
+        count = self.moves
+        return "moves: ", count
 
     def _map_coords(self, x, y):
         "Maps grid positions to window positions (in pixels)."
         return (250 + 450 * ((x - self.width / 2.0) / self.max_dim),
                 250 + 450 * ((self.height / 2.0 - y) / self.max_dim))
 
-    def _draw_robot(self, position, direction):
+    def _draw_cars(self, position, direction):
         "Returns a polygon representing a robot with the specified parameters."
         x, y = position.getX(), position.getY()
         d1 = direction + 165
@@ -108,4 +108,3 @@ class RushHourVisualization:
     def done(self):
         "Indicate that the animation is done so that we allow the user to close the window."
         mainloop()
-

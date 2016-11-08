@@ -1,7 +1,7 @@
 ''''
 Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 10669744, 10543988, 10001228
-''''
+'''
 
 import math
 import random
@@ -49,7 +49,9 @@ class car(object):
 		self.orientation = orientation
 
 	def getId(self):
-		
+		for x in car:
+			int id += 1
+			x += 1
 
 	def move(self, direction, position):
 		if direction == N:

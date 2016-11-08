@@ -64,8 +64,9 @@ class car(object):
 		boundarycheck(new_position)
 		counter++
 
-	# def positioncheck(self, position):
-
+	def positioncheck(self, position):
+		if isoccupied(new_position):
+			invalidmove()
 
 	def boundarycheck(self, position, room):
 		if new_position.x < room.x || new_position.x > room.x || new_position.y < room.y || new_position.y > room.y:

@@ -1,15 +1,10 @@
-# Problem Set 6:
-# Visualization code for simulated robots.
-#
-# See the problem set for instructions on how to use this code.
-
 import math
 import time
 
 from Tkinter import *
 
-class RobotVisualization:
-    def __init__(self, num_robots, width, height, delay = 0.2):
+class RushHourVisualization:
+    def __init__(self, chupachups, width, height, exit, delay = 0.2):
         "Initializes a visualization with the specified parameters."
         # Number of seconds to pause after each frame
         self.delay = delay
@@ -17,7 +12,6 @@ class RobotVisualization:
         self.max_dim = max(width, height)
         self.width = width
         self.height = height
-        self.num_robots = num_robots
 
         # Initialize a drawing surface
         self.master = Tk()

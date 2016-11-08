@@ -43,6 +43,10 @@ class Position(object):
 
 		boundarycheck(new_position)
 		positioncheck(new_position)
+		
+		if boundarycheck == True and positioncheck == True:
+			releaseplace(position)
+
 		return new_position
 
 # =================================== #
@@ -105,10 +109,14 @@ class car(object):
 	def positioncheck(self, position):
 		if isoccupied(new_position):
 			invalidmove()
+		elif:
+			return True
 
 	def boundarycheck(self, position, room):
 		if new_position.x < room.x or new_position.x > room.x or new_position.y < room.y or new_position.y > room.y:
 			invalidmove()
+		elif:
+			return True
 
 	def invalidmove():
 		raise ValueError

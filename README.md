@@ -1,6 +1,6 @@
 # RushHour
 
-class move:
+class room:
 	grootte, en dimensie aanmaken;
 	exit creeren;
 	updaten van de room na een move

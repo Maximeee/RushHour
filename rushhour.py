@@ -24,6 +24,7 @@ class Position(object):
 	def getY(self):
 		return self.y
 	def move(self, direction, position):
+
 		if direction == 'N':
 			new_position.y = position.y + 1
 			new_position.x = position.x
@@ -39,10 +40,9 @@ class Position(object):
 		else:
 			raise ValueError
 
-		boundarycheck(new_position)
-		positioncheck(new_position)
+		car.validmove(new_position)
 
-		if boundarycheck == True and positioncheck == True:
+		if validmove == True:
 			releaseplace(position)
 
 		return new_position
@@ -98,21 +98,18 @@ class car(object):
 		self.orientation = chupachups[2]
 		self.lenght = chupachups[3]
 
-	def positioncheck(self, position):
-		if isoccupied(new_position):
-			invalidmove()
+	def validmove(self, position):
+		if !isoccupied(new_position):
+			if car.id == 1 and (new_position == exit):
+				won(True) 
+			elif new_position.x < 0 or new_position.x > room.width or new_position.y < room.0 or new_position.y > room.height:
+				return False
+			else:
+				return True
 		else:
-			return True
+			return False
 
-	def boundarycheck(self, position, room):
-		if new_position.x < room.x or new_position.x > room.x or new_position.y < room.y or new_position.y > room.y:
-			invalidmove()
-		else:
-			return True
 
-	# tell algorithem move is a death end
-	def invalidmove():
-		raise ValueError
 
 # =================================== #
 
@@ -124,10 +121,17 @@ def runSimulation(chupachups, width, height, exit):
     while i > 0:
         cars.append(car(chupachups))
         i -= 1
-    while (car.id == 1) and (car.position != exit):
+    while (car.id == 1 and car.position != exit):
         for entry in cars:
             entry.move()
+
         start_time = time.time()
         #anim.update(room, robots)
     #anim.done()
     return (time.time() - start_time)
+
+def won(x):
+	if x == True:
+		anim.done()
+		return path
+

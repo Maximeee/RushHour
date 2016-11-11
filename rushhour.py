@@ -8,6 +8,7 @@ import random
 import pylab
 import numpy
 import time
+import queue
 
 # ([id, position, orientation, length], [etc])
 # position = x, y; orientation: nz = 1 ew = 2
@@ -23,24 +24,6 @@ class Position(object):
 		return self.x
 	def getY(self):
 		return self.y
-	def move(self, direction, position):
-
-		if direction == 'N':
-			new_position.y = position.y + 1
-			new_position.x = position.x
-		elif direction == 'S':
-			new_position.y = position.y - 1
-			new_position.x = position.x
-		elif direction == 'W':
-			new_position.x = position.x - 1
-			new_position.y = position.y
-		elif direction == 'E':
-			new_position.x = position.x + 1
-			new_position.y = position.y
-		else:
-			raise ValueError
-
-		car.validmove(new_position)
 
 		if validmove == True:
 			releaseplace(position)
@@ -98,10 +81,34 @@ class car(object):
 		self.orientation = chupachups[2]
 		self.lenght = chupachups[3]
 
+		def move(self, direction, position):
+			if direction == 'N':
+				new_position.y = position.y + 1
+				new_position.x = position.x
+				if validMove(new_position):
+					return new_position
+			elif direction == 'S':
+				new_position.y = position.y - 1
+				new_position.x = position.x
+				if validMove(new_position):
+					return new_position
+			elif direction == 'W':
+				new_position.x = position.x - 1
+				new_position.y = position.y
+				if validMove(new_position):
+					return new_position
+			elif direction == 'E':
+				new_position.x = position.x + 1
+				new_position.y = position.y
+				if validMove(new_position):
+					return new_position
+			else:
+				raise ValueError
+
 	def validmove(self, position):
 		if !isoccupied(new_position):
 			if car.id == 1 and (new_position == exit):
-				won(True) 
+				return "won"
 			elif new_position.x < 0 or new_position.x > room.width or new_position.y < room.0 or new_position.y > room.height:
 				return False
 			else:
@@ -135,3 +142,20 @@ def won(x):
 		anim.done()
 		return path
 
+
+"""
+for each in cars
+	move up/right
+		isvalid? (occupied/boundarycheck)
+			not in library?
+				update position of car
+				update board
+					put into library
+				break
+	move down/left
+		isvalid? (occupied/boundarycheck)
+			not in library?
+				update position of car
+				update board
+					put into library
+				break

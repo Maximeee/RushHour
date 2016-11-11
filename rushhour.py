@@ -32,7 +32,7 @@ class Position(object):
 
 # =================================== #
 
-class room(object):
+class Room(object):
 	def __init__(self, width, height):
 		self.width = width
 		self.height = height
@@ -69,11 +69,11 @@ class room(object):
 		if (height % 2):
 			return height/2
 		else:
-			return (height/2 +1)
+			return (height/2 + 1)
 
 # =================================== #
 
-class car(object):
+class Car(object):
 	#orientation is NS, EW
 	def __init__(self, chupachups):
 		self.id = chupachups[0]
@@ -106,7 +106,7 @@ class car(object):
 				raise ValueError
 
 	def validmove(self, position):
-		if !isoccupied(new_position):
+		if not isoccupied(new_position):
 			if car.id == 1 and (new_position == exit):
 				return "won"
 			elif new_position.x < 0 or new_position.x > room.width or new_position.y < room.0 or new_position.y > room.height:

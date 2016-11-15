@@ -9,6 +9,7 @@ import random
 import numpy
 import time
 import sys
+from msvcrt import getch
 # import matlSab
 
 # ([id, position, orientation, length], [etc])
@@ -36,21 +37,9 @@ class Room(object):
 		self.height = height
 		# 0 is empty, if not 0 car id
 
-		arraynp = numpy.zeros((width, height))
-
-		i = 0
-		for j in chupachups[i][1]:
-			a = chupachups[i][1][0]
-			b = chupachups[i][1][1]
-			if arraynp[a, b] == 0:
-				arraynp[a,b] = chupachups[i][0]
-				if chupachups[i][2] == 1:
-					arraynp[a+1, b] = chupachups[i][0]
-				else:
-					arraynp[a, b+1] = chupachups[i][0]
-				i +=1	
-
-		print arraynp
+		initroom(width, height)
+		Car().moveDown()
+	
 
 	def getposition(self, pos):
 		x = pos.getX()
@@ -80,52 +69,74 @@ class Room(object):
 # =================================== #
 
 class Car(object):
-	#orientation is NS, EW
-	def __init__(self, chupachups):
-		self.id = chupachups[0]
-		self.position = chupachups[1]
-		self.orientation = chupachups[2]
-		self.lenght = chupachups[3]
 
-	def move(self, id, direction):
+	
 
-		if direction == 'N':
-			new_position.y = position.y + 1
-			new_position.x = position.x
-			if validMove(new_position):
-				return new_position
-		elif direction == 'S':
-			new_position.y = position.y - 1
-			new_position.x = position.x
-			if validMove(new_position):
-				return new_position
-		elif direction == 'W':
-			new_position.x = position.x - 1
-			new_position.y = position.y
-			if validMove(new_position):
-				return new_position
-		elif direction == 'E':
-			new_position.x = position.x + 1
-			new_position.y = position.y
-			if validMove(new_position):
-				return new_position
-		else:
-			raise ValueError
+	def moveDown(self):
+		key = getch()
+		print key
 
-		if validmove == True:
-			releaseplace(position)
+		if key == 224:
+			print "jeeej"
 
-		return new_position
+		# if direction == 'N':
+		# 	new_position[x][y] = position[x][y+1]
+		# 	print new_position[x][y]
+		# 	if validMove(new_position):
+		# 		return new_position[x][y]
+		# elif direction == 'S':
+		# 	new_position.y = position.y - 1
+		# 	new_position.x = position.x
+		# 	if validMove(new_position):
+		# 		return new_position
+		# elif direction == 'W':
+		# 	new_position.x = position.x - 1
+		# 	new_position.y = position.y
+		# 	if validMove(new_position):
+		# 		return new_position
+		# elif direction == 'E':
+		# 	new_position.x = position.x + 1
+		# 	new_position.y = position.y
+		# 	if validMove(new_position):
+		# 		return new_position
+		# else:
+		# 	raise ValueError
 
-	def validmove(self, position):
-		if not isoccupied(new_position):
-			if car.id == 1 and (new_position == exit):
-				return "won"
-			elif new_position.x < 0 or new_position.x > room.width or new_position.y < 0 or new_position.y > room.height:
-				return False
+		# if validmove == True:
+		# 	releaseplace(position)
+
+		# return new_position
+
+	# def validmove(self, position):
+	# 	if not isoccupied(new_position):
+	# 		if car.id == 1 and (new_position == exit):
+	# 			return "won"
+	# 		elif new_position.x < 0 or new_position.x > room.width or new_position.y < 0 or new_position.y > room.height:
+	# 			return False
+	# 		else:
+	# 			return True
+	# 	else:
+	# 		return False
+
+
+def initroom(width, height):
+	arraynp = numpy.zeros((width, height))
+
+	i = 0
+	for j in chupachups[i][1]:
+		a = chupachups[i][1][0]
+		b = chupachups[i][1][1]
+		if arraynp[a, b] == 0:
+			arraynp[a,b] = chupachups[i][0]
+			if chupachups[i][2] == 1:
+				arraynp[a+1, b] = chupachups[i][0]
 			else:
-				return True
-		else:
-			return False
+				arraynp[a, b+1] = chupachups[i][0]
+			i +=1
+
+	print arraynp
+
+	return arraynp
 
 x = Room(5,5)
+

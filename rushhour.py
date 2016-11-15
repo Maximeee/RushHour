@@ -59,6 +59,34 @@ class Room(object):
 		x = pos.getX()
 		y = pos.getY()
 		self.posit[x,y] = 1
+		return self.posit
+	
+	def archive(self, pos):
+		q = queue.Queue()
+		if q.full():
+			raise ValueError
+		
+		placeoccupied(pos)
+		array = []
+		
+		for i in self.posit:
+			array.append(i)
+		q.put(array)
+		return q
+
+
+
+
+		q.put(self.posit)
+		return q
+
+
+
+
+		 
+
+
+
 
 	def releaseplace(self,pos):
 		x = post.getX()
@@ -70,6 +98,12 @@ class Room(object):
 			return height/2
 		else:
 			return (height/2 + 1)
+
+
+
+
+
+
 
 # =================================== #
 
@@ -99,7 +133,7 @@ class Car(object):
 					return new_position
 			elif direction == 'E':
 				new_position.x = position.x + 1
-				new_position.y = position.y
+				new_position.y = position.yqu
 				if validMove(new_position):
 					return new_position
 			else:

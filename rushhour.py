@@ -133,7 +133,7 @@ class Car(object):
 					return new_position
 			elif direction == 'E':
 				new_position.x = position.x + 1
-				new_position.y = position.yqu
+				new_position.y = position.y
 				if validMove(new_position):
 					return new_position
 			else:

@@ -14,7 +14,7 @@ import sys
 # ([id, position, orientation, length], [etc])
 # position = x, y; orientation: nz = 1 ew = 2
 
-chupachups = ([1, [0, 3], 2, 2], [2, [1,2], 1, 2])
+chupachups = ([1, [0, 3], 2, 3], [2, [0,2], 1, 2])
 counter = 0
 exit = []
 
@@ -36,21 +36,21 @@ class Room(object):
 		self.height = height
 		# 0 is empty, if not 0 car id
 
-		array = numpy.zeros((width, height))
+		arraynp = numpy.zeros((width, height))
 
 		i = 0
 		for j in chupachups[i][1]:
 			a = chupachups[i][1][0]
 			b = chupachups[i][1][1]
-		
-			array[a,b] = chupachups[i][0]
-			if chupachups[i][2] == 1:
-				array[a+1, b] = chupachups[i][0]
-			else:
-				array[a, b+1] = chupachups[i][0]
-			i +=1
-			
-		print array
+			if arraynp[a, b] == 0:
+				arraynp[a,b] = chupachups[i][0]
+				if chupachups[i][2] == 1:
+					arraynp[a+1, b] = chupachups[i][0]
+				else:
+					arraynp[a, b+1] = chupachups[i][0]
+				i +=1	
+
+		print arraynp
 
 	def getposition(self, pos):
 		x = pos.getX()
@@ -65,11 +65,6 @@ class Room(object):
 			return True
 		else:
 			return False
-
-	def placeoccupied(self, pos):
-		x = pos.getX()
-		y = pos.getY()
-		self.posit[x,y] = 1
 
 	def releaseplace(self,pos):
 		x = post.getX()
@@ -134,5 +129,3 @@ class Car(object):
 			return False
 
 x = Room(5,5)
-Car.move(2, 'N')
-

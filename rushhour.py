@@ -65,27 +65,14 @@ class Room(object):
 		q = queue.Queue()
 		if q.full():
 			raise ValueError
-		
-		placeoccupied(pos)
-		array = []
+		else:
+			placeoccupied(pos)
+			array = []
 		
 		for i in self.posit:
 			array.append(i)
 		q.put(array)
 		return q
-
-
-
-
-		q.put(self.posit)
-		return q
-
-
-
-
-		 
-
-
 
 
 	def releaseplace(self,pos):
@@ -147,6 +134,9 @@ class Car(object):
 				return False
 			else:
 				return True
+
+
+		#dit kan weg toch?
 		else:
 			return False
 

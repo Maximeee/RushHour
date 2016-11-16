@@ -32,7 +32,11 @@ class Position(object):
 
 # =================================== #
 
+<<<<<<< HEAD
+class board(object):
+=======
 class Room(object):
+>>>>>>> d5ea696d91b73fcaf0ae0449e5754ae073233f39
 	def __init__(self, width, height):
 		self.width = width
 		self.height = height
@@ -93,15 +97,21 @@ class Room(object):
 
 
 # =================================== #
+# ([id, position, orientation, length], [etc])
+# position = x, y; orientation: nz = 1 ew = 2
 
 class Car(object):
 	#orientation is NS, EW
 	def __init__(self, chupachups):
 		self.id = chupachups[0]
-		self.position = chupachups[1]
+		self.position[0] = chupachups[1]
 		self.orientation = chupachups[2]
 		self.lenght = chupachups[3]
 
+		if self.orientation == 1:
+			for i in range(1, self.lenght):
+				self.position[i] = chupachups[1][] + 1
+			pass
 		def move(self, direction, position):
 			if direction == 'N':
 				new_position.y = position.y + 1
@@ -130,7 +140,7 @@ class Car(object):
 		if not isoccupied(new_position):
 			if car.id == 1 and (new_position == exit):
 				return "won"
-			elif new_position.x < 0 or new_position.x > room.width or new_position.y < room.0 or new_position.y > room.height:
+			elif new_position.x < 0 or new_position.x > board.width or new_position.y < board.0 or new_position.y > board.height:
 				return False
 			else:
 				return True
@@ -147,7 +157,7 @@ class Car(object):
 def runSimulation(chupachups, width, height, exit):
     # anim = RushHour_visualize.RushHourVisualization(chupachups, width, height, exit)
     i = len(chupachups)
-    room = room(width, height)
+    board = board(width, height)
     cars = []
     while i > 0:
         cars.append(car(chupachups))
@@ -157,7 +167,7 @@ def runSimulation(chupachups, width, height, exit):
             entry.move()
 
         start_time = time.time()
-        #anim.update(room, robots)
+        #anim.update(board, robots)
     #anim.done()
     return (time.time() - start_time)
 

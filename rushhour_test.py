@@ -16,6 +16,7 @@ from msvcrt import getch
 # position = x, y; orientation: nz = 1 ew = 2
 
 chupachups = ([1, [0, 3], 2, 3], [2, [0,2], 1, 3])
+
 counter = 0
 exit = []
 
@@ -85,17 +86,10 @@ class Room(object):
 
 # =================================== #
 
-class Car(object):
+# class Car(object):
 
 	# def moveUp(self, id, board):
 		
-
-	def moveDown(self):
-		key = ord(getch())
-		print key
-
-		if key == 115:
-			print "jeeej"
 
 		# if direction == 'N':
 		# 	new_position[x][y] = position[x][y+1]
@@ -143,27 +137,33 @@ def RushHour(width, height):
 	print board
 
 	while(True):
-		key = raw_input("Give car ID: ")
-		print key
+		maxchup = len(chupachups)
+		key = int(raw_input("Give car ID: ")) -1
+
+		while key < 0 or key >= maxchup:
+			key = int(raw_input("Try again: ")) -1
+		
 		move = raw_input("ASDW? ")
-		print move
 
-		# key2 = key.split(' ')
-		# print key2
-
-		if key == '1':
-			print "jeeej"
-			if move == 'A' or move == 'a':
-				chupachups[0][1][1] = chupachups[0][1][1] -1
-				chupachups[0][1][0] = chupachups[0][1][0]
-
-				board = Room().initroom(width, height)
-
-
-
-				print board
-				# print new_position
-
-
+		while not (move == 'a' or move == 'A' or move == 'S' or move == 's' or move == 'W' or move == 'w' or move == 'd' or move == 'D'):
+			raw_input("Try again: ")
+		
+		if move == 'A' or move == 'a':
+			print chupachups[key][1][1] -1
+			if not chupachups[key][1][1] -1 < 0:
+				chupachups[key][1][1] = chupachups[key][1][1] -1
+				chupachups[key][1][0] = chupachups[key][1][0]
+		elif move == 'S' or move == 's':
+			chupachups[key][1][1] = chupachups[key][1][1] 
+			chupachups[key][1][0] = chupachups[key][1][0] +1
+		elif move == 'W' or move == 'w':
+			chupachups[key][1][1] = chupachups[key][1][1] 
+			chupachups[key][1][0] = chupachups[key][1][0] -1
+		elif move == 'D' or move == 'd':
+			chupachups[key][1][1] = chupachups[key][1][1] +1
+			chupachups[key][1][0] = chupachups[key][1][0] 
+		
+		board = Room().initroom(width, height)
+		print board
 x=RushHour(5,5)
 

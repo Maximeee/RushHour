@@ -15,68 +15,86 @@ from msvcrt import getch
 # ([id, position, orientation, length], [etc])
 # position = x, y; orientation: nz = 1 ew = 2
 
-chupachups = ([1, [0, 3], 2, 3], [2, [0,2], 1, 2])
+chupachups = ([1, [0, 3], 2, 3], [2, [0,2], 1, 3])
 counter = 0
 exit = []
 
-class Position(object):
-	def __init__(self, x, y):
-		self.x = x
-		self.y = y
-	def getX(self):
-		return self.x
-	def getY(self):
-		return self.y
+# class Position(object):
+# 	def __init__(self, x, y):
+# 		self.x = x
+# 		self.y = y
+# 	def getX(self):
+# 		return self.x
+# 	def getY(self):
+# 		return self.y
 
 
 # =================================== #
 
 class Room(object):
-	def __init__(self, width, height):
-		self.width = width
-		self.height = height
-		# 0 is empty, if not 0 car id
 
-		initroom(width, height)
-		Car().moveDown()
-	
+	def initroom(self, width, height):
+		arraynp = numpy.zeros((width, height))
 
-	def getposition(self, pos):
-		x = pos.getX()
-		y = pos.getY()
-		array = []
-		if self.posit[x,y] != 0:
-			posarray.append(self.posit[x,y])
-		return x,y
+		i = 0
+		for j in chupachups[i][1]:
+			a = chupachups[i][1][0]
+			b = chupachups[i][1][1]
+			if arraynp[a, b] == 0:
+				arraynp[a,b] = chupachups[i][0]
+				if chupachups[i][2] == 1:
+					if chupachups[i][3] == 2:
+						arraynp[a+1, b] = chupachups[i][0]
+					else:
+						arraynp[a+1, b] = chupachups[i][0]
+						arraynp[a+2, b] = chupachups[i][0]
+				else:
+					if chupachups[i][3] == 2:
+						arraynp[a, b+1] = chupachups[i][0]
+					else:
+						arraynp[a, b+1] = chupachups[i][0]
+						arraynp[a, b+1] = chupachups[i][0]				
+				i +=1
 
-	def isoccupied(self, x, y):
-		if (x, y) in self.pos:
-			return True
-		else:
-			return False
+		return arraynp
 
-	def releaseplace(self,pos):
-		x = post.getX()
-		y = pos.getY()
-		self.posit[x,y] = 0
+	# def getposition(self, pos):
+	# 	x = pos.getX()
+	# 	y = pos.getY()
+	# 	array = []
+	# 	if self.posit[x,y] != 0:
+	# 		posarray.append(self.posit[x,y])
+	# 	return x,y
 
-	def exit (height, width):
-		if (height % 2):
-			return height/2
-		else:
-			return (height/2 + 1)
+	# def isoccupied(self, board):
+	# 	if :
+	# 		return True
+	# 	else:
+	# 		return False
+
+	# def releaseplace(self,pos):
+	# 	x = post.getX()
+	# 	y = pos.getY()
+	# 	self.posit[x,y] = 0
+
+	# def exit (height, width):
+	# 	if (height % 2):
+	# 		return height/2
+	# 	else:
+	# 		return (height/2 + 1)
 
 # =================================== #
 
 class Car(object):
 
-	
+	# def moveUp(self, id, board):
+		
 
 	def moveDown(self):
-		key = getch()
+		key = ord(getch())
 		print key
 
-		if key == 224:
+		if key == 115:
 			print "jeeej"
 
 		# if direction == 'N':
@@ -119,24 +137,33 @@ class Car(object):
 	# 		return False
 
 
-def initroom(width, height):
-	arraynp = numpy.zeros((width, height))
 
-	i = 0
-	for j in chupachups[i][1]:
-		a = chupachups[i][1][0]
-		b = chupachups[i][1][1]
-		if arraynp[a, b] == 0:
-			arraynp[a,b] = chupachups[i][0]
-			if chupachups[i][2] == 1:
-				arraynp[a+1, b] = chupachups[i][0]
-			else:
-				arraynp[a, b+1] = chupachups[i][0]
-			i +=1
+def RushHour(width, height):
+	board = Room().initroom(width, height)
+	print board
 
-	print arraynp
+	while(True):
+		key = raw_input("Give car ID: ")
+		print key
+		move = raw_input("ASDW? ")
+		print move
 
-	return arraynp
+		# key2 = key.split(' ')
+		# print key2
 
-x = Room(5,5)
+		if key == '1':
+			print "jeeej"
+			if move == 'A' or move == 'a':
+				chupachups[0][1][1] = chupachups[0][1][1] -1
+				chupachups[0][1][0] = chupachups[0][1][0]
+
+				board = Room().initroom(width, height)
+
+
+
+				print board
+				# print new_position
+
+
+x=RushHour(5,5)
 

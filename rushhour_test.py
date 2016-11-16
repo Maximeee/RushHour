@@ -13,9 +13,9 @@ from msvcrt import getch
 # import matlSab
 
 # ([id, position, orientation, length], [etc])
-# position = x, y; orientation: nz = 1 ew = 2
+# position = y, x; orientation: nz = 1 ew = 2
 
-chupachups = ([1, [0, 3], 2, 3], [2, [0,2], 1, 3])
+chupachups = ([1, [2, 0], 2, 3], [2, [0,2], 1, 3])
 
 counter = 0
 exit = []
@@ -45,7 +45,7 @@ class Room(object):
 				arraynp[a,b] = chupachups[i][0]
 				if chupachups[i][2] == 1:
 					if chupachups[i][3] == 2:
-						arraynp[a+1, b] = chupachups[i][0]
+							arraynp[a+1, b] = chupachups[i][0]
 					else:
 						arraynp[a+1, b] = chupachups[i][0]
 						arraynp[a+2, b] = chupachups[i][0]
@@ -148,22 +148,55 @@ def RushHour(width, height):
 		while not (move == 'a' or move == 'A' or move == 'S' or move == 's' or move == 'W' or move == 'w' or move == 'd' or move == 'D'):
 			raw_input("Try again: ")
 		
+		# zorgen dat autos niet botsen
+		# zorgen dat het spel gewonnen kan worden
+		# [1, [0,3], 2, 3]
+		# [2, [0,2], 1, 3]
+		
 		if move == 'A' or move == 'a':
-			print chupachups[key][1][1] -1
-			if not chupachups[key][1][1] -1 < 0:
-				chupachups[key][1][1] = chupachups[key][1][1] -1
-				chupachups[key][1][0] = chupachups[key][1][0]
-		elif move == 'S' or move == 's':
-			chupachups[key][1][1] = chupachups[key][1][1] 
-			chupachups[key][1][0] = chupachups[key][1][0] +1
-		elif move == 'W' or move == 'w':
-			chupachups[key][1][1] = chupachups[key][1][1] 
-			chupachups[key][1][0] = chupachups[key][1][0] -1
+			if not chupachups[key][2] == 1:
+				if not chupachups[key][1][1] -1 < 0:
+					b = chupachups[key][1][1] -1
+					a = chupachups[key][1][0]
+					if board[a][b] == 0:
+						chupachups[key][1][1] = chupachups[key][1][1] -1
+						chupachups[key][1][0] = chupachups[key][1][0]
 		elif move == 'D' or move == 'd':
-			chupachups[key][1][1] = chupachups[key][1][1] +1
-			chupachups[key][1][0] = chupachups[key][1][0] 
+			if not chupachups[key][2] == 1: 
+				if not chupachups[key][1][1] +1 >= height:
+					b = chupachups[key][1][1] +1
+					a = chupachups[key][1][0]
+					# if board[a+(chupachups[key][3])][b] == 0 and board[a+(chupachups[key][3]-1)][b] == 0 :
+					chupachups[key][1][1] = chupachups[key][1][1] +1
+					chupachups[key][1][0] = chupachups[key][1][0] 
+
+		elif move == 'S' or move == 's':
+			if not chupachups[key][2] == 2:
+				print "jeej" 
+				if not chupachups[key][1][0] + 1 >= width:
+					b = chupachups[key][1][1] +1
+					a = chupachups[key][1][0] 
+					print a, b, board[a][b]
+					# if board[a][b] == 0:
+					chupachups[key][1][1] = chupachups[key][1][1] 
+					chupachups[key][1][0] = chupachups[key][1][0] +1
+		
+		elif move == 'W' or move == 'w':
+			if not chupachups[key][2] == 2: 
+				if not chupachups[key][1][0] -1 < 0:
+					b = chupachups[key][1][1] 
+					a = chupachups[key][1][0] -1
+					# if board[a][b] == 0:
+					chupachups[key][1][1] = chupachups[key][1][1] 
+					chupachups[key][1][0] = chupachups[key][1][0] -1
 		
 		board = Room().initroom(width, height)
 		print board
+
+
+
+
+
+
 x=RushHour(5,5)
 

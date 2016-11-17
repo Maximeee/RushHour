@@ -137,36 +137,45 @@ def RushHour(width, height):
 	print board
 
 	while(True):
+		# User input for which car he/she wants to move
 		maxchup = len(chupachups)
 		key = int(raw_input("Give car ID: ")) -1
 
 		while key < 0 or key >= maxchup:
 			key = int(raw_input("Try again: ")) -1
 		
+		# User input for the move
 		move = raw_input("ASDW? ")
 
 		while not (move == 'a' or move == 'A' or move == 'S' or move == 's' or move == 'W' or move == 'w' or move == 'd' or move == 'D'):
 			raw_input("Try again: ")
-		
+
+
+		# TODO LIJSTJE:
 		# zorgen dat autos niet botsen
 		# zorgen dat het spel gewonnen kan worden
-		# [1, [0,3], 2, 3]
-		# [2, [0,2], 1, 3]
+		# als de move niet geldig is, een loop om een move te vragen
 		
+		# Checks which move was given
 		if move == 'A' or move == 'a':
+			# Checks if the orientation of the car is H or V
 			if not chupachups[key][2] == 1:
+				# Checks if the car is not outside the field
 				if not chupachups[key][1][1] -1 < 0:
 					b = chupachups[key][1][1] -1
 					a = chupachups[key][1][0]
+					# Checks if the new position is empty
 					if board[a][b] == 0:
+						# Saves the new position to the tuple 
 						chupachups[key][1][1] = chupachups[key][1][1] -1
 						chupachups[key][1][0] = chupachups[key][1][0]
+
 		elif move == 'D' or move == 'd':
 			if not chupachups[key][2] == 1: 
 				if not chupachups[key][1][1] +1 >= height:
 					b = chupachups[key][1][1] +1
 					a = chupachups[key][1][0]
-					# if board[a+(chupachups[key][3])][b] == 0 and board[a+(chupachups[key][3]-1)][b] == 0 :
+					# TODO: checken of new position is leeg
 					chupachups[key][1][1] = chupachups[key][1][1] +1
 					chupachups[key][1][0] = chupachups[key][1][0] 
 
@@ -176,8 +185,7 @@ def RushHour(width, height):
 				if not chupachups[key][1][0] + 1 >= width:
 					b = chupachups[key][1][1] +1
 					a = chupachups[key][1][0] 
-					print a, b, board[a][b]
-					# if board[a][b] == 0:
+					# TODO: checken of new position is leeg
 					chupachups[key][1][1] = chupachups[key][1][1] 
 					chupachups[key][1][0] = chupachups[key][1][0] +1
 		
@@ -186,10 +194,11 @@ def RushHour(width, height):
 				if not chupachups[key][1][0] -1 < 0:
 					b = chupachups[key][1][1] 
 					a = chupachups[key][1][0] -1
-					# if board[a][b] == 0:
-					chupachups[key][1][1] = chupachups[key][1][1] 
-					chupachups[key][1][0] = chupachups[key][1][0] -1
+					if board[a][b] == 0:
+						chupachups[key][1][1] = chupachups[key][1][1] 
+						chupachups[key][1][0] = chupachups[key][1][0] -1
 		
+		# Update board
 		board = Room().initroom(width, height)
 		print board
 

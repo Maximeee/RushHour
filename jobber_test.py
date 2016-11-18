@@ -128,26 +128,34 @@ class Board(object):
                 if (x+length < width):
                     # if the board to the right is empty
                     if (self.arraynp[x+length,y] == 0):
-                        #change the position of the car on a new board / not changes to old cars "deepcopy"
+                        # ensure no changes are made to old cars "deepcopy"
                         new_cars = copy.deepcopy(cars)
+                        # update position
                         new_cars[car.id-1].position[0] = car.position[0] + 1
+                        # create new board
                         child = Board(new_cars, self.width, self.height)
+                        # check if won
                         if car.id == 1 and child.arraynp[self.width-1,y]:
+                            # return winning identivier and winning board
                             child_boards.append(child)
+                            return "win", child_boards
+                        # if not winning board append new board
                         child_boards.append(child)
                         counter += 1
+                # if the space to the left is on the board
                 if (x-1 >= 0):
+                    # if the space to the left is empty
                     if (self.arraynp[x-1,y] == 0):
+                        # ensure no changes are made to old cars "deepcopy"
                         new_cars = copy.deepcopy(cars)
+                        # update position
                         new_cars[car.id-1].position[0] = car.position[0] - 1
+                        # append new board
                         child = Board(new_cars, self.width, self.height)
                         child_boards.append(child)
                         counter += 1
-
+        # return all new boards if non won
         return child_boards
-        # if valid
-            # return list of children
-        # else discard
 
 '''
 put board 1  in queue
@@ -161,24 +169,39 @@ while not won or queue not empty
     or
         discard
 '''
-
+# flip the board to match the orientation in boards.txt
 # print numpy.transpose(x.arraynp)
-board = Board(cars, 6, 6)
-archive = dict()
-queue = queue.Queue()
-queue.put(board)
-do
 
+# create starting board
+board = Board(cars, 6, 6)
+# create archive
+archive = dict()
+# initialize queue
+queue = queue.Queue()
+# put starting board in queue
+queue.put(board)
+
+# as long as there are boards to try
 while not queue.empty():
+    # get the first board from the queue
     board = queue.get()
+    # make children from that board
     board_children = board.children()
-    if board_children[0] == "won":
+    # if children() returns the winning identivier
+    if board_children[0] == "win":
         print "WON"
+        # show the winning board
+        print numpy.transpose(board_children[1].arraynp)
         break
+    # if children() returns no winning board
     else:
+        # for all the boards children() returned
         for each in board_children:
+            # if board is not in archive
             if each not in archive:
+                # add to archive with board hash as key
                 archive[each.hash] = each
+                # put board at the end of the queue
                 queue.put(each)
 
 """

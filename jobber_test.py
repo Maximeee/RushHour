@@ -25,7 +25,8 @@ chupachups = [
 [5,[4,4],1,3],
 [6,[5,4],2,2],
 [7,[1,5],1,2],
-[8,[5,6],2,2]
+[8,[2,5],2,2],
+[9,[5,6],2,2]
 ]
 
 counter = 0
@@ -52,6 +53,7 @@ class Board(object):
         self.width = width
         self.height = height
         self.arraynp = numpy.zeros((width, height))
+        self.pathWay = []
         for car in cars:
             x = car.position[0] - 1
             y = car.position[1] - 1
@@ -103,7 +105,7 @@ class Board(object):
             orientation = car.orientation
             numb = car.id
             # move
-            # if the car is oriented nz
+            # if the car is oriented ns
             if (orientation == 1):
                 # if the position bellow? the lowest part of the car is on the board
                 if (y+length < height):
@@ -115,6 +117,8 @@ class Board(object):
                         new_cars[car.id-1].position[1] = car.position[1] + 1
                         # print "cars:", cars[car.id-1].position, "\nnew_cars:", new_cars[car.id].position
                         child = Board(new_cars, self.width, self.height)
+                        child.pathWay = self.pathWay
+                        child.pathWay.append([car.id, "S"])
                         child_boards.append(child)
                         counter += 1
                         ### queue new board
@@ -125,6 +129,8 @@ class Board(object):
                         new_cars = copy.deepcopy(cars)
                         new_cars[car.id-1].position[1] = car.position[1] - 1
                         child = Board(new_cars, self.width, self.height)
+                        child.pathWay = self.pathWay
+                        child.pathWay.append([car.id, "N"])
                         child_boards.append(child)
                         counter += 1
             # if orientation is EW
@@ -139,15 +145,16 @@ class Board(object):
                         new_cars[car.id-1].position[0] = car.position[0] + 1
                         # create new board
                         child = Board(new_cars, self.width, self.height)
+                        # if not winning board append new board
+                        child.pathWay = self.pathWay
+                        child.pathWay.append([car.id, "E"])
+                        child_boards.append(child)
+                        counter += 1
                         # check if won
                         if car.id == 1 and child.arraynp[self.width-1,y]:
                             print "\n\n\n WIN \n\n\n"
                             # return winning identivier and winning board
-                            child_boards.append(child)
                             return "win", child_boards
-                        # if not winning board append new board
-                        child_boards.append(child)
-                        counter += 1
                 # if the space to the left is on the board
                 if (x-1 >= 0):
                     # if the space to the left is empty
@@ -158,6 +165,8 @@ class Board(object):
                         new_cars[car.id-1].position[0] = car.position[0] - 1
                         # append new board
                         child = Board(new_cars, self.width, self.height)
+                        child.pathWay = self.pathWay
+                        child.pathWay.append([car.id, "W"])
                         child_boards.append(child)
                         counter += 1
         # return all new boards if non won
@@ -191,7 +200,7 @@ queue.put(board)
 while not queue.empty():
     # get the first board from the queue
     board = queue.get()
-    print numpy.transpose(board.arraynp)
+    print "\n", numpy.transpose(board.arraynp)
 
     # make children from that board
     board_children = board.children()
@@ -206,7 +215,7 @@ while not queue.empty():
         # for all the boards children() returned
         for each in board_children:
             # if board is not in archive
-            if each not in archive:
+            if not each in archive:
                 # add to archive with board hash as key
                 archive[hash(each)] = each
                 # put board at the end of the queue

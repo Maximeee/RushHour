@@ -87,11 +87,9 @@ class Board(object):
     def children(self):
         counter = 0
         child_boards = []
-        print "test"
         height = self.height
         width = self.width
         for car in cars:
-            print '-', car.id, '-'
             # y - 1 means move up one on the board
             x = car.position[0] - 1
             y = car.position[1] - 1
@@ -102,7 +100,6 @@ class Board(object):
             # move
             # if the car is oriented nz
             if (orientation == 1):
-                print "NZ"
                 # if the position bellow? the lowest part of the car is on the board
                 if (y+length < height):
                     # if the position bellow the lowest part is empty
@@ -131,13 +128,12 @@ class Board(object):
                 if (x+length < width):
                     # if the board to the right is empty
                     if (self.arraynp[x+length,y] == 0):
+                        #change the position of the car on a new board / not changes to old cars "deepcopy"
                         new_cars = copy.deepcopy(cars)
                         new_cars[car.id-1].position[0] = car.position[0] + 1
                         child = Board(new_cars, self.width, self.height)
                         if car.id == 1 and child.arraynp[self.width-1,y]:
-                            print "\nwin\n"
                             child_boards.append(child)
-                            return "won", child_boards
                         child_boards.append(child)
                         counter += 1
                 if (x-1 >= 0):
@@ -148,9 +144,6 @@ class Board(object):
                         child_boards.append(child)
                         counter += 1
 
-
-        print "\n", counter, "children made"
-        print "children end"
         return child_boards
         # if valid
             # return list of children
@@ -184,8 +177,9 @@ while not queue.empty():
         break
     else:
         for each in board_children:
-            archive[each.hash] = each
-            queue.put(each)
+            if each not in archive:
+                archive[each.hash] = each
+                queue.put(each)
 
 """
 print board.arraynp, "\n"

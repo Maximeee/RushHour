@@ -6,6 +6,7 @@ Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 import math
 import random
 import copy
+import queue
 # import pylab
 import numpy
 import time
@@ -17,28 +18,13 @@ from msvcrt import getch
 # position = x, y; orientation: nz = 1 ew = 2
 
 chupachups = [
-[1,[2,5],2,2],
-[2,[1,1],1,2],
-[3,[2,1],2,3],
-[4,[6,1],1,3],
-[5,[4,2],1,3],
-[6,[7,2],2,3],
-[7,[9,3],1,3],
-[8,[1,4],2,2],
-[9,[6,4],2,3],
-[10,[1,5],1,2],
-[11,[4,5],1,2],
-[12,[3,6],1,2],
-[13,[6,6],2,3],
-[14,[9,6],1,3],
-[15,[1,7],2,2],
-[16,[4,7],1,2],
-[17,[5,7],2,2],
-[18,[1,8],1,2],
-[19,[5,8],1,2],
-[20,[2,9],2,2],
-[21,[6,9],2,2],
-[22,[8,9],2,2]
+[1,[4,3],2,2],
+[2,[4,1],2,2],
+[3,[3,1],1,3],
+[5,[4,4],1,3],
+[6,[5,4],2,2],
+[7,[1,5],1,2],
+[8,[5,6],2,2]
 ]
 
 counter = 0
@@ -119,62 +105,52 @@ class Board(object):
                 print "NZ"
                 # if the position bellow? the lowest part of the car is on the board
                 if (y+length < height):
-                    print "one"
-                    print self.arraynp[x,y+length]
                     # if the position bellow the lowest part is empty
                     if (self.arraynp[x,y+length] == 0):
-                        print "two"
                         #change the position of the car on a new board / not changes to old cars "deepcopy"
                         new_cars = copy.deepcopy(cars)
                         # print "cars:", cars[car.id-1].position, "\nnew_cars:", new_cars[car.id].position
                         new_cars[car.id-1].position[1] = car.position[1] + 1
                         # print "cars:", cars[car.id-1].position, "\nnew_cars:", new_cars[car.id].position
                         child = Board(new_cars, self.width, self.height)
-                        print numpy.transpose(child.arraynp)
                         child_boards.append(child)
                         counter += 1
                         ### queue new board
-                if (y-1 > 0):
-                    print "one.2"
+                # if new position is on the board
+                if (y-1 >= 0):
+                    # if the new area is empty
                     if (self.arraynp[x,y-1] == 0):
-                        print "two.2"
                         new_cars = copy.deepcopy(cars)
                         new_cars[car.id-1].position[1] = car.position[1] - 1
                         child = Board(new_cars, self.width, self.height)
-                        print numpy.transpose(child.arraynp)
                         child_boards.append(child)
                         counter += 1
+            # if orientation is EW
             if (orientation == 2):
-                print "EW"
-
-                print x + length, "<", width
+                # if
                 if (x+length < width):
-                    print "one.3"
-                    print x + length, y
-                    print self.arraynp[x+length,y]
+                    # if the board to the right is empty
                     if (self.arraynp[x+length,y] == 0):
-                        print "two.3"
                         new_cars = copy.deepcopy(cars)
                         new_cars[car.id-1].position[0] = car.position[0] + 1
                         child = Board(new_cars, self.width, self.height)
-                        print numpy.transpose(child.arraynp)
+                        if car.id == 1 and child.arraynp[self.width-1,y]:
+                            print "\nwin\n"
+                            child_boards.append(child)
+                            return "won", child_boards
                         child_boards.append(child)
                         counter += 1
-                print x-1, ">", 0
-                if (x-1 > 0):
-                    print "one.4"
+                if (x-1 >= 0):
                     if (self.arraynp[x-1,y] == 0):
-                        print "two.4"
                         new_cars = copy.deepcopy(cars)
                         new_cars[car.id-1].position[0] = car.position[0] - 1
                         child = Board(new_cars, self.width, self.height)
-                        print numpy.transpose(child.arraynp)
                         child_boards.append(child)
                         counter += 1
 
 
         print "\n", counter, "children made"
-        print "test end"
+        print "children end"
         return child_boards
         # if valid
             # return list of children
@@ -193,9 +169,35 @@ while not won or queue not empty
         discard
 '''
 
-board = Board(cars, 9, 9)
+# print numpy.transpose(x.arraynp)
+board = Board(cars, 6, 6)
+archive = dict()
+queue = queue.Queue()
+queue.put(board)
+do
+
+while not queue.empty():
+    board = queue.get()
+    board_children = board.children()
+    if board_children[0] == "won":
+        print "WON"
+        break
+    else:
+        for each in board_children:
+            archive[each.hash] = each
+            queue.put(each)
+
+"""
 print board.arraynp, "\n"
-print board.children()
+temp = board.children()
+print temp
+print "children: ", len(temp)
+if temp[0] == "won":
+    print "WON"
+else:
+    for each in temp:
+        print numpy.transpose(each.arraynp), "\n"
+"""
 
 """
 counter = 0
@@ -203,6 +205,7 @@ test = numpy.zeros((6, 6))
 test = numpy.transpose(test)
 for i in range(0, 6):
     for j in range(0, 6):
+        print i, j
         test[i,j] = counter
         counter += 1
 print test

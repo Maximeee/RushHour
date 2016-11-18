@@ -6,7 +6,7 @@ Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 import math
 import random
 import copy
-import queue
+import Queue
 # import pylab
 import numpy
 import time
@@ -21,6 +21,7 @@ chupachups = [
 [1,[4,3],2,2],
 [2,[4,1],2,2],
 [3,[3,1],1,3],
+[4,[6,1],1,3],
 [5,[4,4],1,3],
 [6,[5,4],2,2],
 [7,[1,5],1,2],
@@ -79,10 +80,14 @@ class Board(object):
         #self.arraynp = numpy.transpose(self.arraynp)
 
     def __hash__(self):
-        return hash(self.arraynp.toString())
+        return hash(self.arraynp.tostring())
 
     def __eq__(self, other):
-        return (self.arraynp == other.arraynp).all()
+        if type(other) != str and type(self) != str:
+            return (self.arraynp == other).all()
+        else:
+            return (self.arraynp.tostring() == other)
+
 
     def children(self):
         counter = 0
@@ -136,6 +141,7 @@ class Board(object):
                         child = Board(new_cars, self.width, self.height)
                         # check if won
                         if car.id == 1 and child.arraynp[self.width-1,y]:
+                            print "\n\n\n WIN \n\n\n"
                             # return winning identivier and winning board
                             child_boards.append(child)
                             return "win", child_boards
@@ -177,7 +183,7 @@ board = Board(cars, 6, 6)
 # create archive
 archive = dict()
 # initialize queue
-queue = queue.Queue()
+queue = Queue.Queue()
 # put starting board in queue
 queue.put(board)
 
@@ -185,13 +191,15 @@ queue.put(board)
 while not queue.empty():
     # get the first board from the queue
     board = queue.get()
+    print numpy.transpose(board.arraynp)
+
     # make children from that board
     board_children = board.children()
     # if children() returns the winning identivier
     if board_children[0] == "win":
-        print "WON"
         # show the winning board
-        print numpy.transpose(board_children[1].arraynp)
+        print "WON"
+        print numpy.transpose(board_children[1][0].arraynp)
         break
     # if children() returns no winning board
     else:
@@ -200,7 +208,7 @@ while not queue.empty():
             # if board is not in archive
             if each not in archive:
                 # add to archive with board hash as key
-                archive[each.hash] = each
+                archive[hash(each)] = each
                 # put board at the end of the queue
                 queue.put(each)
 

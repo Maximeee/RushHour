@@ -53,8 +53,9 @@ class Board(object):
         self.width = width
         self.height = height
         self.arraynp = numpy.zeros((width, height))
+        self.cars = cars
         self.pathWay = []
-        for car in cars:
+        for car in self.cars:
             x = car.position[0] - 1
             y = car.position[1] - 1
             length = car.length
@@ -96,7 +97,7 @@ class Board(object):
         child_boards = []
         height = self.height
         width = self.width
-        for car in cars:
+        for car in self.cars:
             # y - 1 means move up one on the board
             x = car.position[0] - 1
             y = car.position[1] - 1
@@ -112,12 +113,12 @@ class Board(object):
                     # if the position bellow the lowest part is empty
                     if (self.arraynp[x,y+length] == 0):
                         #change the position of the car on a new board / not changes to old cars "deepcopy"
-                        new_cars = copy.deepcopy(cars)
+                        new_cars = copy.deepcopy(self.cars)
                         # print "cars:", cars[car.id-1].position, "\nnew_cars:", new_cars[car.id].position
                         new_cars[car.id-1].position[1] = car.position[1] + 1
                         # print "cars:", cars[car.id-1].position, "\nnew_cars:", new_cars[car.id].position
                         child = Board(new_cars, self.width, self.height)
-                        child.pathWay = self.pathWay
+                        child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "S"])
                         child_boards.append(child)
                         counter += 1
@@ -126,27 +127,27 @@ class Board(object):
                 if (y-1 >= 0):
                     # if the new area is empty
                     if (self.arraynp[x,y-1] == 0):
-                        new_cars = copy.deepcopy(cars)
+                        new_cars = copy.deepcopy(self.cars)
                         new_cars[car.id-1].position[1] = car.position[1] - 1
                         child = Board(new_cars, self.width, self.height)
-                        child.pathWay = self.pathWay
+                        child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "N"])
                         child_boards.append(child)
                         counter += 1
             # if orientation is EW
-            if (orientation == 2):
+            elif (orientation == 2):
                 # if
                 if (x+length < width):
                     # if the board to the right is empty
                     if (self.arraynp[x+length,y] == 0):
                         # ensure no changes are made to old cars "deepcopy"
-                        new_cars = copy.deepcopy(cars)
+                        new_cars = copy.deepcopy(self.cars)
                         # update position
                         new_cars[car.id-1].position[0] = car.position[0] + 1
                         # create new board
                         child = Board(new_cars, self.width, self.height)
                         # if not winning board append new board
-                        child.pathWay = self.pathWay
+                        child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "E"])
                         child_boards.append(child)
                         counter += 1
@@ -160,15 +161,16 @@ class Board(object):
                     # if the space to the left is empty
                     if (self.arraynp[x-1,y] == 0):
                         # ensure no changes are made to old cars "deepcopy"
-                        new_cars = copy.deepcopy(cars)
+                        new_cars = copy.deepcopy(self.cars)
                         # update position
                         new_cars[car.id-1].position[0] = car.position[0] - 1
                         # append new board
                         child = Board(new_cars, self.width, self.height)
-                        child.pathWay = self.pathWay
+                        child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "W"])
                         child_boards.append(child)
                         counter += 1
+
         # return all new boards if non won
         return child_boards
 
@@ -193,6 +195,8 @@ board = Board(cars, 6, 6)
 archive = dict()
 # initialize queue
 queue = Queue.Queue()
+# archive the start board
+archive[hash(board)] = board
 # put starting board in queue
 queue.put(board)
 
@@ -200,8 +204,6 @@ queue.put(board)
 while not queue.empty():
     # get the first board from the queue
     board = queue.get()
-    print "\n", numpy.transpose(board.arraynp)
-
     # make children from that board
     board_children = board.children()
     # if children() returns the winning identivier
@@ -214,8 +216,9 @@ while not queue.empty():
     else:
         # for all the boards children() returned
         for each in board_children:
-            # if board is not in archive
+            ## if board is not in archive
             if not each in archive:
+                print "\n",board.pathWay, "\n", numpy.transpose(board.arraynp)
                 # add to archive with board hash as key
                 archive[hash(each)] = each
                 # put board at the end of the queue

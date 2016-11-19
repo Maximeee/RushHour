@@ -152,7 +152,7 @@ class Board(object):
                         child_boards.append(child)
                         counter += 1
                         # check if won
-                        if car.id == 1 and child.arraynp[self.width-1,y]:
+                        if child.arraynp[self.width-1,y] == 0 and child.arraynp[self.width-2,y] == 1:
                             print "\n\n\n WIN \n\n\n"
                             # return winning identivier and winning board
                             return "win", child_boards
@@ -199,7 +199,7 @@ queue = Queue.Queue()
 archive[hash(board)] = board
 # put starting board in queue
 queue.put(board)
-
+#
 # as long as there are boards to try
 while not queue.empty():
     # get the first board from the queue
@@ -210,15 +210,14 @@ while not queue.empty():
     if board_children[0] == "win":
         # show the winning board
         print "WON"
-        print numpy.transpose(board_children[1][0].arraynp)
+        print board_children[1][0].pathWay, "\n", numpy.transpose(board_children[1][0].arraynp)
         break
     # if children() returns no winning board
     else:
         # for all the boards children() returned
         for each in board_children:
             ## if board is not in archive
-            if not each in archive:
-                print "\n",each.pathWay, "\n", numpy.transpose(each.arraynp)
+            if not hash(each) in archive:
                 # add to archive with board hash as key
                 archive[hash(each)] = each
                 # put board at the end of the queue

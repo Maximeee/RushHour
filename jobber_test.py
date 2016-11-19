@@ -86,9 +86,9 @@ class Board(object):
         return hash(self.arraynp.tostring())
 
     def __eq__(self, other):
-        if type(other) != str and type(self) != str:
+        if type(other) == numpy.ndarray and type(self) == numpy.ndarray:
             return (self.arraynp == other).all()
-        else:
+        elif (type(other) == str):
             return (self.arraynp.tostring() == other)
 
 
@@ -218,7 +218,7 @@ while not queue.empty():
         for each in board_children:
             ## if board is not in archive
             if not each in archive:
-                print "\n",board.pathWay, "\n", numpy.transpose(board.arraynp)
+                print "\n",each.pathWay, "\n", numpy.transpose(each.arraynp)
                 # add to archive with board hash as key
                 archive[hash(each)] = each
                 # put board at the end of the queue

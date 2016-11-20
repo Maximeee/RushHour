@@ -70,4 +70,5 @@ class Room(object):
 
 
 room = Room(cars, 6, 6)
+q.append(room)
 print room.arraynp

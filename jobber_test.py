@@ -210,10 +210,12 @@ counter = 0
 if True:
     # as long as there are boards to try
     while not queue.empty():
+        """
         if (counter % 500 == 0):
             print "count:", counter
             print "queue length:", queue.qsize()
             print "archive size:", len(archive)
+        """
         # get the first board from the queue
         board = queue.get()
         # make children from that board
@@ -285,11 +287,6 @@ def runSimulation(speed, width, height, board):
                 ### print step, "\n", numpy.transpose(vizualize.arraynp), "\n\n"
     anim.done()
 
-<<<<<<< HEAD
-room = Room(cars, 6, 6)
-q.append(room)
-print room.arraynp
-=======
 runSimulation(2, board_size[0], board_size[1], winning_board)
 
 """
@@ -313,4 +310,3 @@ for i in range(0, 6):
 print test
 print test[0,5]
 """
->>>>>>> f8e3ae81ce113426a565fc6d71d42f4618f870ca

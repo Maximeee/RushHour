@@ -5,7 +5,7 @@ import numpy
 from Tkinter import *
 
 class RushHourVisualization:
-    def __init__(self, board, delay = 0.1, moves = 0):
+    def __init__(self, board, delay = 1, moves = 0):
         self.delay = delay
         self.moves = moves
         self.board = board
@@ -37,14 +37,14 @@ class RushHourVisualization:
             self.w.create_line(x1, y1, x2, y2)
 
         self.cars = None
-        self.text = self.w.create_text(25, 0, anchor = NW, text = self._status_string(0,0))
+        self.text = self.w.create_text(25, 0, anchor = NW, text = self._status_string())
         self.time = 0
         self.master.update()
 
-    def _status_string(self, time, num_clean_tiles):
+    def _status_string(self):
         "Returns an appropriate status string to print."
-        count = self.moves
-        return "moves: ", count
+        self.moves = self.moves + 1
+        return "moves: ", self.moves
 
     def _map_coords(self, x, y):
         "Maps grid positions to window positions (in pixels)."
@@ -86,7 +86,7 @@ class RushHourVisualization:
         # update text
         self.w.delete(self.text)
         self.time += 1
-        self.text = self.w.create_text(25, 0, anchor = NW, text = self._status_string(self.time, len(self.board.pathWay)))
+        self.text = self.w.create_text(25, 0, anchor = NW, text = self._status_string())
         self.master.update()
         time.sleep(self.delay)
 

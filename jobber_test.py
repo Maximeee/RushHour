@@ -19,26 +19,20 @@ from msvcrt import getch
 # position = x, y; orientation: nz = 1 ew = 2
 
 chupachups = [
-[1,[1,3],2,2],
-[2,[2,1],2,2],
-[3,[4,1],2,3],
-[4,[2,2],2,2],
-[5,[4,2],1,2],
-[6,[5,2],2,2],
-[7,[3,3],1,2],
-[8,[6,3],1,2],
-[9,[4,1],2,2],
-[10,[4,4],2,2],
-[11,[1,5],1,2],
-[12,[3,5],1,2],
-[13,[5,5],2,2]
+[1,[4,3],2,2],
+[2,[4,1],2,2],
+[3,[3,1],1,3],
+[4,[6,1],1,3],
+[5,[4,4],1,3],
+[6,[5,4],2,2],
+[7,[1,5],1,2],
+[8,[2,5],2,2],
+[9,[5,6],2,2]
 ]
 
+board_size = [6, 6]
 
-board_size = [6,6]
-
-exit = []
-
+vizualization = False
 
 class Car(object):
     def __init__(self, chupachups):
@@ -156,8 +150,6 @@ class Board(object):
                         counter += 1
                         # check if won
                         if child.arraynp[self.width-1,y] == 0 and child.arraynp[self.width-2,y] == 1:
-                            print "\n\n\n WIN \n\n\n"
-                            # return winning identivier and winning board
                             return "win", child_boards
                 # if the space to the left is on the board
                 if (x-1 >= 0):
@@ -210,12 +202,12 @@ counter = 0
 if True:
     # as long as there are boards to try
     while not queue.empty():
-        """
-        if (counter % 500 == 0):
+        if (counter%1000 == 0) and vizualization:
             print "count:", counter
-            print "queue length:", queue.qsize()
-            print "archive size:", len(archive)
-        """
+            if (counter%10000 == 0):
+                print "queue length:", queue.qsize()
+                print "archive size:", len(archive)
+
         # get the first board from the queue
         board = queue.get()
         # make children from that board
@@ -224,7 +216,7 @@ if True:
         if board_children[0] == "win":
             # show the winning board
             winning_board = board_children[1][0]
-            print "WON"
+            print "WON", counter, "boards checked"
             print board_children[1][0].pathWay, "\n", numpy.transpose(board_children[1][0].arraynp)
             break
         # if children() returns no winning board
@@ -258,13 +250,15 @@ def runSimulation(speed, width, height, board):
     num_cars = len(vizualize.cars)
     # store the path
     path = winning_board.pathWay
+
     # game #1
-    #path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S'], [1, 'E'], [1, 'E'], [1, 'E']]
-    #game #2
-    #path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
+    # [83 moves, 55557th board]: 50.176s, 40.568s, 42.289s
+    # path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S'], [1, 'E'], [1, 'E'], [1, 'E']]
+    # game #2
+    # [29 moves, 21716th board], 60.275s, 57.422s, 48.821s, 63.325s
+    # path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
     # game #3 not algorimically found
     # path = [[13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [4, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [6, 'W'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [13, 'E'], [5, 'S'], [12, 'S'], [1, 'E'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [8, 'N']]
-
 
     # while there are moves left
     anim = jobber_vizualize.RushHourVisualization(vizualize)
@@ -287,7 +281,8 @@ def runSimulation(speed, width, height, board):
                 ### print step, "\n", numpy.transpose(vizualize.arraynp), "\n\n"
     anim.done()
 
-runSimulation(2, board_size[0], board_size[1], winning_board)
+if (vizualization):
+    runSimulation(2, board_size[0], board_size[1], winning_board)
 
 """
 print board.arraynp, "\n"

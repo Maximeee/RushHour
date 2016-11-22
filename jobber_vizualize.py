@@ -5,7 +5,7 @@ import numpy
 from Tkinter import *
 
 class RushHourVisualization:
-    def __init__(self, board, delay = 1, moves = 0):
+    def __init__(self, board, delay = 0.5, moves = 0):
         self.delay = delay
         self.moves = moves
         self.board = board

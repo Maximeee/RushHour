@@ -154,10 +154,11 @@ def RushHour(width, height):
 		if key == '1':
 			print "jeeej"
 			if move == 'A' or move == 'a':
-				chupachups[0][1][1] = chupachups[0][1][1] -1
-				chupachups[0][1][0] = chupachups[0][1][0]
+				if validmove(width, height) == True:
+					chupachups[0][1][1] = chupachups[0][1][1] -1
+					chupachups[0][1][0] = chupachups[0][1][0]
 
-				board = Room().initroom(width, height)
+					board = Room().initroom(width, height)
 
 
 

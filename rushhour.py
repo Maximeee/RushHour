@@ -59,13 +59,10 @@ class board(object):
 		if q.full():
 			raise ValueError
 		else:
-			placeoccupied(pos)
 			array = []
-
-		for i in self.posit:
-			array.append(i)
-		q.put(array)
-		return q
+			array.append(self.posit)
+			q.put(array)
+	
 
 
 	def releaseplace(self,pos):

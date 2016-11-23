@@ -5,7 +5,7 @@ import numpy
 from Tkinter import *
 
 class RushHourVisualization:
-    def __init__(self, board, delay = 0.5, moves = 0):
+    def __init__(self, board, delay = 0.8, moves = 0):
         self.delay = delay
         self.moves = moves
         self.board = board
@@ -36,8 +36,9 @@ class RushHourVisualization:
             x2, y2 = self._map_coords(self.width, i)
             self.w.create_line(x1, y1, x2, y2)
 
-        self.cars = None
         self.text = self.w.create_text(25, 0, anchor = NW, text = self._status_string())
+        self.cars = None
+        self.id_text = None
         self.time = 0
         self.master.update()
 
@@ -62,15 +63,18 @@ class RushHourVisualization:
         y = self.height - car.position[1] + 1
         x1, y1 = self._map_coords(x, y)
         if car.orientation == 1:
-            x2, y2 = self._map_coords(x+1, y-2)
-            if car.length == 3:
-                x2, y2 = self._map_coords(x+1, y-3)
+            x2, y2 = self._map_coords(x+1, y-car.length)
             return self.w.create_rectangle(x1, y1, x2, y2, fill = color)
         elif car.orientation == 2:
-            x2, y2 = self._map_coords(x+2, y-1)
-            if car.length == 3:
-                x2, y2 = self._map_coords(x+3, y-1)
+            x2, y2 = self._map_coords(x+car.length, y-1)
             return self.w.create_rectangle(x1, y1, x2, y2, fill = color)
+
+    def _draw_ids(self, car):
+        x = car.position[0] - 0.5
+        y = self.height - car.position[1] + 0.5
+        x1, y1 = self._map_coords(x, y)
+        return self.w.create_text(x1, y1, text = car.id)
+
 
     def update(self, board):
         # remove cars
@@ -78,10 +82,16 @@ class RushHourVisualization:
             for car in self.cars:
                 self.w.delete(car)
                 self.master.update_idletasks()
+            if self.id_text:
+                for x in self.id_text:
+                    self.w.delete(x)
+                    self.master.update_idletasks()
         # draw cars
         self.cars = []
+        self.id_text = []
         for car in self.board.cars:
             self.cars.append(self._draw_cars(car))
+            self.id_text.append(self._draw_ids(car))
 
         # update text
         self.w.delete(self.text)

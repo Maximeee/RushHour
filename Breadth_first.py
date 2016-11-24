@@ -3,7 +3,7 @@ Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 10669744, 10001228, 10543988
 '''
 import Breadth_first_vizualize
-
+import cProfile
 import math
 import random
 import copy
@@ -19,32 +19,15 @@ from msvcrt import getch
 # position = x, y; orientation: nz = 1 ew = 2
 
 chupachups = [
-[1,[1,5],2,2],
-[2,[1,1],2,2],
-[3,[3,1],2,2],
-[4,[5,1],1,2],
-[5,[8,1],1,2],
-[6,[1,2],1,2],
-[7,[2,2],2,3],
-[8,[6,2],2,2],
-[9,[3,3],2,2],
-[10,[5,3],1,2],
-[11,[6,3],1,2],
-[12,[8,3],2,2],
-[13,[3,4],1,2],
-[14,[4,4],1,3],
-[15,[7,4],2,3],
-[16,[2,6],1,2],
-[17,[5,6],2,2],
-[18,[7,6],2,2],
-[19,[9,6],1,3],
-[20,[1,7],1,3],
-[21,[3,7],2,2],
-[22,[5,7],1,3],
-[23,[6,7],2,3],
-[24,[3,8],2,2],
-[25,[6,8],2,2],
-[26,[2,9],2,3]
+[1,[4,3],2,2],
+[2,[4,1],2,2],
+[3,[3,1],1,3],
+[4,[6,1],1,3],
+[5,[4,4],1,3],
+[6,[5,4],2,2],
+[7,[1,5],1,2],
+[8,[5,6],2,2],
+[9,[2,5],2,2]
 ]
 
 board_size = [9, 9]
@@ -209,49 +192,51 @@ while not won or queue not empty
 # print numpy.transpose(x.arraynp)
 
 # create starting board
-board = Board(cars, board_size[0], board_size[1])
-# create archive
-archive = dict()
-# initialize queue
-queue = Queue.Queue()
-# archive the start board
-archive[hash(board)] = board
-# put starting board in queue
-queue.put(board)
-# store the winning board
-winning_board = board
+def bfs():
 
-counter = 0
-if run:
-    # as long as there are boards to try
-    while not queue.empty():
-        if (counter%1000 == 0) and vizualization:
-            print "count:", counter, ", queue length:", queue.qsize(), ", archive size:", len(archive)
-        # get the first board from the queue
-        board = queue.get()
-        # make children from that board
-        board_children = board.children()
-        # if children() returns the winning identivier
-        if board_children[0] == "win":
-            # show the winning board
-            winning_board = board_children[1]
-            print "WON", counter, "boards checked"
-            print board_children[1].pathWay, "\n", numpy.transpose(board_children[1].arraynp)
-            break
-        # if children() returns no winning board
-        else:
-            # for all the boards children() returned
-            for each in board_children:
-                counter += 1
-                # if board is not in archive
-                if not hash(each) in archive:
-                    # add to archive with board hash as key
-                    archive[hash(each)] = each
-                    # put board at the end of the queue
-                    queue.put(each)
-        if queue.empty():
-            print "queue is empty,", counter, "boards checked"
-            winning_board = board
+    board = Board(cars, board_size[0], board_size[1])
+    # create archive
+    archive = dict()
+    # initialize queue
+    queue = Queue.Queue()
+    # archive the start board
+    archive[hash(board)] = board
+    # put starting board in queue
+    queue.put(board)
+    # store the winning board
+    winning_board = board
+
+    counter = 0
+    if run:
+        # as long as there are boards to try
+        while not queue.empty():
+            if (counter%1000 == 0) and vizualization:
+                print "count:", counter, ", queue length:", queue.qsize(), ", archive size:", len(archive)
+            # get the first board from the queue
+            board = queue.get()
+            # make children from that board
+            board_children = board.children()
+            # if children() returns the winning identivier
+            if board_children[0] == "win":
+                # show the winning board
+                winning_board = board_children[1]
+                print "WON", counter, "boards checked"
+                print board_children[1].pathWay, "\n", numpy.transpose(board_children[1].arraynp)
+                break
+            # if children() returns no winning board
+            else:
+                # for all the boards children() returned
+                for each in board_children:
+                    counter += 1
+                    # if board is not in archive
+                    if not hash(each) in archive:
+                        # add to archive with board hash as key
+                        archive[hash(each)] = each
+                        # put board at the end of the queue
+                        queue.put(each)
+            if queue.empty():
+                print "queue is empty,", counter, "boards checked"
+                winning_board = board
 
 
 def runSimulation(speed, width, height, board):
@@ -301,8 +286,8 @@ def runSimulation(speed, width, height, board):
         anim.update(vizualize)
     anim.done()
 
-if (vizualization):
-    runSimulation(2, board_size[0], board_size[1], winning_board)
+#if (vizualization):
+ #   runSimulation(2, board_size[0], board_size[1], winning_board)
 
 #starter = Board(cars, board_size[0], board_size[1])
 #runSimulation(2, board_size[0], board_size[1], starter)
@@ -320,3 +305,4 @@ for i in range(0, 6):
 print test.tostring()
 print test[0,5]
 """
+cProfile.run('bfs()')

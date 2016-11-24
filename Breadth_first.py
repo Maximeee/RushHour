@@ -19,24 +19,38 @@ from msvcrt import getch
 # position = x, y; orientation: nz = 1 ew = 2
 
 chupachups = [
-[1,[3,3],2,2],
-[2,[3,1],2,2],
-[3,[5,1],2,2],
-[4,[2,2],2,2],
-[5,[4,2],2,2],
-[6,[6,2],1,3],
-[7,[5,3],1,2],
-[8,[1,4],2,2],
-[9,[3,4],2,2],
-[10,[1,5],1,2],
-[11,[4,5],1,2],
-[12,[5,5],2,2],
-[13,[5,6],2,2]
+[1,[1,5],2,2],
+[2,[1,1],2,2],
+[3,[3,1],2,2],
+[4,[5,1],1,2],
+[5,[8,1],1,2],
+[6,[1,2],1,2],
+[7,[2,2],2,3],
+[8,[6,2],2,2],
+[9,[3,3],2,2],
+[10,[5,3],1,2],
+[11,[6,3],1,2],
+[12,[8,3],2,2],
+[13,[3,4],1,2],
+[14,[4,4],1,3],
+[15,[7,4],2,3],
+[16,[2,6],1,2],
+[17,[5,6],2,2],
+[18,[7,6],2,2],
+[19,[9,6],1,3],
+[20,[1,7],1,3],
+[21,[3,7],2,2],
+[22,[5,7],1,3],
+[23,[6,7],2,3],
+[24,[3,8],2,2],
+[25,[6,8],2,2],
+[26,[2,9],2,3]
 ]
 
-board_size = [6, 6]
+board_size = [9, 9]
 
 vizualization = True
+run = True
 
 class Car(object):
     def __init__(self, chupachups):
@@ -208,10 +222,9 @@ queue.put(board)
 winning_board = board
 
 counter = 0
-if True:
+if run:
     # as long as there are boards to try
     while not queue.empty():
-        print counter
         if (counter%1000 == 0) and vizualization:
             print "count:", counter, ", queue length:", queue.qsize(), ", archive size:", len(archive)
         # get the first board from the queue
@@ -261,51 +274,49 @@ def runSimulation(speed, width, height, board):
     # game #1
     # path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S'], [1, 'E'], [1, 'E'], [1, 'E']]
     # game #2
-    path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
+    # path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
     # game #3
     # path = [[2, 'W'], [4, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [6, 'W'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [12, 'S'], [1, 'E'], [12, 'S'], [13, 'E'], [5, 'S'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [7, 'S'], [8, 'N'], [7, 'N']]
     # game #4
     #path = [[]]
 
     # while there are moves left
-    anim = Breadth_first_vizualize.RushHourVisualization(vizualize)
-    for step in path:
-        for car in vizualize.cars:
-            if car.id == step[0]:
-                if step[1] == 'N':
-                    car.position[1] = car.position[1] - 1
-                elif step[1] == 'S':
-                    car.position[1] = car.position[1] + 1
-                elif step[1] == 'W':
-                    car.position[0] = car.position[0] - 1
-                elif step[1] == 'E':
-                    car.position[0] = car.position[0] + 1
-                vizualize = Board(vizualize.cars, width, height)
-                anim.update(vizualize)
-                ### print step, "\n", numpy.transpose(vizualize.arraynp), "\n\n"
+    anim = Breadth_first_vizualize.RushHourVisualization(vizualize, 2)
+    if (len(path) != 0):
+        for step in path:
+            for car in vizualize.cars:
+                if car.id == step[0]:
+                    if step[1] == 'N':
+                        car.position[1] = car.position[1] - 1
+                    elif step[1] == 'S':
+                        car.position[1] = car.position[1] + 1
+                    elif step[1] == 'W':
+                        car.position[0] = car.position[0] - 1
+                    elif step[1] == 'E':
+                        car.position[0] = car.position[0] + 1
+                    vizualize = Board(vizualize.cars, width, height)
+                    anim.update(vizualize)
+    else:
+        vizualize = Board(vizualize.cars, width, height)
+        anim.update(vizualize)
     anim.done()
 
 if (vizualization):
     runSimulation(2, board_size[0], board_size[1], winning_board)
 
+#starter = Board(cars, board_size[0], board_size[1])
+#runSimulation(2, board_size[0], board_size[1], starter)
+
 """
-print board.arraynp, "\n"
-temp = board.children()
-print temp
-print "children: ", len(temp)
-if temp[0] == "won":
-    print "WON"
-else:
-    for each in temp:
-        print numpy.transpose(each.arraynp), "\n"
 counter = 0
 test = numpy.zeros((6, 6))
 test = numpy.transpose(test)
 for i in range(0, 6):
     for j in range(0, 6):
-        print i, j
         test[i,j] = counter
+        print test
+        print test.tostring()
         counter += 1
-print test
+print test.tostring()
 print test[0,5]
 """

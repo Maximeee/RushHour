@@ -208,9 +208,10 @@ queue.put(board)
 winning_board = board
 
 counter = 0
-if False:
+if True:
     # as long as there are boards to try
     while not queue.empty():
+        print counter
         if (counter%1000 == 0) and vizualization:
             print "count:", counter, ", queue length:", queue.qsize(), ", archive size:", len(archive)
         # get the first board from the queue
@@ -267,7 +268,7 @@ def runSimulation(speed, width, height, board):
     #path = [[]]
 
     # while there are moves left
-    anim = jobber_vizualize.RushHourVisualization(vizualize)
+    anim = Breadth_first_vizualize.RushHourVisualization(vizualize)
     for step in path:
         for car in vizualize.cars:
             if car.id == step[0]:

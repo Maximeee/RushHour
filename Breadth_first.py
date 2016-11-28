@@ -19,6 +19,7 @@ from msvcrt import getch
 # position = x, y; orientation: nz = 1 ew = 2
 
 chupachups = [
+
 [1,[4,3],2,2],
 [2,[4,1],2,2],
 [3,[3,1],1,3],
@@ -30,7 +31,7 @@ chupachups = [
 [9,[2,5],2,2]
 ]
 
-board_size = [9, 9]
+board_size = [6, 6]
 
 vizualization = True
 run = True
@@ -42,6 +43,7 @@ class Car(object):
         self.length = chupachups[3]
         self.position = chupachups[1]
 
+# stores cars in array
 cars = []
 for i in range(0, len(chupachups)):
     car = Car(chupachups[i])
@@ -238,6 +240,98 @@ def bfs():
                 print "queue is empty,", counter, "boards checked"
                 winning_board = board
 
+    
+    def heuristics(self):
+        endpoint = board.width - positionXaxis
+        endpoint * 10
+        return endpoint
+
+
+    def astar():
+        # TODO: organize priority queue by fcost
+        # define fcost,gcost and hcost,
+        # hcost defined in heuristic function
+        # make everything work smoothly obv
+        # PLEASE ADD PSEUDOCODE FOR SUGGESTIONS
+
+
+
+        # initialize the starting board
+        boarding = Board(cars, board_size[0], board_size[1])
+        # create archive/ closed list
+        archive_astar = dict()
+        # create open list 
+        priority = Queue.PriorityQueue()
+        
+        # put starting board in queue
+        priority.put(boarding)
+        # hash start board
+        archive_astar[hash(boarding)]
+        winners = boarding
+        counter = 0
+        # TODO appropriate g and h costs
+        #gcost = # every step
+        #hCost = heuristics()
+        #fCost = gCost + hCost
+
+        # until there are no more positions and more nodes to traverse
+        while not priority.empty():
+            
+            # counts boards0) and vizualization:
+            if counter%1000 == 0 and vizualization:
+                print "count:", counter, ", queue length:", priority.qsize(), ", archive size:", len(archive_astar)
+            # get board with lowest fcost
+            boarding = priority.get()
+            # endboard found
+            if boarding == ######endboard#########
+
+                return True
+
+            else:
+                # make children of that board
+                childrens = boarding.children()
+                # traverse children
+                for child in childrens:
+                    # count childrens
+                    counter += 1
+                    # check if child is in archive
+                    if not hash(child) in archive:
+                        # adds to archive
+                        archive_astar[hash(child)] = child
+                        # put in priority queue
+                        priority.put(child)
+                    
+                    else:
+                        priority.put(child)
+
+
+                    
+        
+
+
+
+
+
+        
+            
+
+      
+                    
+
+
+             
+
+
+    
+
+
+
+
+
+
+
+
+
 
 def runSimulation(speed, width, height, board):
     # devine the size of the board
@@ -305,4 +399,3 @@ for i in range(0, 6):
 print test.tostring()
 print test[0,5]
 """
-cProfile.run('bfs()')

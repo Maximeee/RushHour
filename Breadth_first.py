@@ -242,38 +242,31 @@ def bfs():
 
     
     def heuristics(self):
-        endpoint = board.width - positionXaxis
-        endpoint * 10
+        # board_size is size x axis and boarding 0 start board
+        endpoint = board_size[0] - boarding[0]
+        # returns minimum steps to still complete
         return endpoint
+
+    def gCost(self):
+        counter += 1
+        return counter
 
 
     def astar():
-        # TODO: organize priority queue by fcost
-        # define fcost,gcost and hcost,
-        # hcost defined in heuristic function
-        # make everything work smoothly obv
-        # PLEASE ADD PSEUDOCODE FOR SUGGESTIONS
-
-
-
         # initialize the starting board
         boarding = Board(cars, board_size[0], board_size[1])
         # create archive/ closed list
         archive_astar = dict()
-        # create open list 
-        priority = Queue.PriorityQueue()
+        # create open list // arguments: priority, data// priority being the fcost
+        priority = Queue.PriorityQueue() 
         
         # put starting board in queue
-        priority.put(boarding)
-        # hash start board
-        archive_astar[hash(boarding)]
-        winners = boarding
+        priority.put(boarding, 0)
         counter = 0
-        # TODO appropriate g and h costs
-        #gcost = # every step
-        #hCost = heuristics()
-        #fCost = gCost + hCost
-
+        came_from = {}
+        cost_so_far = {}
+        came_from[boarding] = 0
+        cost_so_far[boarding] = None
         # until there are no more positions and more nodes to traverse
         while not priority.empty():
             
@@ -283,26 +276,36 @@ def bfs():
             # get board with lowest fcost
             boarding = priority.get()
             # endboard found
-            if boarding == ######endboard#########
+            if boarding == boarding[heuristics()]:
+                break
+        
+            # make children of that board
+            childrens = boarding.children()
+            # traverse children
+            for child in childrens:
+                # count childrens
+                counter += 1
+                # calculate costs of each child
+                childCost = cost_so_far[boarding] + gCost()
+                # check if child is in archive
+                if not child in archive:
+                    # set cost of child to new cost
+                    cost_so_far[child] = childCost
+                    # totalcosts of move
+                    total = cost_so_far[child] + heuristics()
+                    # puts total costs in queue
+                    priority.put(next, total)
+                    # sets boarding as position child came from
+                    came_from[next] = boarding
+                    # archive child
+                    archive_astar[child] = child
 
-                return True
+        return came_from, cost_so_far
 
-            else:
-                # make children of that board
-                childrens = boarding.children()
-                # traverse children
-                for child in childrens:
-                    # count childrens
-                    counter += 1
-                    # check if child is in archive
-                    if not hash(child) in archive:
-                        # adds to archive
-                        archive_astar[hash(child)] = child
-                        # put in priority queue
-                        priority.put(child)
+
+    
                     
-                    else:
-                        priority.put(child)
+                
 
 
                     

@@ -286,17 +286,18 @@ def bfs():
                 # count childrens
                 counter += 1
                 # calculate costs of each child
+                # current costs plus costs of child
                 childCost = cost_so_far[boarding] + gCost()
                 # check if child is in archive
                 if not child in archive:
-                    # set cost of child to new cost
+                    # set cost of child to childcost
                     cost_so_far[child] = childCost
                     # totalcosts of move
                     total = cost_so_far[child] + heuristics()
                     # puts total costs in queue
-                    priority.put(next, total)
+                    priority.put(child,total)
                     # sets boarding as position child came from
-                    came_from[next] = boarding
+                    came_from[child] = boarding
                     # archive child
                     archive_astar[child] = child
 

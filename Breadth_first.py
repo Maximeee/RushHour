@@ -241,6 +241,56 @@ def bfs():
                 winning_board = board
 
     
+def astar(self):
+    # initialize the starting board
+    boarding = Board(cars, board_size[0], board_size[1])
+    # create archive/ closed list
+    archive_astar = dict()
+    # create open list // arguments: priority, data// priority being the fcost
+    priority = Queue.PriorityQueue() 
+    
+    # put starting board in queue
+    priority.put(boarding, 0)
+    counter = 0
+    came_from = {}
+    cost_so_far = {}
+    came_from[boarding] = 0
+    cost_so_far[boarding] = None
+    # until there are no more positions and more nodes to traverse
+    while not priority.empty():
+        
+        # counts boards0) and vizualization:
+        if counter%1000 == 0 and vizualization:
+            print "count:", counter, ", queue length:", priority.qsize(), ", archive size:", len(archive_astar)
+        # get board with lowest fcost
+        boarding = priority.get()
+        # endboard found
+        if boarding == boarding[heuristics()]:
+            break
+    
+        # make children of that board
+        childrens = boarding.children()
+        # traverse children
+        for child in childrens:
+            # count childrens
+            counter += 1
+            # current costs plus costs of child
+            childCost = cost_so_far[boarding] + gCost()
+            # check if child is in archive
+            if not child in archive:
+                # set cost of child to childcost
+                cost_so_far[child] = childCost
+                # totalcosts of move
+                total = cost_so_far[child] + heuristics()
+                # puts total costs in queue
+                priority.put(child,total)
+                # sets boarding as position child came from
+                came_from[child] = boarding
+                # archive child
+                archive_astar[child] = child
+    
+    return came_from, cost_so_far
+
     def heuristics(self):
         # board_size is size x axis and boarding 0 start board
         endpoint = board_size[0] - boarding[0]
@@ -251,138 +301,54 @@ def bfs():
         counter += 1
         return counter
 
-
-    def astar():
-        # initialize the starting board
-        boarding = Board(cars, board_size[0], board_size[1])
-        # create archive/ closed list
-        archive_astar = dict()
-        # create open list // arguments: priority, data// priority being the fcost
-        priority = Queue.PriorityQueue() 
-        
-        # put starting board in queue
-        priority.put(boarding, 0)
-        counter = 0
-        came_from = {}
-        cost_so_far = {}
-        came_from[boarding] = 0
-        cost_so_far[boarding] = None
-        # until there are no more positions and more nodes to traverse
-        while not priority.empty():
-            
-            # counts boards0) and vizualization:
-            if counter%1000 == 0 and vizualization:
-                print "count:", counter, ", queue length:", priority.qsize(), ", archive size:", len(archive_astar)
-            # get board with lowest fcost
-            boarding = priority.get()
-            # endboard found
-            if boarding == boarding[heuristics()]:
-                break
-        
-            # make children of that board
-            childrens = boarding.children()
-            # traverse children
-            for child in childrens:
-                # count childrens
-                counter += 1
-                # calculate costs of each child
-                # current costs plus costs of child
-                childCost = cost_so_far[boarding] + gCost()
-                # check if child is in archive
-                if not child in archive:
-                    # set cost of child to childcost
-                    cost_so_far[child] = childCost
-                    # totalcosts of move
-                    total = cost_so_far[child] + heuristics()
-                    # puts total costs in queue
-                    priority.put(child,total)
-                    # sets boarding as position child came from
-                    came_from[child] = boarding
-                    # archive child
-                    archive_astar[child] = child
-
-        return came_from, cost_so_far
-
-
     
                     
-                
+    def runSimulation(speed, width, height, board):
+        # devine the size of the board
+        width = width
+        height = height
+        # create a starting board
+        vizualize = Board(cars, board_size[0], board_size[1])
+        # store the winning board + path
+        end_board = board
+        # store the winning path
+        path = end_board.pathWay
+        # amount of moves to win
+        num = len(end_board.pathWay)
+        # ammount of cars that are on the board
+        num_cars = len(vizualize.cars)
+        # store the path
+        path = end_board.pathWay
 
+        # game #1
+        # path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S'], [1, 'E'], [1, 'E'], [1, 'E']]
+        # game #2
+        # path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
+        # game #3
+        # path = [[2, 'W'], [4, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [6, 'W'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [12, 'S'], [1, 'E'], [12, 'S'], [13, 'E'], [5, 'S'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [7, 'S'], [8, 'N'], [7, 'N']]
+        # game #4
+        #path = [[]]
 
-                    
-        
-
-
-
-
-
-        
-            
-
-      
-                    
-
-
-             
-
-
-    
-
-
-
-
-
-
-
-
-
-
-def runSimulation(speed, width, height, board):
-    # devine the size of the board
-    width = width
-    height = height
-    # create a starting board
-    vizualize = Board(cars, board_size[0], board_size[1])
-    # store the winning board + path
-    end_board = board
-    # store the winning path
-    path = end_board.pathWay
-    # amount of moves to win
-    num = len(end_board.pathWay)
-    # ammount of cars that are on the board
-    num_cars = len(vizualize.cars)
-    # store the path
-    path = end_board.pathWay
-
-    # game #1
-    # path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S'], [1, 'E'], [1, 'E'], [1, 'E']]
-    # game #2
-    # path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
-    # game #3
-    # path = [[2, 'W'], [4, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [6, 'W'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [12, 'S'], [1, 'E'], [12, 'S'], [13, 'E'], [5, 'S'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [7, 'S'], [8, 'N'], [7, 'N']]
-    # game #4
-    #path = [[]]
-
-    # while there are moves left
-    anim = Breadth_first_vizualize.RushHourVisualization(vizualize, 2)
-    if (len(path) != 0):
-        for step in path:
-            for car in vizualize.cars:
-                if car.id == step[0]:
-                    if step[1] == 'N':
-                        car.position[1] = car.position[1] - 1
-                    elif step[1] == 'S':
-                        car.position[1] = car.position[1] + 1
-                    elif step[1] == 'W':
-                        car.position[0] = car.position[0] - 1
-                    elif step[1] == 'E':
-                        car.position[0] = car.position[0] + 1
-                    vizualize = Board(vizualize.cars, width, height)
-                    anim.update(vizualize)
-    else:
-        vizualize = Board(vizualize.cars, width, height)
-        anim.update(vizualize)
-    anim.done()
+        # while there are moves left
+        anim = Breadth_first_vizualize.RushHourVisualization(vizualize, 2)
+        if (len(path) != 0):
+            for step in path:
+                for car in vizualize.cars:
+                    if car.id == step[0]:
+                        if step[1] == 'N':
+                            car.position[1] = car.position[1] - 1
+                        elif step[1] == 'S':
+                            car.position[1] = car.position[1] + 1
+                        elif step[1] == 'W':
+                            car.position[0] = car.position[0] - 1
+                        elif step[1] == 'E':
+                            car.position[0] = car.position[0] + 1
+                        vizualize = Board(vizualize.cars, width, height)
+                        anim.update(vizualize)
+        else:
+            vizualize = Board(vizualize.cars, width, height)
+            anim.update(vizualize)
+        anim.done()
 
 #if (vizualization):
  #   runSimulation(2, board_size[0], board_size[1], winning_board)
@@ -403,3 +369,4 @@ for i in range(0, 6):
 print test.tostring()
 print test[0,5]
 """
+astar()

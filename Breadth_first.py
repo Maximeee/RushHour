@@ -56,6 +56,7 @@ class Board(object):
         self.height = height
         self.arraynp = numpy.zeros((width, height))
         self.cars = cars
+        self.cost = None
         self.pathWay = []
         for car in self.cars:
             x = car.position[0] - 1
@@ -197,6 +198,7 @@ while not won or queue not empty
 def bfs():
 
     board = Board(cars, board_size[0], board_size[1])
+    print board.arraynp
     # create archive
     archive = dict()
     # initialize queue
@@ -241,13 +243,41 @@ def bfs():
                 winning_board = board
 
     
-def astar(self):
+def astar(): 
+
+ 
+    def heuristics():
+        # initializes board
+        board = Board(cars,board_size[0], board_size[1])
+        # computes minimum amount of steps
+        endpoint = board.width - car.position[0]
+        return endpoint
+
+    def gCost():
+        # initialize start board
+        board = Board(cars,board_size[0], board_size[1])
+        gcost = 0
+        # set starting cost to zero
+        board.cost = gcost
+        heuristics = heuristics()
+        node = car.position
+        # make children until heuristics point
+        for i in range(heuristics):
+            new_node = node.children()
+            for i in new_node:
+                # for every child
+                gcost += 1
+        return gcost
+
+    
     # initialize the starting board
     boarding = Board(cars, board_size[0], board_size[1])
     # create archive/ closed list
     archive_astar = dict()
     # create open list // arguments: priority, data// priority being the fcost
-    priority = Queue.PriorityQueue() 
+    priority = Queue.PriorityQueue()
+    # intializes boards heuristics
+    heuristics = heuristics()
     
     # put starting board in queue
     priority.put(boarding, 0)
@@ -265,7 +295,7 @@ def astar(self):
         # get board with lowest fcost
         boarding = priority.get()
         # endboard found
-        if boarding == boarding[heuristics()]:
+        if boarding == boarding[heuristics]:
             break
     
         # make children of that board
@@ -288,19 +318,9 @@ def astar(self):
                 came_from[child] = boarding
                 # archive child
                 archive_astar[child] = child
+        print archive_astar
     
     return came_from, cost_so_far
-
-    def heuristics(self):
-        # board_size is size x axis and boarding 0 start board
-        endpoint = board_size[0] - boarding[0]
-        # returns minimum steps to still complete
-        return endpoint
-
-    def gCost(self):
-        counter += 1
-        return counter
-
     
                     
     def runSimulation(speed, width, height, board):
@@ -367,6 +387,25 @@ for i in range(0, 6):
         print test.tostring()
         counter += 1
 print test.tostring()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 print test[0,5]
 """
 astar()

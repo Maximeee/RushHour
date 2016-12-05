@@ -253,21 +253,26 @@ def astar():
         endpoint = board.width - car.position[0]
         return endpoint
 
+
+
+    # gcost returns 5 atm
     def gCost():
-        # initialize start board
+        # initialize start board and cost 
         board = Board(cars,board_size[0], board_size[1])
         gcost = 0
         # set starting cost to zero
         board.cost = gcost
-        heuristics = heuristics()
+        # returns minimum steps to complete game
+        endpoint = board.width
         node = car.position
         # make children until heuristics point
-        for i in range(heuristics):
-            new_node = node.children()
-            for i in new_node:
+        for i in range(endpoint):
+            new_node = board.children()
+            for j in new_node:
                 # for every child
-                gcost += 1
+                gcost = i
         return gcost
+
 
     
     # initialize the starting board
@@ -285,7 +290,7 @@ def astar():
     came_from = {}
     cost_so_far = {}
     came_from[boarding] = 0
-    cost_so_far[boarding] = None
+    cost_so_far[boarding] = 0
     # until there are no more positions and more nodes to traverse
     while not priority.empty():
         
@@ -295,7 +300,7 @@ def astar():
         # get board with lowest fcost
         boarding = priority.get()
         # endboard found
-        if boarding == boarding[heuristics]:
+        if boarding.width == heuristics:
             break
     
         # make children of that board
@@ -307,18 +312,17 @@ def astar():
             # current costs plus costs of child
             childCost = cost_so_far[boarding] + gCost()
             # check if child is in archive
-            if not child in archive:
+            if not child in archive_astar:
                 # set cost of child to childcost
                 cost_so_far[child] = childCost
                 # totalcosts of move
-                total = cost_so_far[child] + heuristics()
+                total = cost_so_far[child] + heuristics
                 # puts total costs in queue
                 priority.put(child,total)
                 # sets boarding as position child came from
                 came_from[child] = boarding
                 # archive child
                 archive_astar[child] = child
-        print archive_astar
     
     return came_from, cost_so_far
     

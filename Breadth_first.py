@@ -253,9 +253,6 @@ def astar():
         endpoint = board.width - car.position[0]
         return endpoint
 
-
-
-    # gcost returns 5 atm
     def gCost():
         # initialize start board and cost 
         board = Board(cars,board_size[0], board_size[1])
@@ -300,7 +297,7 @@ def astar():
         # get board with lowest fcost
         boarding = priority.get()
         # endboard found
-        if boarding.width == heuristics:
+        if car.position[0] == heuristics:
             break
     
         # make children of that board

@@ -2,7 +2,7 @@
 Maxime Weekhout, Daniel Jacob, Jobber Bekkers
 10669744, 10001228, 10543988
 '''
-import jobber_vizualize
+import Breadth_first_vizualize
 
 import math
 import random
@@ -57,6 +57,12 @@ cars = []
 for i in range(0, len(chupachups)):
     car = Car(chupachups[i])
     cars.append(car)
+
+# class Stack(object):
+#     def __init__(self):
+#         self.storage() = []
+#     def push():
+
 
 class Board(object):
 
@@ -129,7 +135,7 @@ class Board(object):
                         child = Board(new_cars, self.width, self.height)
                         child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "S"])
-                        child_boards.append(child)
+                        child_boards.insert(0, child)
                         counter += 1
                         if child.arraynp[self.width-1,y] == 0 and child.arraynp[self.width-2,y] == 1:
                             return "win", child
@@ -143,7 +149,7 @@ class Board(object):
                         child = Board(new_cars, self.width, self.height)
                         child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "N"])
-                        child_boards.append(child)
+                        child_boards.insert(0, child)
                         counter += 1
                         if child.arraynp[self.width-1,y] == 0 and child.arraynp[self.width-2,y] == 1:
                             return "win", child
@@ -163,7 +169,7 @@ class Board(object):
                         # if not winning board append new board
                         child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "E"])
-                        child_boards.append(child)
+                        child_boards.insert(0, child)
                         counter += 1
                         # check if won
                         if child.arraynp[self.width-1,y] == 0 and child.arraynp[self.width-2,y] == 1:
@@ -181,7 +187,7 @@ class Board(object):
                         child = Board(new_cars, self.width, self.height)
                         child.pathWay = copy.deepcopy(self.pathWay)
                         child.pathWay.append([car.id, "W"])
-                        child_boards.append(child)
+                        child_boards.insert(0, child)
                         counter += 1
 
         # return all new boards if non won
@@ -207,11 +213,11 @@ board = Board(cars, board_size[0], board_size[1])
 # create archive
 archive = dict()
 # initialize queue
-queue = Queue.Queue()
+stack = []
 # archive the start board
 archive[hash(board)] = board
 # put starting board in queue
-queue.put(board)
+stack.append(board)
 # store the winning board
 winning_board = board
 
@@ -219,15 +225,15 @@ counter = 0
 
 if True:
     # as long as there are boards to try
-    while not queue.empty():
+    while not len(stack) == 0:
         if (counter%1000 == 0) and vizualization:
             print "count:", counter
             if (counter%1000 == 0):     
                 print "archive size:", len(archive)
-                print "queue length:", queue.qsize()
+                print "stack length:", len(stack)
 
         # get the first board from the queue
-        board = queue.get()
+        board = stack.pop(0)
         # make children from that board
         board_children = board.children()
         # if children() returns the winning identivier
@@ -247,8 +253,8 @@ if True:
                     # add to archive with board hash as key
                     archive[hash(each)] = each
                     # put board at the end of the queue
-                    queue.put(each)
-        if queue.empty():
+                    stack.append(each)
+        if len(stack) == 0:
             print "queue is empty,", counter, "boards checked"
             winning_board = board
 
@@ -278,7 +284,7 @@ def runSimulation(speed, width, height, board):
     # path = [[13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [4, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [6, 'W'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [13, 'E'], [5, 'S'], [12, 'S'], [1, 'E'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [8, 'N']]
 
     # while there are moves left
-    anim = jobber_vizualize.RushHourVisualization(vizualize)
+    anim = Breadth_first_vizualize.RushHourVisualization(vizualize)
     for step in path:
         for car in vizualize.cars:
             if car.id == step[0]:

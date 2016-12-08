@@ -18,23 +18,86 @@ from msvcrt import getch
 # ([id, position, orientation, length], [etc])
 # position = x, y; orientation: nz = 1 ew = 2
 
-chupachups = [
-
-[1,[4,3],2,2],
-[2,[4,1],2,2],
-[3,[3,1],1,3],
-[4,[6,1],1,3],
-[5,[4,4],1,3],
-[6,[5,4],2,2],
-[7,[1,5],1,2],
-[8,[5,6],2,2],
-[9,[2,5],2,2]
+chupachups =[
+[1,[1,5],2,2],
+[2,[1,1],2,2],
+[3,[3,1],2,2],
+[4,[5,1],1,2],
+[5,[8,1],1,2],
+[6,[1,2],1,2],
+[7,[2,2],2,3],
+[8,[6,2],2,2],
+[9,[3,3],2,2],
+[10,[5,3],1,2],
+[11,[6,3],1,2],
+[12,[8,3],2,2],
+[13,[3,4],1,2],
+[14,[4,4],1,3],
+[15,[7,4],2,3],
+[16,[2,6],1,2],
+[17,[5,6],2,2],
+[18,[7,6],2,2],
+[19,[9,6],1,3],
+[20,[1,7],1,3],
+[21,[3,7],2,2],
+[22,[5,7],1,3],
+[23,[6,7],2,3],
+[24,[3,8],2,2],
+[25,[6,8],2,2],
+[26,[2,9],2,3]
 ]
 
-board_size = [6, 6]
+board_size = [12, 12]
 
 vizualization = True
 run = True
+
+def runSimulation(speed, width, height, board):
+    # devine the size of the board
+    width = width
+    height = height
+    # create a starting board
+    vizualize = Board(cars, board_size[0], board_size[1])
+    # store the winning board + path
+    end_board = board
+    # store the winning path
+    path = end_board.pathWay
+    # amount of moves to win
+    num = len(end_board.pathWay)
+    # ammount of cars that are on the board
+    num_cars = len(vizualize.cars)
+    # store the path
+    path = end_board.pathWay
+
+    # game #1
+    # path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S'], [1, 'E'], [1, 'E'], [1, 'E']]
+    # game #2
+    # path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
+    # game #3
+    # path = [[2, 'W'], [4, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [6, 'W'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [12, 'S'], [1, 'E'], [12, 'S'], [13, 'E'], [5, 'S'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [7, 'S'], [8, 'N'], [7, 'N']]
+    # game #4
+    #path = [[]]
+
+    # while there are moves left
+    anim = Breadth_first_vizualize.RushHourVisualization(vizualize, 2)
+    if (len(path) != 0):
+        for step in path:
+            for car in vizualize.cars:
+                if car.id == step[0]:
+                    if step[1] == 'N':
+                        car.position[1] = car.position[1] - 1
+                    elif step[1] == 'S':
+                        car.position[1] = car.position[1] + 1
+                    elif step[1] == 'W':
+                        car.position[0] = car.position[0] - 1
+                    elif step[1] == 'E':
+                        car.position[0] = car.position[0] + 1
+                    vizualize = Board(vizualize.cars, width, height)
+                    anim.update(vizualize)
+    else:
+        vizualize = Board(vizualize.cars, width, height)
+        anim.update(vizualize)
+    anim.done()
 
 class Car(object):
     def __init__(self, chupachups):
@@ -56,7 +119,7 @@ class Board(object):
         self.height = height
         self.arraynp = numpy.zeros((width, height))
         self.cars = cars
-        self.cost = None
+        self.cost = 0
         self.pathWay = []
         for car in self.cars:
             x = car.position[0] - 1
@@ -89,11 +152,9 @@ class Board(object):
         return hash(self.arraynp.tostring())
 
     def __eq__(self, other):
-        if type(other) == numpy.ndarray and type(self) == numpy.ndarray:
-            return (self.arraynp == other).all()
-        elif (type(other) == str):
-            return (self.arraynp.tostring() == other)
-
+        return isinstance(other, type(self)) and (self.arraynp == other.arraynp).all()
+        #elif (type(other) == str):
+        #    return (self.arraynp.tostring() == other)
 
     def children(self):
         counter = 0
@@ -175,6 +236,9 @@ class Board(object):
                         child.pathWay.append([car.id, "W"])
                         child_boards.append(child)
                         counter += 1
+                        if child.arraynp[self.width-1,y] == 0 and child.arraynp[self.width-2,y] == 1:
+                            return "win", child
+                            break
 
         # return all new boards if non won
         return child_boards
@@ -246,43 +310,47 @@ def bfs():
 def astar(): 
 
  
-    def heuristics():
-        # initializes board
-        board = Board(cars,board_size[0], board_size[1])
-        # computes minimum amount of steps
-        endpoint = board.width - car.position[0]
-        return endpoint
+    def heuristics(board):
+        cost = 0
+        for car in board.cars:
+            # found red car
+            if car.id == 1:
+                for i in range(car.position[0] + 2, board.width+1):
+                    if board.arraynp[i -1, car.position[1] -1] != 0:
+                        cost += 10
+        return cost
 
-    def gCost():
-        # initialize start board and cost 
-        board = Board(cars,board_size[0], board_size[1])
-        gcost = 0
-        # set starting cost to zero
-        board.cost = gcost
-        # returns minimum steps to complete game
-        endpoint = board.width
-        node = car.position
-        # make children until heuristics point
-        for i in range(endpoint):
-            new_node = board.children()
-            for j in new_node:
+    #def gCost():
+     #   # initialize start board and cost 
+     #   board = Board(cars,board_size[0], board_size[1])
+     #   gcost = 0
+     #   # set starting cost to zero
+      #  board.cost = gcost
+      #  # returns minimum steps to complete game
+      #  endpoint = board.width
+      #  # make children until heuristics point
+      #  for i in range(endpoint):
+        #    new_node = board.children()
+       #     for j in new_node:
                 # for every child
-                gcost = i
-        return gcost
+         #       gcost = i
+       # return gcost
 
 
     
     # initialize the starting board
     boarding = Board(cars, board_size[0], board_size[1])
+    joden = heuristics(boarding)
+    print joden
+    print numpy.transpose(boarding.arraynp)
+
+
     # create archive/ closed list
     archive_astar = dict()
-    # create open list // arguments: priority, data// priority being the fcost
+    # create open list 
     priority = Queue.PriorityQueue()
-    # intializes boards heuristics
-    heuristics = heuristics()
-    
     # put starting board in queue
-    priority.put(boarding, 0)
+    priority.put((0, boarding))
     counter = 0
     came_from = {}
     cost_so_far = {}
@@ -294,29 +362,28 @@ def astar():
         # counts boards0) and vizualization:
         if counter%1000 == 0 and vizualization:
             print "count:", counter, ", queue length:", priority.qsize(), ", archive size:", len(archive_astar)
-        # get board with lowest fcost
-        boarding = priority.get()
-        # endboard found
-        if car.position[0] == heuristics:
-            break
-    
+        # get first board
+        score, boarding = priority.get()  
         # make children of that board
         childrens = boarding.children()
+        if childrens[0] == "win":
+            print "WON\n", childrens[1].pathWay, numpy.transpose(childrens[1].arraynp)
+            runSimulation(2, board_size[0], board_size[1], childrens[1])
+            break
         # traverse children
         for child in childrens:
-            # count childrens
             counter += 1
             # current costs plus costs of child
-            childCost = cost_so_far[boarding] + gCost()
+            childCost = cost_so_far[boarding] + 1
             # check if child is in archive
             if not child in archive_astar:
                 # set cost of child to childcost
                 cost_so_far[child] = childCost
                 # totalcosts of move
-                total = cost_so_far[child] + heuristics
+                total = cost_so_far[child] + heuristics(child)
                 # puts total costs in queue
-                priority.put(child,total)
-                # sets boarding as position child came from
+                priority.put( (total, child))
+                # sets path
                 came_from[child] = boarding
                 # archive child
                 archive_astar[child] = child
@@ -324,89 +391,25 @@ def astar():
     return came_from, cost_so_far
     
                     
-    def runSimulation(speed, width, height, board):
-        # devine the size of the board
-        width = width
-        height = height
-        # create a starting board
-        vizualize = Board(cars, board_size[0], board_size[1])
-        # store the winning board + path
-        end_board = board
-        # store the winning path
-        path = end_board.pathWay
-        # amount of moves to win
-        num = len(end_board.pathWay)
-        # ammount of cars that are on the board
-        num_cars = len(vizualize.cars)
-        # store the path
-        path = end_board.pathWay
 
-        # game #1
-        # path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S'], [1, 'E'], [1, 'E'], [1, 'E']]
-        # game #2
-        # path = [[1, 'W'], [2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [1, 'E'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S'], [1, 'E']]
-        # game #3
-        # path = [[2, 'W'], [4, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [6, 'W'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [12, 'S'], [1, 'E'], [12, 'S'], [13, 'E'], [5, 'S'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [7, 'S'], [8, 'N'], [7, 'N']]
-        # game #4
-        #path = [[]]
-
-        # while there are moves left
-        anim = Breadth_first_vizualize.RushHourVisualization(vizualize, 2)
-        if (len(path) != 0):
-            for step in path:
-                for car in vizualize.cars:
-                    if car.id == step[0]:
-                        if step[1] == 'N':
-                            car.position[1] = car.position[1] - 1
-                        elif step[1] == 'S':
-                            car.position[1] = car.position[1] + 1
-                        elif step[1] == 'W':
-                            car.position[0] = car.position[0] - 1
-                        elif step[1] == 'E':
-                            car.position[0] = car.position[0] + 1
-                        vizualize = Board(vizualize.cars, width, height)
-                        anim.update(vizualize)
-        else:
-            vizualize = Board(vizualize.cars, width, height)
-            anim.update(vizualize)
-        anim.done()
 
 #if (vizualization):
  #   runSimulation(2, board_size[0], board_size[1], winning_board)
 
-#starter = Board(cars, board_size[0], board_size[1])
-#runSimulation(2, board_size[0], board_size[1], starter)
 
-"""
-counter = 0
-test = numpy.zeros((6, 6))
-test = numpy.transpose(test)
-for i in range(0, 6):
-    for j in range(0, 6):
-        test[i,j] = counter
-        print test
-        print test.tostring()
-        counter += 1
-print test.tostring()
+#counter = 0
+#test = numpy.zeros((6, 6))
+#test = numpy.transpose(test)
+#for i in range(0, 6):
+ #   for j in range(0, 6):
+  #      test[i,j] = counter
+   #     print test
+    #    print test.tostring()
+     #   counter += 1
+#print test.tostring()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-print test[0,5]
-"""
 astar()
+#cProfile.run('astar()')
+#print test[0,5]

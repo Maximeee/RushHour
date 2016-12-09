@@ -9,15 +9,12 @@ print path1, "\n", path2, "\n", path3
 import Queue
 
 board = [
-[ 2, 3, 3, 3, 0, 4, 0, 0, 0],
-[ 2, 0, 0, 5, 0, 4, 6, 6, 6],
-[ 0, 0, 0, 5, 0, 4, 0, 0, 7],
-[ 8, 8, 0, 5, 0, 9, 9, 9, 7],
-[10, 1, 1,11, 0, 0, 0, 0, 7],
-[10, 0,12,11, 0,13,13,13,14],
-[15,15,12,16,17,17, 0, 0,14],
-[18, 0,12,16,19, 0, 0, 0,14],
-[18,20,20,20,19,21,21,22,22]
+[0,0,3,2,2,4],
+[0,0,3,0,0,4],
+[0,0,3,1,1,4],
+[0,0,0,5,6,6],
+[7,8,8,5,0,0],
+[7,0,0,5,9,9]
 ]
 # board[row][colom]
 class Board(object):
@@ -169,7 +166,7 @@ def df():
 		first = stack.pop(0)
 		# create children
 		children = first.children()
-		print children
+		# print children
 		winning_board = 0
 		won = 0
 		for each in children:
@@ -189,7 +186,9 @@ def df():
 					stack.insert(0, each)
 					print "queue", len(stack)
 			counter += 1
+			steps +=1
 			print "counter", counter, "stack", len(stack), ", archive size:", len(archive)
+
 	#end of while loop	
 
 
@@ -198,3 +197,7 @@ winning = df()
 print winning.pathWay, len(winning.pathWay)
 for i in range(len(winning.start)):
 	print winning.start[i]
+
+
+
+# depth first: game 4, ong 5 minuten, 7416 stappen.

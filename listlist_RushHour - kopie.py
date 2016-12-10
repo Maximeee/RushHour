@@ -11,33 +11,47 @@ import Queue
 
 # imput is in de vorm [[row1],[row1],[row3],[row4], etc]
 chupachup = [
-[0,0,3,2,2,4],
-[0,0,3,0,0,4],
-[0,0,3,1,1,4],
-[0,0,0,5,6,6],
-[7,8,8,5,0,0],
-[7,0,0,5,9,9]
+[ 0, 0, 2, 2, 3, 3],
+[ 0, 4, 4, 5, 5, 6],
+[ 0, 0, 1, 1, 7, 6],
+[ 8, 8, 9, 9, 7, 6],
+[10, 0, 0,11,12,12],
+[10, 0, 0,11,13,13]
 ]
 
 # board[row][colom]
 
 # accepteerd een grid en print het
 def koffie(z):
+    print "steps:", len(z.pathWay), ", path:", z.pathWay
     for i in range(len(z.start)):
+        row = str(z.start[i])
+        row.replace(" ", "")
         print z.start[i]
-####
-# work in progress
-def move(car, board, pathWay, x, y, ofset, step):
-    new_board = board[:]
-    new_board[x - ofset] = board[x - ofset][:]
-    new_board[x - ofset][y] = 0
-    new_board[x+1] = board[x+1][:]
-    new_board[x+1][y] = board[x][y]
-    temp = Board(new_board)
-    temp.pathWay = pathWay[:]
-    temp.pathWay.append([board[x][y], step])
+    print "\n"
+
+
+def moveVert(board, i, j, k, empty, ori):
+    new_board = board.start[:]
+    new_board[i+k] = board.start[i+k][:]
+    new_board[i+k][j] = board.start[i][j]
+    new_board[i - empty] = board.start[i - empty][:]
+    new_board[i - empty][j] = 0
+    temp = Board(new_board, board.vertical, board.horizontal)
+    temp.pathWay = board.pathWay[:]
+    temp.pathWay.append([board.start[i][j], ori])
     return temp
-####
+
+def moveHor(board, i, j, k, empty, ori):
+    new_board = board.start[:]
+    new_board[i] = board.start[i][:]
+    new_board[i][j + k] = board.start[i][j]
+    new_board[i][j - empty] = 0
+    temp = Board(new_board, board.vertical, board.horizontal)
+    temp.pathWay = board.pathWay[:]
+    temp.pathWay.append([board.start[i][j], ori])
+    return temp
+
 
 def check_cars(board):
     vertical = dict()
@@ -103,42 +117,12 @@ class Board(object):
                         # DOWN
                         # move the car down if possible
                         if self.start[i+1][j] == 0:
-                            # create an array sharing the old grid
-                            new_board = self.start[:]
-                            # "deepcopy" the row the car is moving into
-                            new_board[i+1] = self.start[i+1][:]
-                            # set the position in the new row to the car id
-                            new_board[i+1][j] = self.start[i][j]
-                            # "deepcopy" the row where the other end of the car is
-                            new_board[i - empty] = self.start[i - empty][:]
-                            # set the position the car used to be to 0
-                            new_board[i - empty][j] = 0
-                            # create a new board
-                            temp = Board(new_board, self.vertical, self.horizontal)
-                            # "deepcopy" an array, revering to the parent pathWay
-                            temp.pathWay = self.pathWay[:]
-                            # append the new step
-                            temp.pathWay.append([self.start[i][j], "N"])
-                            # append the new board to the children list
-                            new_boards.append(temp)
-                            ####
-                            # all of the above might fit in one function for moving vertical
-                            # a similar on could be deficed for horizontal movement
-                            # print self.start[i][j]
-                            # new_boards.append(move(self.start[i][j], self.start, self.pathWay, empty, i, j, "S"))
+                            new_boards.append(moveVert(self, i, j, 1, empty, "S"))
                     if i > 0:
                         # UP
                         # Works the same as the move down
                         if self.start[i-1][j] == 0:
-                            new_board = self.start[:]
-                            new_board[i + empty] = self.start[i + empty][:]
-                            new_board[i + empty][j] = 0
-                            new_board[i-1] = self.start[i-1][:]
-                            new_board[i-1][j] = self.start[i][j]
-                            temp = Board(new_board, self.vertical, self.horizontal)
-                            temp.pathWay = self.pathWay[:]
-                            temp.pathWay.append([self.start[i][j], "N"])
-                            new_boards.append(temp)
+                            new_boards.append(moveVert(self, i, j, -1, -empty, "N"))
                 # if the car found is orientated horizontally
                 if self.start[i][j] in self.horizontal:
                     # check the length of the car
@@ -149,36 +133,14 @@ class Board(object):
                         # RIGHT
                         # if the position to the right is empty
                         if self.start[i][j+1] == 0:
-                            # create an array sharing the old grid
-                            new_board = self.start[:]
-                            # "deepcopy" the row the car is on
-                            new_board[i] = self.start[i][:]
-                            # set the position the the right of the car to the car id
-                            new_board[i][j + 1] = self.start[i][j]
-                            # set the left most part of the car to 0
-                            new_board[i][j - empty] = 0
-                            # create a new grid
-                            temp = Board(new_board, self.vertical, self.horizontal)
-                            # create an array sharing the parent pathWay
-                            temp.pathWay = self.pathWay[:]
-                            # append the new step
-                            temp.pathWay.append([self.start[i][j], "E"])
-                            # append the new board to the children list
-                            new_boards.append(temp)
+                            new_boards.append(moveHor(self, i, j, 1, empty, "E"))
                     if j > 0:
                         # LEFT
                         # works the same as the move right
                         if self.start[i][j-1] == 0:
-                            new_board = self.start[:]
-                            new_board[i] = self.start[i][:]
-                            new_board[i][j-1] = self.start[i][j]
-                            new_board[i][j + empty] = 0
-                            temp = Board(new_board, self.vertical, self.horizontal)
-                            temp.pathWay = self.pathWay[:]
-                            temp.pathWay.append([self.start[i][j], "W"])
-                            new_boards.append(temp)
+                            new_boards.append(moveHor(self, i, j, -1, -empty, "W"))
         return new_boards
-        
+
 # Work in progress
 def simulation(speed, path, chupachup):
     starting_board = Board(chupachup)
@@ -192,6 +154,21 @@ def simulation(speed, path, chupachup):
 
 
 def bf():
+    ###
+    # paths found:
+    #   board 1:
+    #       [[3, 'N'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'N'], [3, 'N'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'N'], [4, 'N'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'N'], [3, 'N'], [1, 'E'], [7, 'N'], [2, 'W'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'N'], [7, 'N'], [6, 'W'], [3, 'N'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'N'], [3, 'N'], [7, 'N'], [3, 'N'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'N'], [6, 'W'], [3, 'N'], [8, 'W'], [8, 'W'], [5, 'N'], [8, 'W'], [3, 'N'], [9, 'W'], [4, 'N'], [9, 'W'], [9, 'W'], [5, 'N'], [9, 'W'], [3, 'N']]
+    #   board2: time 3.302s
+    #       26 steps => [[2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [1, 'W'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'N'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'N'], [9, 'W'], [6, 'N'], [6, 'N'], [6, 'N']]
+    #   board 3: time 2.42s(with prints)
+    #       34 steps => [[2, 'W'], [4, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [8, 'N'], [13, 'W'], [13, 'W'], [8, 'N'], [10, 'E'], [5, 'N'], [6, 'W'], [5, 'N'], [5, 'N'], [10, 'W'], [8, 'N'], [8, 'N'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [12, 'N'], [1, 'E'], [13, 'E'], [5, 'N'], [1, 'E'], [1, 'E'], [7, 'N'], [3, 'W'], [8, 'N']]
+    #   board 4: time 161.697s(with prints)
+    #       44 steps => [[2, 'N'], [3, 'W'], [5, 'N'], [9, 'W'], [9, 'W'], [9, 'W'], [4, 'N'], [4, 'N'], [6, 'W'], [7, 'N'], [7, 'N'], [17, 'E'], [17, 'E'], [19, 'N'], [21, 'W'], [22, 'W'], [14, 'N'], [13, 'E'], [4, 'N'], [4, 'N'], [9, 'E'], [8, 'E'], [9, 'E'], [8, 'E'], [9, 'E'], [8, 'E'], [9, 'E'], [8, 'E'], [5, 'N'], [3, 'E'], [2, 'N'], [10, 'N'], [10, 'N'], [1, 'W'], [12, 'N'], [12, 'N'], [12, 'N'], [12, 'N'], [15, 'E'], [4, 'N'], [18, 'N'], [20, 'W'], [16, 'N'], [11, 'N']]
+    #   board 5: time ?
+    #       ? steps => ?
+    #   board 6: time
+    #
+    ###
     # determine the cars and their orientation on the grid
     # the dicts for vertical and horizontal cars are necessary to build the board object
     # ones a board is made these dicts are inherited when children are made (self.vertical & self.horizontal)
@@ -241,14 +218,17 @@ def bf():
                     # return the winning board object
                     print "\nwon"
                     return each
+                    break
                 # if the red cars path is still blocked
                 else:
+                    if counter % 50000 == 0:
+                        koffie(each)
                     # put the board in the queue
                     queue.put(each)
             counter += 1
             # modulo is used properly now
-            if counter % 1 == 0:
-                print "counter:", counter, ", queue:", queue.qsize(), ", archive size:", len(archive)
+            if counter % 50000 == 0:
+                print "counter:", counter/1000000, "million", ", queue:", queue.qsize(), ", archive size:", len(archive)
             if queue.empty():
                 print "queue is empty"
     print "done"
@@ -256,5 +236,5 @@ def bf():
 
 # simulation(2, Board(chupachup).pathWay, chupachup)
 winning_board = bf()
-print len(winning_board.pathWay), "\n", winning_board.pathWay
+print "steps:", len(winning_board.pathWay), "\n", winning_board.pathWay
 koffie(winning_board)

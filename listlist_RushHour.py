@@ -8,13 +8,16 @@ print path1, "\n", path2, "\n", path3
 """
 import Queue
 
-board = [
-[ 0, 0, 2, 2, 3, 3],
-[ 0, 4, 4, 5, 5, 6],
-[ 0, 0, 1, 1, 7, 6],
-[ 8, 8, 9, 9, 7, 6],
-[10, 0, 0,11,12,12],
-[10, 0, 0,11,13,13]
+board =[
+[ 2, 2, 2, 3, 0, 4, 5, 0, 0],
+[ 0, 0, 0, 3, 0, 4, 5, 6, 6],
+[ 0, 0, 0, 3, 7, 7, 8, 0, 0],
+[ 0, 0, 0, 0, 9, 9, 8,10,10],
+[ 0, 0,11,11,11,12, 1, 1,13],
+[14, 0,15, 0, 0,12, 0, 0,13],
+[14, 0,15,16,16,12,17,17,13],
+[18,19,20,20,21,22,22,22,23],
+[18,19,24,24,21, 0, 0, 0,23]
 ]
 # board[row][colom]
 class Board(object):
@@ -126,6 +129,7 @@ def bf():
         for each in children:
             if not str(each.start) in archive:
                 archive[str(each.start)] = str(each.start)
+                # loop over board rows
                 for i in range(parent.height):
                     if 1 in each.start[i]:
                         for j in range(parent.width):
@@ -140,9 +144,70 @@ def bf():
                     queue.put(each)
                     print "queue", queue.qsize()
             counter += 1
-            print "counter", counter, "queue", queue.qsize(), ", archive size:", len(archive)
+            print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
     #end of while loop
-winning = bf()
-print winning.pathWay
-for i in range(len(winning.start)):
-    print winning.start[i]
+
+    #lala = bfs()
+    #print winning.pathWay
+    #for i in range(len(winning.start)):
+    #    print winning.start[i]
+
+# TODO: change heuristic plus numpy transpose crap
+def astar(): 
+
+  
+    def heuristics(board):
+        cost = 0
+        for i in range(0, board.height):
+            if 1 in board.start[i]:
+                for j in range(0, board.width):
+                    if board.start[i][j] != 0 and board.start[i][j] != 1:
+                        cost += 10
+        return cost
+                    
+    # initialize the starting board
+    boarding = Board(board)
+    # create archive/ closed list
+    archive_astar = dict()
+    # create open list 
+    priority = Queue.PriorityQueue()
+    # put starting board in queue
+    priority.put((0, boarding))
+    counter = 0
+    came_from = {}
+    cost_so_far = {}
+    came_from[boarding] = 0
+    cost_so_far[boarding] = 0
+    # until there are no more positions and more nodes to traverse
+    while not priority.empty():
+        
+        # get first board
+        score, boarding = priority.get()  
+        # make children of that board
+        childrens = boarding.children()
+        if childrens[0] == "win":
+            print "WON\n", childrens[1].pathWay, numpy.transpose(childrens[1].arraynp)
+            runSimulation(2, board_size[0], board_size[1], childrens[1])
+            break
+        # traverse children
+        for child in childrens:
+            counter += 1
+            # current costs plus costs of child
+            childCost = cost_so_far[boarding] + 1
+            # check if child is in archive
+            if not child in archive_astar:
+                # set cost of child to childcost
+                cost_so_far[child] = childCost
+                # totalcosts of move
+                total = cost_so_far[child] + heuristics(child)
+                # puts total costs in queue
+                priority.put( (total, child))
+                # sets path
+                came_from[child] = boarding
+                # archive child
+                archive_astar[child] = child
+    print childrens[1].pathWay
+    return came_from, cost_so_far
+    
+
+astar()

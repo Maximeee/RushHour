@@ -8,6 +8,7 @@ print path1, "\n", path2, "\n", path3
 """
 import Queue
 
+
 board =[
 [ 2, 2, 2, 3, 0, 4, 5, 0, 0],
 [ 0, 0, 0, 3, 0, 4, 5, 6, 6],
@@ -145,11 +146,12 @@ def bf():
                     queue.put(each)
                     print "queue", queue.qsize()
             counter += 1
-            print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
+            if counter % 50000 == 0:
+                print "counter:", counter/1000000, "million", ", queue:", queue.qsize(), ", archive size:", len(archive)
 
-def astar(): 
+def astar():
 
-  
+
     def heuristics(board):
         cost = 0
         for i in range(0, board.height):
@@ -158,6 +160,15 @@ def astar():
                     if board.start[i][j] != 0 and board.start[i][j] != 1:
                         cost += 10
         return cost
+
+    def koffie(z):
+    	print "steps:", len(z.pathWay), ", path:", z.pathWay
+    	for i in range(len(z.start)):
+        	row = str(z.start[i])
+        	row.replace(" ", "")
+        	print z.start[i]
+    	print "\n"
+
                     
     # initialize the starting board
     boarding = Board(board)
@@ -168,59 +179,61 @@ def astar():
     # put starting board in queue
     priority.put((0, boarding))
     counter = 0
+    # for calculating path
     came_from = {}
+    # calculates cost made so far
     cost_so_far = {}
+    # starting board came from nowhere
     came_from[boarding] = 0
+    # no costs either
     cost_so_far[boarding] = 0
     won = 0
+    childcost= 0
     winning_board = 0
     # until there are no more positions and more nodes to traverse
     while not priority.empty():
         
         # get first board
-        score, boarding = priority.get()  
+        score, boarding = priority.get()
         # make children of that board
         childrens = boarding.children()
-     	# loops over height of board
-     	for i in range(0, boarding.height):
-     		# loops over board
-     		for child in childrens[i].start:
-     			# found red car
-     			if 1 in child:
-     				# loops over width of row where red car is
-     				for j in range(0, child[i]):
-     					if child[j] == 1:
-     						won = 0
-     					elif not child[j] == 0:
-     						won += 1
-     		if won == 0:
-     			return child
-     		else:
-				# traverse children
-        		for child in childrens:
-        			counter += 1
-            		# current costs plus costs of child
-            		childCost = cost_so_far[boarding] + 1
-            		# check if child is in archive
-            		if not child in archive_astar:
-		                # set cost of child to childcost
-		                cost_so_far[child] = childCost
-		                # totalcosts of move
-		                total = cost_so_far[child] + heuristics(child)
-		                # puts total costs in queue
-		                priority.put( (total, child))
-		                # sets path
-		                came_from[child] = boarding
-		                # archive child
-		                archive_astar[child] = child
-		                print "counter", counter, "queue", len(priority), ", archive size:", len(archive_astar)
+        # for each child that in archive
+        for child in childrens:
+        	if not str(child.start) in archive_astar:
+		 		# calculate cost of path
+		 		childCost = cost_so_far[boarding] + 1
+		 		cost_so_far[child] = childCost
+		 		total = cost_so_far[child] + heuristics(child)
+		 		priority.put( (total, child))
+		 		came_from[child] = boarding
+		 		for i in range(boarding.height):
+		 			if 1 in child.start[i]:
+		 				for j in range(boarding.width):
+		 					if child.start[i][j] == 1:
+		 						won = 0
+		 					elif not child.start[i][j] == 0:
+		 						won += 1
+ 				if won == 0:
+ 					print "Won 1\n"
+ 					return child
+ 				else:
+ 					print "queue", priority.qsize()
+	     			archive_astar[str(child.start)] = str(child.start)
+	     	counter += 1
+	     	print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
 
+            
     return came_from, cost_so_far
 
+
+
 winning = astar()
-print winning.pathWay, len(winning.pathWay)
-for i in range(len(winning.start)):
-	print winning.start[i]
+koffie(winning)
+
+
+#.pathWay, len(winning.pathWay)
+#for i in range(len(winning.start)):
+#	print winning.start[i]
 
     
 

@@ -160,15 +160,6 @@ def astar():
                     if board.start[i][j] != 0 and board.start[i][j] != 1:
                         cost += 10
         return cost
-
-    def koffie(z):
-    	print "steps:", len(z.pathWay), ", path:", z.pathWay
-    	for i in range(len(z.start)):
-        	row = str(z.start[i])
-        	row.replace(" ", "")
-        	print z.start[i]
-    	print "\n"
-
                     
     # initialize the starting board
     boarding = Board(board)
@@ -199,36 +190,37 @@ def astar():
         childrens = boarding.children()
         # for each child that in archive
         for child in childrens:
-        	if not str(child.start) in archive_astar:
-		 		# calculate cost of path
-		 		childCost = cost_so_far[boarding] + 1
-		 		cost_so_far[child] = childCost
-		 		total = cost_so_far[child] + heuristics(child)
-		 		priority.put( (total, child))
-		 		came_from[child] = boarding
-		 		for i in range(boarding.height):
-		 			if 1 in child.start[i]:
-		 				for j in range(boarding.width):
-		 					if child.start[i][j] == 1:
-		 						won = 0
-		 					elif not child.start[i][j] == 0:
-		 						won += 1
- 				if won == 0:
- 					print "Won 1\n"
- 					return child
- 				else:
- 					print "queue", priority.qsize()
-	     			archive_astar[str(child.start)] = str(child.start)
-	     	counter += 1
-	     	print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
+        	counter += 1
+        	childCost = cost_so_far[boarding] + 1
 
+        	if not str(child.start) in archive_astar:
+        		cost_so_far[child] = childCost
+        		total = cost_so_far[child] + heuristics(child)
+        		priority.put( (total, child))
+        		came_from[child] = boarding
+        		archive_astar[str(child.start)] = (child.start)
+        		for i in range(boarding.height):
+        			if 1 in child.start[i]:
+        				for j in range(boarding.width):
+        					if child.start[i][j] == 1:
+        						won = 0
+        					elif not child.start[i][j] == 0:
+        						won += 1
+        		if won == 0:
+        			print "won 1\n"
+        			return child
+        		else:
+        			archive_astar[str(child.start)] = (child.start)
+        			if counter % 1000 == 0:
+        				print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
+	  
             
     return came_from, cost_so_far
 
 
 
 winning = astar()
-koffie(winning)
+print winning
 
 
 #.pathWay, len(winning.pathWay)

@@ -8,15 +8,16 @@ print path1, "\n", path2, "\n", path3
 """
 import Listlist_Breadth_first_vizualize
 import Queue
+import numpy
 
 # imput is in de vorm [[row1],[row1],[row3],[row4], etc]
 chupachup = [
-[ 0, 0, 2, 2, 3, 3],
-[ 0, 4, 4, 5, 5, 6],
-[ 0, 0, 1, 1, 7, 6],
-[ 8, 8, 9, 9, 7, 6],
-[10, 0, 0,11,12,12],
-[10, 0, 0,11,13,13]
+[ 0, 2, 2, 3, 3, 3],
+[ 0, 4, 4, 5, 6, 6],
+[ 1, 1, 7, 5, 0, 8],
+[ 9, 9, 7,10,10, 8],
+[11, 0,12, 0,13,13],
+[11, 0,12, 0, 0, 0]
 ]
 
 # board[row][colom]
@@ -31,7 +32,13 @@ def koffie(z):
     print "\n"
 
 
-def moveVert(board, i, j, k, empty, ori):
+def moveVert(board, i, j, ori):
+    k = 0
+    if ori == "S":
+        k = 1
+    elif ori == "N":
+        k = -1
+    empty = ((board.vertical[board.start[i][j]] - 1) * k)
     new_board = board.start[:]
     new_board[i+k] = board.start[i+k][:]
     new_board[i+k][j] = board.start[i][j]
@@ -42,7 +49,13 @@ def moveVert(board, i, j, k, empty, ori):
     temp.pathWay.append([board.start[i][j], ori])
     return temp
 
-def moveHor(board, i, j, k, empty, ori):
+def moveHor(board, i, j, ori):
+    k = 0
+    if ori == "E":
+        k = 1
+    elif ori == "W":
+        k = -1
+    empty = ((board.horizontal[board.start[i][j]] - 1) * k)
     new_board = board.start[:]
     new_board[i] = board.start[i][:]
     new_board[i][j + k] = board.start[i][j]
@@ -110,48 +123,76 @@ class Board(object):
                 # check orientation of car
                 if self.start[i][j] in self.vertical:
                     # see how far the other end of the car is so that position can be set to 0
-                    empty = self.vertical[self.start[i][j]] - 1
                     # if the move is valid/ new position is still on the board
                     # -1 as it is 0 indexed
                     if i < self.height - 1:
                         # DOWN
                         # move the car down if possible
                         if self.start[i+1][j] == 0:
-                            new_boards.append(moveVert(self, i, j, 1, empty, "S"))
+                            new_boards.append(moveVert(self, i, j, "S"))
                     if i > 0:
                         # UP
                         # Works the same as the move down
                         if self.start[i-1][j] == 0:
-                            new_boards.append(moveVert(self, i, j, -1, -empty, "N"))
+                            new_boards.append(moveVert(self, i, j, "N"))
                 # if the car found is orientated horizontally
                 if self.start[i][j] in self.horizontal:
                     # check the length of the car
                     # and thus which position to clear
-                    empty = self.horizontal[self.start[i][j]] - 1
                     # if a step right still is within the grid
                     if j + 1 < self.width:
                         # RIGHT
                         # if the position to the right is empty
                         if self.start[i][j+1] == 0:
-                            new_boards.append(moveHor(self, i, j, 1, empty, "E"))
+                            new_boards.append(moveHor(self, i, j, "E"))
                     if j > 0:
                         # LEFT
                         # works the same as the move right
                         if self.start[i][j-1] == 0:
-                            new_boards.append(moveHor(self, i, j, -1, -empty, "W"))
+                            new_boards.append(moveHor(self, i, j, "W"))
         return new_boards
 
 # Work in progress
-def simulation(speed, path, chupachup):
-    starting_board = Board(chupachup)
-    path = [[2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [1, 'W'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'S'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'S'], [9, 'W'], [6, 'S'], [6, 'S'], [6, 'S']]
+def simulation(speed, board, chupachup):
+    current_board = Board(chupachup, board.vertical, board.horizontal)
+    anim_speed = speed
+    path = board.pathWay
+    # path = [[13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [4, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [6, 'W'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [13, 'E'], [5, 'S'], [12, 'S'], [1, 'E'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [8, 'N']]
+    counter = 1
+    anim = Listlist_Breadth_first_vizualize.RushHourVisualization(current_board, anim_speed)
     for step in path:
-        for i in range(len(starting_board.start)):
-            for j in range(len(starting_board.start[0])):
-                if not starting_board.start[i][j] == 0:
-                    if starting_board.start[i][j] in starting_board.vertical:
-                        print "simulation", starting_board.start[i][j]
-
+        counter += 1
+        if step[1] == "N":
+            for i in range(current_board.height):
+                for j in range(current_board.width):
+                    if i -1 >= 0:
+                        if current_board.start[i][j] == step[0] and current_board.start[i-1][j] == 0:
+                            current_board = moveVert(current_board, i, j, step[1])
+                            break
+        elif step[1] == "S":
+            for i in range(current_board.height):
+                for j in range(current_board.width):
+                    if i +1 < current_board.height:
+                        if current_board.start[i][j] == step[0] and current_board.start[i+1][j] == 0:
+                            current_board = moveVert(current_board, i, j, step[1])
+                            break
+        elif step[1] == "W":
+            for i in range(current_board.height):
+                for j in range(current_board.width):
+                    if j -1 >= 0:
+                        if current_board.start[i][j] == step[0] and current_board.start[i][j-1] == 0:
+                            current_board = moveHor(current_board, i, j, step[1])
+                            break
+        elif step[1] == "E":
+            for i in range(current_board.height):
+                for j in range(current_board.width):
+                    if j+1 < current_board.width:
+                        if current_board.start[i][j] == step[0] and current_board.start[i][j+1] == 0:
+                            current_board = moveHor(current_board, i, j, step[1])
+                            break
+        anim.update(current_board)
+    anim.done()
+    ### end
 
 def bf():
     ###
@@ -228,13 +269,11 @@ def bf():
             counter += 1
             # modulo is used properly now
             if counter % 50000 == 0:
-                print "counter:", counter/1000000, "million", ", queue:", queue.qsize(), ", archive size:", len(archive)
+                print "counter:", counter/1000000.0, "million", ", queue:", queue.qsize(), ", archive size:", len(archive)
             if queue.empty():
                 print "queue is empty"
     print "done"
     #end of while loop & bf algoritme
-
-# simulation(2, Board(chupachup).pathWay, chupachup)
 winning_board = bf()
-print "steps:", len(winning_board.pathWay), "\n", winning_board.pathWay
 koffie(winning_board)
+simulation(0.5, winning_board, chupachup)

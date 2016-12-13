@@ -9,18 +9,15 @@ print path1, "\n", path2, "\n", path3
 import Queue
 
 
-board =[
-[ 2, 2, 2, 3, 0, 4, 5, 0, 0],
-[ 0, 0, 0, 3, 0, 4, 5, 6, 6],
-[ 0, 0, 0, 3, 7, 7, 8, 0, 0],
-[ 0, 0, 0, 0, 9, 9, 8,10,10],
-[ 0, 0,11,11,11,12, 1, 1,13],
-[14, 0,15, 0, 0,12, 0, 0,13],
-[14, 0,15,16,16,12,17,17,13],
-[18,19,20,20,21,22,22,22,23],
-[18,19,24,24,21, 0, 0, 0,23]
-]
+board =
 # board[row][colom]
+def koffie(z):
+	print "steps:", len(z.pathWay), ", path:", z.pathWay
+	for i in range(len(z.start)):
+		row= str(z.start[i])
+		print z.start[i]
+	print "\n"
+
 class Board(object):
 	def __init__ (self, board):
 		self.start = board
@@ -159,6 +156,11 @@ def astar():
                 for j in range(0, board.width):
                     if board.start[i][j] != 0 and board.start[i][j] != 1:
                         cost += 10
+                    	for k in range(0, board.height):
+                    		if board.start[k][j] != 0:
+                    			cost += 5
+
+                          
         return cost
                     
     # initialize the starting board
@@ -220,7 +222,8 @@ def astar():
 
 
 winning = astar()
-print winning
+print dir(winning)
+koffie(winning)
 
 
 #.pathWay, len(winning.pathWay)

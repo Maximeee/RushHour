@@ -9,7 +9,20 @@ print path1, "\n", path2, "\n", path3
 import Queue
 
 
-board =
+board =[
+[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
+[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
+[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
+[13,14, 0, 0, 0,15,11,16,16,17,17, 0],
+[13,14,18,18,18,15,11,19,19,19, 0, 0],
+[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],
+[22,22,22,23,20,21,24,28, 0,24,25,25],
+[26,26,26,23,27,27,24,28, 0,24,29,29],
+[30,30,31,32,32,32,24,33,33,33, 0,34],
+[ 0, 0,31,35,35,35,36, 0,37,37,38,34],
+[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],
+[ 0,41,41,42,42,42,36,43,43,49,38,40]
+]
 # board[row][colom]
 def koffie(z):
 	print "steps:", len(z.pathWay), ", path:", z.pathWay
@@ -167,6 +180,7 @@ def astar():
     boarding = Board(board)
     # create archive/ closed list
     archive_astar = dict()
+    archive_astar[str(boarding.start)] = len(boarding.pathWay)
     # create open list 
     priority = Queue.PriorityQueue()
     # put starting board in queue
@@ -200,6 +214,7 @@ def astar():
         		total = cost_so_far[child] + heuristics(child)
         		priority.put( (total, child))
         		came_from[child] = boarding
+
         		archive_astar[str(child.start)] = (child.start)
         		for i in range(boarding.height):
         			if 1 in child.start[i]:
@@ -218,7 +233,6 @@ def astar():
 	  
             
     return came_from, cost_so_far
-
 
 
 winning = astar()

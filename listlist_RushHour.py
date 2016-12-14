@@ -7,9 +7,12 @@ path3.append([4, "N"])
 print path1, "\n", path2, "\n", path3
 """
 import Queue
+import cProfile
+import re
 
 
 board =[
+<<<<<<< HEAD
 [ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
 [ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
 [ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
@@ -22,6 +25,17 @@ board =[
 [ 0, 0,31,35,35,35,36, 0,37,37,38,34],
 [ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],
 [ 0,41,41,42,42,42,36,43,43,49,38,40]
+=======
+[ 2, 2, 3, 3, 4, 0, 0, 5, 0],
+[ 6, 7, 7, 7, 4, 8, 8, 5, 0],
+[ 6, 0, 9, 9,10,11, 0,12,12],
+[ 0, 0,13,14,10,11,15,15,15],
+[ 1, 1,13,14, 0, 0, 0, 0, 0],
+[ 0,16, 0,14,17,17,18,18,19],
+[20,16,21,21,22,23,23,23,19],
+[20, 0,24,24,22,25,25, 0,19],
+[20,26,26,26,22, 0, 0, 0 ,0]
+>>>>>>> 077d930cf9584395b79ca09a2c0fe208c322522f
 ]
 # board[row][colom]
 def koffie(z):
@@ -74,6 +88,7 @@ class Board(object):
 							new_board[i+1][j] = self.start[i][j]
 							temp = Board(new_board)
 							temp.pathWay = self.pathWay[:]
+							# if len(temp.pathWay) < 50:
 							temp.pathWay.append([self.start[i][j], "S"])
 							new_boards.append(temp)
 					if i > 0:
@@ -86,6 +101,7 @@ class Board(object):
 							new_board[i-1][j] = self.start[i][j]
 							temp = Board(new_board)
 							temp.pathWay = self.pathWay[:]
+							# if len(temp.pathWay) < 50:
 							temp.pathWay.append([self.start[i][j], "N"])
 							new_boards.append(temp)
 				if self.start[i][j] in self.horizontal:
@@ -99,6 +115,7 @@ class Board(object):
 							new_board[i][j - empty] = 0
 							temp = Board(new_board)
 							temp.pathWay = self.pathWay[:]
+							# if len(temp.pathWay) < 50:
 							temp.pathWay.append([self.start[i][j], "E"])
 							new_boards.append(temp)
 					if j > 0:
@@ -110,8 +127,12 @@ class Board(object):
 							new_board[i][j + empty] = 0
 							temp = Board(new_board)
 							temp.pathWay = self.pathWay[:]
+							# if len(temp.pathWay) < 50:
 							temp.pathWay.append([self.start[i][j], "W"])
 							new_boards.append(temp)
+
+
+			
 		return new_boards
 		
 def bf():
@@ -235,9 +256,15 @@ def astar():
     return came_from, cost_so_far
 
 
+<<<<<<< HEAD
 winning = astar()
 print dir(winning)
 koffie(winning)
+=======
+
+# winning = astar()
+# print winning
+>>>>>>> 077d930cf9584395b79ca09a2c0fe208c322522f
 
 
 #.pathWay, len(winning.pathWay)
@@ -247,7 +274,7 @@ koffie(winning)
     
 
 
-def df():
+def df(depth):
 	parent = Board(board)
 	"""
 	# indicate start and print 1st board
@@ -272,7 +299,7 @@ def df():
 		winning_board = 0
 		won = 0
 		for each in children:
-			if not str(each.start) in archive:
+			if not str(each.start) in archive and len(each.pathWay) < depth:
 				archive[str(each.start)] = str(each.start)
 				for i in range(parent.height):
 					if 1 in each.start[i]:
@@ -286,21 +313,29 @@ def df():
 					return each
 				else:
 					stack.insert(0, each)
-					print "queue", len(stack)
+					# print "queue", len(stack)
 			counter += 1
-			steps +=1
-			print "counter", counter, "stack", len(stack), ", archive size:", len(archive)
+			if counter%10000 == 0:
+				print "counter", counter, "stack", len(stack), ", archive size:", len(archive)
+			if len(stack) == 0:
+				print "help"
+		# else:
+		# 	break
 
 	#end of while loop	
 
 
 
-#winning = astar()
-#print winning.pathWay, len(winning.pathWay)
-#for i in range(len(winning.start)):
+winning = df(30)
+# cProfile.run('re.compile(df(150))')
+# print winning
+# print winning.pathWay, len(winning.pathWay)
+# #for i in range(len(winning.start)):
 #	print winning.start[i]
 
 
 
 # depth first: game 4, ong 5 minuten, 7416 stappen.
 
+# game 5
+# Memery error bij 2,9 miljoen borden in archive. 39,1miljoen borden doorgerekend.

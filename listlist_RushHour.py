@@ -12,6 +12,10 @@ import re
 
 
 board =[
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> bfa244870d4ff9c7c9c90a4190582264b9eeb677
 [ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
 [ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
 [ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
@@ -24,8 +28,29 @@ board =[
 [ 0, 0,31,35,35,35,36, 0,37,37,38,34],
 [ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],
 [ 0,41,41,42,42,42,36,43,43,49,38,40]
+<<<<<<< HEAD
+=======
+=======
+[ 2, 2, 3, 3, 4, 0, 0, 5, 0],
+[ 6, 7, 7, 7, 4, 8, 8, 5, 0],
+[ 6, 0, 9, 9,10,11, 0,12,12],
+[ 0, 0,13,14,10,11,15,15,15],
+[ 1, 1,13,14, 0, 0, 0, 0, 0],
+[ 0,16, 0,14,17,17,18,18,19],
+[20,16,21,21,22,23,23,23,19],
+[20, 0,24,24,22,25,25, 0,19],
+[20,26,26,26,22, 0, 0, 0 ,0]
+>>>>>>> 077d930cf9584395b79ca09a2c0fe208c322522f
+>>>>>>> bfa244870d4ff9c7c9c90a4190582264b9eeb677
 ]
 # board[row][colom]
+def koffie(z):
+	print "steps:", len(z.pathWay), ", path:", z.pathWay
+	for i in range(len(z.start)):
+		row= str(z.start[i])
+		print z.start[i]
+	print "\n"
+
 class Board(object):
 	def __init__ (self, board):
 		self.start = board
@@ -172,16 +197,25 @@ def astar():
                 	print board.start[j]
                     if board.start[i][j] != 0 and board.start[i][j] != 1:
                         cost += 10
+<<<<<<< HEAD
                     for k in range(0, board.height):
                     	if board[j][k]
 
 
+=======
+                    	for k in range(0, board.height):
+                    		if board.start[k][j] != 0:
+                    			cost += 5
+
+                          
+>>>>>>> bfa244870d4ff9c7c9c90a4190582264b9eeb677
         return cost
                     
     # initialize the starting board
     boarding = Board(board)
     # create archive/ closed list
     archive_astar = dict()
+    archive_astar[str(boarding.start)] = len(boarding.pathWay)
     # create open list 
     priority = Queue.PriorityQueue()
     # put starting board in queue
@@ -215,6 +249,7 @@ def astar():
         		total = cost_so_far[child] + heuristics(child)
         		priority.put( (total, child))
         		came_from[child] = boarding
+
         		archive_astar[str(child.start)] = (child.start)
         		for i in range(boarding.height):
         			if 1 in child.start[i]:
@@ -235,9 +270,15 @@ def astar():
     return came_from, cost_so_far
 
 
+<<<<<<< HEAD
+winning = astar()
+print dir(winning)
+koffie(winning)
+=======
 
 # winning = astar()
 # print winning
+>>>>>>> 077d930cf9584395b79ca09a2c0fe208c322522f
 
 
 #.pathWay, len(winning.pathWay)

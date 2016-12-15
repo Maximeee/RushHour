@@ -8,22 +8,20 @@ print path1, "\n", path2, "\n", path3
 """
 import Listlist_Breadth_first_vizualize
 import Queue
-import numpy
+import random
 from datetime import datetime
 
 tijd = datetime.now()
 
 # imput is in de vorm [[row1],[row1],[row3],[row4], etc]
 chupachup = [
-[ 2, 2, 3, 3, 4, 0, 0, 5, 0],
-[ 6, 7, 7, 7, 4, 8, 8, 5, 0],
-[ 6, 0, 9, 9,10,11, 0,12,12],
-[ 0, 0,13,14,10,11,15,15,15],
-[ 1, 1,13,14, 0, 0, 0, 0, 0],
-[ 0,16, 0,14,17,17,18,18,19],
-[20,16,21,21,22,23,23,23,19],
-[20, 0,24,24,22,25,25, 0,19],
-[20,26,26,26,22, 0, 0, 0 ,0]
+[0,0,0,0,0,0],
+[0,0,0,0,0,0],
+[0,0,0,0,3,0],
+[0,0,0,0,3,0],
+[1,1,0,2,3,0],
+[0,0,0,2,3,0],
+[0,0,0,0,0,0]
 ]
 
 # board[row][colom]
@@ -162,8 +160,8 @@ class Board(object):
 def simulation(speed, board, chupachup):
 	current_board = Board(chupachup, board.vertical, board.horizontal)
 	anim_speed = speed
-	path = board.pathWay
-	# path = [[13, 'W'], [8, 'S'], [8, 'S'], [10, 'E'], [5, 'S'], [4, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [13, 'W'], [5, 'S'], [5, 'S'], [10, 'W'], [8, 'N'], [8, 'N'], [6, 'W'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [13, 'E'], [5, 'S'], [12, 'S'], [1, 'E'], [1, 'E'], [1, 'E'], [7, 'S'], [3, 'W'], [8, 'N']]
+	# path = board.pathWay
+	path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [7, 'N'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S']]
 	counter = 1
 	anim = Listlist_Breadth_first_vizualize.RushHourVisualization(current_board, anim_speed)
 	for step in path:
@@ -203,6 +201,92 @@ def simulation(speed, board, chupachup):
 		anim.update(current_board)
 	anim.done()
 	### end
+def RandomStep():
+	orientation = check_cars(chupachup)
+	grid = Board(chupachup, orientation[0], orientation[1])
+	maximum = 0
+	for each in orientation[0]:
+		if each > maximum:
+			maximum = each
+	for each in orientation[1]:
+		if each > maximum:
+			maximum = each
+	print orientation
+	counter = 0
+	condition = True
+	while condition:
+		car = random.randint(1, maximum)
+		car = int(car)
+		direction = random.randint(1, 2)
+		if car in orientation[0]:
+			if direction == 1:
+				direction = "N"
+			else:
+				direction= "S"
+		elif car in orientation[1]:
+			if direction== 1:
+				direction= "E"
+			else:
+				direction= "W"
+		step = [int(car), direction]
+		if step[1] == "N":
+			for i in range(grid.height):
+				for j in range(grid.width):
+					if i -1 >= 0:
+						if grid.start[i][j] == step[0] and grid.start[i-1][j] == 0:
+							if step[1] != "N":
+								print step
+							grid = moveVert(grid, i, j, step[1])
+							break
+		elif step[1] == "S":
+			stop = 0
+			for i in range(grid.height):
+				for j in range(grid.width):
+					if i +1 < grid.height:
+						if grid.start[i][j] == step[0] and grid.start[i+1][j] == 0:
+							if step[1] != "S":
+								print step
+							grid = moveVert(grid, i, j, step[1])
+							stop = 1
+							break
+				if stop:
+					break
+		elif step[1] == "W":
+			for i in range(grid.height):
+				for j in range(grid.width):
+					if j -1 >= 0:
+						if grid.start[i][j] == step[0] and grid.start[i][j-1] == 0:
+							if step[1] != "W":
+								print step
+							grid = moveHor(grid, i, j, step[1])
+							break
+		elif step[1] == "E":
+			for i in range(grid.height):
+				for j in range(grid.width):
+					if j+1 < grid.width:
+						if grid.start[i][j] == step[0] and grid.start[i][j+1] == 0:
+							if step[1] != "E":
+								print step
+							grid = moveHor(grid, i, j, step[1])
+							break
+		else:
+			continue
+		for i in range(grid.height):
+			if 1 in grid.start[i]:
+				won = 0
+				for j in range(grid.width):
+					if grid.start[i][j] == 1:
+						won = 0
+					elif not grid.start[i][j] == 0:
+						won += 1
+				if won == 0:
+					print "won"
+					condition = False
+					return grid
+		counter += 1
+
+
+
 
 def bf():
 	###
@@ -258,11 +342,6 @@ def bf():
 								won = 0
 							# if the position contains something other than the red car
 							elif not each.start[i][j] == 0:
-								# set the win condition to 0
-								###
-								# using only this elif statement should be the first heuristic for a* as it counts the number of positions taken besides the ones taken by the red car
-								# if you only want to count the cars to the right of the red car take the if statement and the elif statement
-								###
 								won += 1
 				# if no cars are positioned to the right of the red car won == 0
 				if won == 0:
@@ -343,12 +422,16 @@ def df(depth):
 		# else:
 		# 	break
 
-	#end of while loop	
+	#end of while loop
 
-
-
-winning_board = bf()
-runtime = datetime.now() - tijd
-print runtime
+#check a pathway
+"""
+orientation = check_cars(chupachup)
+simulation(0.5, Board(chupachup, orientation[0], orientation[1]), chupachup)
+"""
+winning_board = RandomStep()
+print "done"
+#runtime = datetime.now() - tijd
+#print runtime
 koffie(winning_board)
-simulation(0.5, winning_board, chupachup)
+simulation(1, winning_board, chupachup)

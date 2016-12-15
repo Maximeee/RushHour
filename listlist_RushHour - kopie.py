@@ -9,15 +9,21 @@ print path1, "\n", path2, "\n", path3
 import Listlist_Breadth_first_vizualize
 import Queue
 import numpy
+from datetime import datetime
+
+tijd = datetime.now()
 
 # imput is in de vorm [[row1],[row1],[row3],[row4], etc]
 chupachup = [
-[ 0, 2, 2, 3, 3, 3],
-[ 0, 4, 4, 5, 6, 6],
-[ 1, 1, 7, 5, 0, 8],
-[ 9, 9, 7,10,10, 8],
-[11, 0,12, 0,13,13],
-[11, 0,12, 0, 0, 0]
+[ 2, 2, 3, 3, 4, 0, 0, 5, 0],
+[ 6, 7, 7, 7, 4, 8, 8, 5, 0],
+[ 6, 0, 9, 9,10,11, 0,12,12],
+[ 0, 0,13,14,10,11,15,15,15],
+[ 1, 1,13,14, 0, 0, 0, 0, 0],
+[ 0,16, 0,14,17,17,18,18,19],
+[20,16,21,21,22,23,23,23,19],
+[20, 0,24,24,22,25,25, 0,19],
+[20,26,26,26,22, 0, 0, 0 ,0]
 ]
 
 # board[row][colom]
@@ -170,12 +176,16 @@ def simulation(speed, board, chupachup):
 							current_board = moveVert(current_board, i, j, step[1])
 							break
 		elif step[1] == "S":
+			stop = 0
 			for i in range(current_board.height):
 				for j in range(current_board.width):
 					if i +1 < current_board.height:
 						if current_board.start[i][j] == step[0] and current_board.start[i+1][j] == 0:
 							current_board = moveVert(current_board, i, j, step[1])
+							stop = 1
 							break
+				if stop:
+					break
 		elif step[1] == "W":
 			for i in range(current_board.height):
 				for j in range(current_board.width):
@@ -308,7 +318,7 @@ def df(depth):
 		won = 0
 		for each in children:
 			if not str(each.start) in archive and len(each.pathWay) < depth:
-				archive[str(each.start)] = str(each.start)
+				archive[str(each.start)] = len(each.pathWay)
 				for i in range(parent.height):
 					if 1 in each.start[i]:
 						for j in range(parent.width):
@@ -322,6 +332,9 @@ def df(depth):
 				else:
 					stack.insert(0, each)
 					# print "queue", len(stack)
+			elif str(each.start) in archive and archive[str(each.start)] > len(each.pathWay):
+				archive[str(each.start)] = len(each.pathWay)
+				stack.insert(0,each)
 			counter += 1
 			if counter%10000 == 0:
 				print "counter", counter, "stack", len(stack), ", archive size:", len(archive)
@@ -335,5 +348,7 @@ def df(depth):
 
 
 winning_board = bf()
+runtime = datetime.now() - tijd
+print runtime
 koffie(winning_board)
 simulation(0.5, winning_board, chupachup)

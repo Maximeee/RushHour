@@ -28,10 +28,21 @@ games = [
 # game 6
 [[ 2, 2, 3, 3, 4, 0, 0, 5, 0],[ 6, 7, 7, 7, 4, 8, 8, 5, 0],[ 6, 0, 9, 9,10,11, 0,12,12],[ 0, 0,13,14,10,11,15,15,15],[ 1, 1,13,14, 0, 0, 0, 0, 0],[ 0,16, 0,14,17,17,18,18,19],[20,16,21,21,22,23,23,23,19],[20, 0,24,24,22,25,25, 0,19],[20,26,26,26,22, 0, 0, 0 ,0]],
 # game 7
-[[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],[13,14, 0, 0, 0,15,11,16,16,17,17, 0],[13,14,18,18,18,15,11,19,19,19, 0, 0],[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],[22,22,22,23,20,21,24,28, 0,24,25,25],[26,26,26,23,27,27,24,28, 0,24,29,29],[30,30,31,32,32,32,24,33,33,33, 0,34],[ 0, 0,31,35,35,35,36, 0,37,37,38,34],[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],[ 0,41,41,42,42,42,36,43,43,49,38,40]]
+[[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
+[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
+[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
+[13,14, 0, 0, 0,15,11,16,16,17,17, 0],
+[13,14,18,18,18,15,11,19,19,19, 0, 0],
+[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],
+[22,22,22,23,20,21,24,28, 0,50,25,25],
+[26,26,26,23,27,27,24,28, 0,50,29,29],
+[30,30,31,32,32,32,24,33,33,33, 0,34],
+[ 0, 0,31,35,35,35,36, 0,37,37,38,34],
+[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],
+[ 0,41,41,42,42,42,36,43,43,49,38,40]]
 ]
 #index of games is the board you want, index 0 is a board used for testing
-chupachup = games[0]
+chupachup = games[7]
 
 # board[row][colom]
 
@@ -78,7 +89,6 @@ def moveHor(board, i, j, ori):
 	temp.pathWay.append([board.start[i][j], ori])
 	return temp
 
-
 def check_cars(board):
 	vertical = dict()
 	horizontal = dict()
@@ -111,6 +121,22 @@ def check_cars(board):
 			elif board[i][j] in horizontal:
 				horizontal[board[i][j]] += 1
 	return vertical, horizontal
+
+# checks if following steps negate eachother
+def PathSweep(l):
+	print "SWEEP"
+	length = len(l) - 2
+	while True:
+		changed = 0
+		for i in range(length):
+			if length - i > 0 and length - i+1 < len(l):
+				if l[length-i][0] == l[length-i+1][0] and not l[length-i][1] == l[length-i+1][1]:
+					del l[length - i + 1]
+					del l[length - i]
+					changed = 1
+		if changed == 0:
+			return l
+			break
 
 
 class Board(object):
@@ -170,7 +196,7 @@ def simulation(speed, board, chupachup):
 	current_board = Board(chupachup, board.vertical, board.horizontal)
 	anim_speed = speed
 	path = board.pathWay
-	# path = [[3, 'S'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'S'], [3, 'S'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'S'], [4, 'S'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'S'], [3, 'S'], [1, 'E'], [7, 'S'], [2, 'W'], [7, 'S'], [7, 'S'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [7, 'S'], [6, 'W'], [3, 'S'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'S'], [3, 'S'], [7, 'N'], [3, 'S'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'S'], [6, 'W'], [3, 'S'], [8, 'W'], [8, 'W'], [5, 'S'], [8, 'W'], [3, 'S'], [9, 'W'], [4, 'S'], [9, 'W'], [9, 'W'], [5, 'S'], [9, 'W'], [3, 'S']]
+	# path = [[8,"S"],[8,"S"]]
 	counter = 1
 	anim = Listlist_Breadth_first_vizualize.RushHourVisualization(current_board, anim_speed)
 	for step in path:
@@ -210,6 +236,7 @@ def simulation(speed, board, chupachup):
 		anim.update(current_board)
 	anim.done()
 	### end
+
 def RandomStep():
 	orientation = check_cars(chupachup)
 	grid = Board(chupachup, orientation[0], orientation[1])
@@ -220,7 +247,6 @@ def RandomStep():
 	for each in orientation[1]:
 		if each > maximum:
 			maximum = each
-	print orientation
 	counter = 0
 	condition = True
 	while condition:
@@ -423,13 +449,20 @@ def df(depth):
 	#end of while loop
 
 #check a pathway
+
+
 """
 orientation = check_cars(chupachup)
-simulation(0.5, Board(chupachup, orientation[0], orientation[1]), chupachup)
+simulation(100, Board(chupachup, orientation[0], orientation[1]), chupachup)
 """
 winning_board = RandomStep()
 print "done"
-#runtime = datetime.now() - tijd
-#print runtime
+runtime = datetime.now() - tijd
+print runtime
+print len(winning_board.pathWay), winning_board.pathWay
+winning_board.pathWay = PathSweep(winning_board.pathWay)
 koffie(winning_board)
-simulation(0.01, winning_board, chupachup)
+
+sim_speed = 10000 / len(winning_board.pathWay)
+
+simulation(sim_speed, winning_board, chupachup)

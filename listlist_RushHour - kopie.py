@@ -42,9 +42,20 @@ games = [
 [ 0,41,41,42,42,42,36,43,43,49,38,40]]
 ]
 #index of games is the board you want, index 0 is a board used for testing
-chupachup = games[7]
+chupachup = games[3]
 
-# board[row][colom]
+# Functie om te checken of het spel gewonnen is
+# Hierbij worden alle plekken rechts van het rode auto'tje gecheckt of deze leeg zijn
+def cappuccino(parent, each):
+	won = 0
+	for i in range(parent.height):
+		if 1 in each.start[i]:
+			for j in range(parent.width):
+				if each.start[i][j] == 1:
+					won = 0
+				elif not each.start[i][j] == 0:
+					won += 1	
+	return won
 
 # accepteerd een grid en print het
 def koffie(z):
@@ -55,7 +66,7 @@ def koffie(z):
 		print z.start[i]
 	print "\n"
 
-
+#  Functie om een verticale stap te zetten, en vervolgens het diezelfde stap op te slaan in het tot nu toe gelopen pad.
 def moveVert(board, i, j, ori):
 	k = 0
 	if ori == "S":
@@ -73,6 +84,7 @@ def moveVert(board, i, j, ori):
 	temp.pathWay.append([board.start[i][j], ori])
 	return temp
 
+#  Functie om een horizontale stap te zetten, en vervolgens het diezelfde stap op te slaan in het tot nu toe gelopen pad.
 def moveHor(board, i, j, ori):
 	k = 0
 	if ori == "E":
@@ -89,6 +101,7 @@ def moveHor(board, i, j, ori):
 	temp.pathWay.append([board.start[i][j], ori])
 	return temp
 
+# 
 def check_cars(board):
 	vertical = dict()
 	horizontal = dict()
@@ -298,19 +311,15 @@ def RandomStep():
 							break
 		else:
 			continue
-		for i in range(grid.height):
-			if 1 in grid.start[i]:
-				won = 0
-				for j in range(grid.width):
-					if grid.start[i][j] == 1:
-						won = 0
-					elif not grid.start[i][j] == 0:
-						won += 1
-				if won == 0:
-					print "won"
-					condition = False
-					return grid
+		
+		won = cappuccino(grid, grid)
+		
+		if won == 0:
+			print "won"
+			condition = False
+			return grid
 		counter += 1
+		
 
 def bf():
 	###
@@ -347,7 +356,6 @@ def bf():
 		# create children
 		children = first.children()
 		winning_board = 0
-		won = 0
 		# check all the children for victors
 		for each in children:
 			# if the child is not yet in the archive
@@ -355,18 +363,7 @@ def bf():
 				# put the child in the archive
 				archive[str(each.start)] = str(each.start)
 				# loop through the rows in the child grid
-				for i in range(parent.height):
-					# if the red car is on the current row
-					if 1 in each.start[i]:
-						# loop over the positions in the row
-						for j in range(parent.width):
-							# if the position contains the red car
-							if each.start[i][j] == 1:
-								# set the win condition to 0
-								won = 0
-							# if the position contains something other than the red car
-							elif not each.start[i][j] == 0:
-								won += 1
+				won = cappuccino(parent, each)
 				# if no cars are positioned to the right of the red car won == 0
 				if won == 0:
 					# return the winning board object
@@ -418,17 +415,10 @@ def df(depth):
 		children = first.children()
 		# print children
 		winning_board = 0
-		won = 0
 		for each in children:
 			if not str(each.start) in archive and len(each.pathWay) < depth:
 				archive[str(each.start)] = len(each.pathWay)
-				for i in range(parent.height):
-					if 1 in each.start[i]:
-						for j in range(parent.width):
-							if each.start[i][j] == 1:
-								won = 0
-							elif not each.start[i][j] == 0:
-								won += 1
+				won = cappuccino(parent, each)
 				if won == 0:
 					print "\nwon 1"
 					return each
@@ -459,10 +449,10 @@ winning_board = RandomStep()
 print "done"
 runtime = datetime.now() - tijd
 print runtime
-print len(winning_board.pathWay), winning_board.pathWay
+# print len(winning_board.pathWay), winning_board.pathWay
 winning_board.pathWay = PathSweep(winning_board.pathWay)
 koffie(winning_board)
 
-sim_speed = 10000 / len(winning_board.pathWay)
+# sim_speed = 10000 / len(winning_board.pathWay)
 
-simulation(sim_speed, winning_board, chupachup)
+# simulation(sim_speed, winning_board, chupachup)

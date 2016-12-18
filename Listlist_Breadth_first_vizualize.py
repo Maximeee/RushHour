@@ -1,6 +1,5 @@
 import math
 import time
-import numpy
 
 from Tkinter import *
 

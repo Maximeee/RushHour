@@ -42,7 +42,7 @@ games = [
 [ 0,41,41,42,42,42,36,43,43,49,38,40]]
 ]
 #index of games is the board you want, index 0 is a board used for testing
-chupachup = games[1]
+chupachup = games[6]
 
 # board[row][colom]
 
@@ -394,17 +394,73 @@ def astar():
 
     def heuristics(board):
         cost = 0
+        temp = []
         for i in range(board.height):
-            if 1 in board.start[i]:
-                for j in range(len(board.start[i]),board.width):
-                	print j
-                	if board.start[i][j] != 0 and board.start[i][j] != 1:
-                		cost += 5
-                    	for k in range(board.height):
-                    		if board.start[k][j] != 0:
-                    			cost += 10
+        	if 1 in board.start[i]:
+        		# reverses list
+        		for j, item in enumerate(reversed(board.start[i])):
+        			if item == 1:
+        				break
+        			elif item is not 1 and item is not 0:
+        				temp.insert(0, item)
+
+        		for element in temp:
+        			cost += 25
+
+       	for row in range(board.height):
+       		if 1 in board.start[row]:
+       			for column in range(board.width):
+       				if column == 1 and column + 1 != 1:
+       					for x in range(board.height):
+       						if board.start[x][column] is not 1 and board.start[x][column] is not 0:
+       							if board.start[x][column] % 2 == 0:
+       								cost +=  10
+
+       	for path in board.pathWay:
+       		cost += 2.5
+       						
+       	return cost
+       				
+       					
+
+
+
+
+       			
+
+       
+
+      					
+
+      					
+
+
+
+      		
+      				
+      				
+      		
+
 
         return cost
+        			
+        		
+        			
+
+        			
+        				
+
+        			
+        
+        			
+     
+        
+
+        
+
+        		
+ 
+      
 
 
     def newheuristics(board):
@@ -415,15 +471,16 @@ def astar():
     		if 1 in board.start[i]:
     			# loop over width to find coordinates of red car
     			for element in board.start[i]:
+    				print element
     				if board.start[i][element] == 1 and board.start[i][element + 1] != 1:
-    					for x in board.start[i][element:]:
+    					for x in range(board.start[i][element + 1], board.width -1):
     						if x is not 0 and x is not 1:
-    							cost += 10
-    							
-
-    
-    				
+    							cost += 25
+    	print cost
     	return cost
+
+
+
 
 
     			
@@ -478,6 +535,7 @@ def astar():
     won = 0
     childcost= 0
     winning_board = 0
+    archive_astar[str(boarding.start)] = (boarding.start)
     # until there are no more positions and more nodes to traverse
     while not priority.empty():
         
@@ -492,7 +550,7 @@ def astar():
 
         	if not str(child.start) in archive_astar:
         		cost_so_far[child] = childCost
-        		total = cost_so_far[child] + newheuristics(child)
+        		total = cost_so_far[child] + heuristics(child)
         		priority.put( (total, child))
         		came_from[child] = boarding
 
@@ -511,8 +569,7 @@ def astar():
         			archive_astar[str(child.start)] = (child.start)
         			if counter % 1000 == 0:
         				print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
-	  
-            
+	          
     return came_from, cost_so_far
 
 winning = astar()

@@ -21,6 +21,7 @@ import re
 
 
 board =[
+<<<<<<< HEAD
 [0,0,3,2,2,4],
 [0,0,3,0,0,4],
 [0,0,3,1,1,4],
@@ -31,6 +32,23 @@ board =[
 # board[row][colom][ 2, 2, 2, 3, 0, 4, 5, 0, 0],
 
 
+=======
+[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
+[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
+[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
+[13,14, 0, 0, 0,15,11,16,16,17,17, 0],
+[13,14,18,18,18,15,11,19,19,19, 0, 0],
+[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],
+[22,22,22,23,20,21,24,28, 0,24,25,25],
+[26,26,26,23,27,27,24,28, 0,24,29,29],
+[30,30,31,32,32,32,24,33,33,33, 0,34],
+[ 0, 0,31,35,35,35,36, 0,37,37,38,34],
+[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],
+[ 0,41,41,42,42,42,36,43,43,49,38,40]
+]
+
+# board[row][colom]
+>>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
 def koffie(z):
 	print "steps:", len(z.pathWay), ", path:", z.pathWay
 	for i in range(len(z.start)):
@@ -178,18 +196,35 @@ def astar():
 
     def heuristics(board):
         cost = 0
-        for i in range(0, board.height):
+        for i in range(board.height):
             if 1 in board.start[i]:
-                for j in range(0, board.width):
-                    if board.start[i][j] != 0 and board.start[i][j] != 1:
-                        cost += 10
-                    	for k in range(0, board.height):
+                for j in range(board.width):
+                	if board.start[i][j] != 0 and board.start[i][j] != 1:
+                		cost += 5
+                    	for k in range(board.height):
                     		if board.start[k][j] != 0:
-                    			cost += 5
+                    			cost += 10
 
-                          
         return cost
-                    
+
+
+    def newheuristics(board):
+    	cost = 0
+    	# loops over height
+    	for i in range(board.height):
+    		# found row of red car
+    		if 1 in board.start[i]:
+    			# loop over width to find coordinates of red car
+    			for j in range(board.width):
+    				if board.start[i][j] == 1 and board.start[i][j + 1] != 1:
+    					for k in range(board.start[i][j], board.width):
+    						if board.start[i][k] != 0:
+    							cost += 10
+    					for n in range(board.start[i][j], board.height):
+    						if board.start[j][n] != 0:
+    							cost += 10
+    	return cost
+
     # initialize the starting board
     boarding = Board(board)
     # create archive/ closed list
@@ -225,7 +260,7 @@ def astar():
 
         	if not str(child.start) in archive_astar:
         		cost_so_far[child] = childCost
-        		total = cost_so_far[child] + heuristics(child)
+        		total = cost_so_far[child] + newheuristics(child)
         		priority.put( (total, child))
         		came_from[child] = boarding
 
@@ -248,11 +283,18 @@ def astar():
             
     return came_from, cost_so_far
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
 winning = astar()
-print dir(winning)
 koffie(winning)
 
+<<<<<<< HEAD
+=======
+# winning = astar()
+# print winning
+>>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
 
 
 #.pathWay, len(winning.pathWay)
@@ -312,6 +354,12 @@ def df(depth):
 
 	#end of while loop	
 
+<<<<<<< HEAD
+=======
+
+
+winning = astar()
+>>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
 # cProfile.run('re.compile(df(150))')
 # print winning
 # print winning.pathWay, len(winning.pathWay)

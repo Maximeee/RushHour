@@ -42,7 +42,13 @@ games = [
 [ 0,41,41,42,42,42,36,43,43,49,38,40]]
 ]
 #index of games is the board you want, index 0 is a board used for testing
-chupachup = games[7]
+chupachup = games[1]
+
+exit = 0
+for i in range(len(chupachup)):
+	if 1 in chupachup[i]:
+		exit = i
+		break
 
 # board[row][colom]
 
@@ -55,6 +61,17 @@ def koffie(z):
 		print z.start[i]
 	print "\n"
 
+def Won(board):
+	condition = 0
+	for i in range(board.width):
+		if board.start[exit][i] != 0:
+			condition = 0
+		if board.start[exit][i] == 1:
+			condition = 1
+	if condition == 1:
+		return True
+	elif condition == 0:
+		return False
 
 def moveVert(board, i, j, ori):
 	k = 0
@@ -298,18 +315,10 @@ def RandomStep():
 							break
 		else:
 			continue
-		for i in range(grid.height):
-			if 1 in grid.start[i]:
-				won = 0
-				for j in range(grid.width):
-					if grid.start[i][j] == 1:
-						won = 0
-					elif not grid.start[i][j] == 0:
-						won += 1
-				if won == 0:
-					print "won"
-					condition = False
-					return grid
+		if Won(grid):
+			print "won"
+			condition = False
+			return grid
 		counter += 1
 
 def bf():
@@ -354,29 +363,14 @@ def bf():
 			if not str(each.start) in archive:
 				# put the child in the archive
 				archive[str(each.start)] = str(each.start)
-				# loop through the rows in the child grid
-				for i in range(parent.height):
-					# if the red car is on the current row
-					if 1 in each.start[i]:
-						# loop over the positions in the row
-						for j in range(parent.width):
-							# if the position contains the red car
-							if each.start[i][j] == 1:
-								# set the win condition to 0
-								won = 0
-							# if the position contains something other than the red car
-							elif not each.start[i][j] == 0:
-								won += 1
 				# if no cars are positioned to the right of the red car won == 0
-				if won == 0:
+				if Won(each):
 					# return the winning board object
 					print "\nwon"
 					return each
 					break
 				# if the red cars path is still blocked
 				else:
-					if counter % 50000 == 0:
-						koffie(each)
 					# put the board in the queue
 					queue.put(each)
 			counter += 1
@@ -389,7 +383,8 @@ def bf():
 	#end of while loop & bf algoritme
 
 
-def df(depth):
+def df(depth = 100):
+	print depth
 	###
 	# determine the cars and their orientation on the grid
 	# the dicts for vertical and horizontal cars are necessary to build the board object
@@ -422,15 +417,8 @@ def df(depth):
 		for each in children:
 			if not str(each.start) in archive and len(each.pathWay) < depth:
 				archive[str(each.start)] = len(each.pathWay)
-				for i in range(parent.height):
-					if 1 in each.start[i]:
-						for j in range(parent.width):
-							if each.start[i][j] == 1:
-								won = 0
-							elif not each.start[i][j] == 0:
-								won += 1
-				if won == 0:
-					print "\nwon 1"
+				if Won(each):
+					print "\nwon"
 					return each
 				else:
 					stack.insert(0, each)
@@ -456,8 +444,6 @@ orientation = check_cars(chupachup)
 simulation(100, Board(chupachup, orientation[0], orientation[1]), chupachup)
 """
 def astar():
-
-
     def heuristics(board):
         cost = 0
         for i in range(board.height):
@@ -468,10 +454,7 @@ def astar():
                     	for k in range(board.height):
                     		if board.start[k][j] != 0:
                     			cost += 10
-
-
         return cost
-
 
     def newheuristics(board):
     	cost = 0
@@ -491,8 +474,6 @@ def astar():
     					for path in board.pathWay:
     						cost +=2.5
     	return cost
-    
-
 
     orientation = check_cars(chupachup)
     # initialize the starting board
@@ -500,7 +481,7 @@ def astar():
     # create archive/ closed list
     archive_astar = dict()
     archive_astar[str(boarding.start)] = len(boarding.pathWay)
-    # create open list 
+    # create open list
     priority = Queue.PriorityQueue()
     # put starting board in queue
     priority.put((0, boarding))
@@ -518,7 +499,6 @@ def astar():
     winning_board = 0
     # until there are no more positions and more nodes to traverse
     while not priority.empty():
-        
         # get first board
         score, boarding = priority.get()
         # make children of that board
@@ -535,26 +515,14 @@ def astar():
         		came_from[child] = boarding
 
         		archive_astar[str(child.start)] = (child.start)
-        		for i in range(boarding.height):
-        			if 1 in child.start[i]:
-        				for j in range(boarding.width):
-        					if child.start[i][j] == 1:
-        						won = 0
-        					elif not child.start[i][j] == 0:
-        						won += 1
-        		if won == 0:
-        			print "won 1\n"
+        		if Won(child):
+        			print "won \n"
         			return child
         		else:
         			archive_astar[str(child.start)] = (child.start)
         			if counter % 1000 == 0:
         				print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
-	  
-            
-    return came_from, cost_so_far
-
-
-
+####################################
 winning_board = astar()
 print "done"
 runtime = datetime.now() - tijd
@@ -562,7 +530,5 @@ print runtime
 print len(winning_board.pathWay), winning_board.pathWay
 winning_board.pathWay = PathSweep(winning_board.pathWay)
 koffie(winning_board)
-
-sim_speed = 10000 / len(winning_board.pathWay)
 
 simulation(0.3, winning_board, chupachup)

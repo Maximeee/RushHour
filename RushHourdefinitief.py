@@ -42,7 +42,7 @@ games = [
 [ 0,41,41,42,42,42,36,43,43,49,38,40]]
 ]
 #index of games is the board you want, index 0 is a board used for testing
-chupachup = games[2]
+chupachup = games[5]
 
 # board[row][colom]
 
@@ -476,9 +476,9 @@ def astar():
 
 
 	def heuristic1988(board):
-		pathlength = 0.5
-		carcostX = 10
-		carcostY = 7.5
+		pathlength = 20
+		carcostX = 18
+		carcostY = 48
 		cost = 0
 		# loops over height
 		for i in range(board.height):

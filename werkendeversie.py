@@ -21,18 +21,20 @@ import re
 
 
 board =[
-<<<<<<< HEAD
-[0,0,3,2,2,4],
-[0,0,3,0,0,4],
-[0,0,3,1,1,4],
-[0,0,0,5,6,6],
-[7,8,8,5,0,0],
-[7,0,0,5,9,9]
+[ 2, 2, 2, 3, 0, 4, 5, 0, 0],
+[ 0, 0, 0, 3, 0, 4, 5, 6, 6],
+[ 0, 0, 0, 3, 7, 7, 8, 0, 0],
+[ 0, 0, 0, 0, 9, 9, 8,10,10],
+[ 0, 0,11,11,11,12, 1, 1,13],
+[14, 0,15, 0, 0,12, 0, 0,13],
+[14, 0,15,16,16,12,17,17,13],
+[18,19,20,20,21,22,22,22,23],
+[18,19,24,24,21, 0, 0, 0,23]
 ]
+
 # board[row][colom][ 2, 2, 2, 3, 0, 4, 5, 0, 0],
 
 
-=======
 [ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
 [ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
 [ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
@@ -45,10 +47,10 @@ board =[
 [ 0, 0,31,35,35,35,36, 0,37,37,38,34],
 [ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],
 [ 0,41,41,42,42,42,36,43,43,49,38,40]
-]
+
 
 # board[row][colom]
->>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
+
 def koffie(z):
 	print "steps:", len(z.pathWay), ", path:", z.pathWay
 	for i in range(len(z.start)):
@@ -204,6 +206,8 @@ def astar():
                     	for k in range(board.height):
                     		if board.start[k][j] != 0:
                     			cost += 10
+        for path in board.pathWay:
+        	cost += 5
 
         return cost
 
@@ -260,7 +264,7 @@ def astar():
 
         	if not str(child.start) in archive_astar:
         		cost_so_far[child] = childCost
-        		total = cost_so_far[child] + newheuristics(child)
+        		total = cost_so_far[child] + heuristics(child)
         		priority.put( (total, child))
         		came_from[child] = boarding
 
@@ -283,18 +287,12 @@ def astar():
             
     return came_from, cost_so_far
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
 winning = astar()
 koffie(winning)
 
-<<<<<<< HEAD
-=======
 # winning = astar()
 # print winning
->>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
 
 
 #.pathWay, len(winning.pathWay)
@@ -354,12 +352,8 @@ def df(depth):
 
 	#end of while loop	
 
-<<<<<<< HEAD
-=======
 
 
-winning = astar()
->>>>>>> 5aa0230bfcaea0244e833b06ed86873f5df6d05f
 # cProfile.run('re.compile(df(150))')
 # print winning
 # print winning.pathWay, len(winning.pathWay)

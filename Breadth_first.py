@@ -47,7 +47,8 @@ chupachups =[
 [26,[2,9],2,3]
 ]
 
-board_size = [12, 12]
+
+board_size = [9, 9]
 
 vizualization = True
 run = True
@@ -320,22 +321,6 @@ def astar():
                         cost += 10
         return cost
 
-    #def gCost():
-     #   # initialize start board and cost 
-     #   board = Board(cars,board_size[0], board_size[1])
-     #   gcost = 0
-     #   # set starting cost to zero
-      #  board.cost = gcost
-      #  # returns minimum steps to complete game
-      #  endpoint = board.width
-      #  # make children until heuristics point
-      #  for i in range(endpoint):
-        #    new_node = board.children()
-       #     for j in new_node:
-                # for every child
-         #       gcost = i
-       # return gcost
-
 
     
     # initialize the starting board
@@ -387,7 +372,7 @@ def astar():
                 came_from[child] = boarding
                 # archive child
                 archive_astar[child] = child
-    
+    print childrens[1].pathWay
     return came_from, cost_so_far
     
                     
@@ -410,6 +395,6 @@ def astar():
 
 
 
-astar()
 #cProfile.run('astar()')
 #print test[0,5]
+astar()

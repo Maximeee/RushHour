@@ -16,7 +16,13 @@ games = [
 [0,0,0,2,3,0],
 [0,0,0,0,0,0]],
 # game 1
-[[0,0,3,2,2,4],[0,0,3,0,0,4],[0,0,3,1,1,4],[0,0,0,5,6,6],[7,8,8,5,0,0],[7,0,0,5,9,9]],
+[
+[0,0,3,2,2,4],
+[0,0,3,0,0,4],
+[0,0,3,1,1,4],
+[0,0,0,5,6,6],
+[7,8,8,5,0,0],
+[7,0,0,5,9,9]],
 # game 2
 [[0,0, 2, 2, 3, 3],[ 0, 4, 4, 5, 5, 6],[ 0, 0, 1, 1, 7, 6],[ 8, 8, 9, 9, 7, 6],[10, 0, 0,11,12,12],[10, 0, 0,11,13,13]],
 # game 3
@@ -28,7 +34,8 @@ games = [
 # game 6
 [[ 2, 2, 3, 3, 4, 0, 0, 5, 0],[ 6, 7, 7, 7, 4, 8, 8, 5, 0],[ 6, 0, 9, 9,10,11, 0,12,12],[ 0, 0,13,14,10,11,15,15,15],[ 1, 1,13,14, 0, 0, 0, 0, 0],[ 0,16, 0,14,17,17,18,18,19],[20,16,21,21,22,23,23,23,19],[20, 0,24,24,22,25,25, 0,19],[20,26,26,26,22, 0, 0, 0 ,0]],
 # game 7
-[[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
+[
+[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
 [ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
 [ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
 [13,14, 0, 0, 0,15,11,16,16,17,17, 0],
@@ -444,36 +451,50 @@ orientation = check_cars(chupachup)
 simulation(100, Board(chupachup, orientation[0], orientation[1]), chupachup)
 """
 def astar():
-    def heuristics(board):
-        cost = 0
-        for i in range(board.height):
-            if 1 in board.start[i]:
-                for j in range(board.width):
-                	if board.start[i][j] != 0 and board.start[i][j] != 1:
-                		cost += 5
-                    	for k in range(board.height):
-                    		if board.start[k][j] != 0:
-                    			cost += 10
-        return cost
+	def heuristic1988(board):
+		pathlength = 0.5
+		carcostX = 10
+		carcostY = 7.5
+		cost = 0
+		# loop over width to find coordinates of red car
+		for j in range(board.width):
+			if board.start[exit][j] == 1:
+				cost = 0
+			if board.start[exit][j] != 0:
+				cost += carcostX
+				for n in range(exit, board.height):
+					if board.start[n][j] != 0 and board.start[exit][j] != board.start[n][j]:
+						cost += carcostY
+						break
+					elif board.start[n][j] == 0:
+						break
+				for n in range(0, board.height-exit):
+					if board.start[exit-n][j] != 0 and board.start[exit][j] != board.start[exit-n][j]:
+						cost += carcostY
+						break
+					elif board.start[exit-n][j] == 0:
+						break
+				for path in board.pathWay:
+					cost += pathlength
+		return cost
 
-    def newheuristics(board):
-    	cost = 0
-    	# loops over height
-    	for i in range(board.height):
-    		# found row of red car
-    		if 1 in board.start[i]:
-    			# loop over width to find coordinates of red car
-    			for j in range(board.width):
-    				if board.start[i][j] == 1 and board.start[i][j + 1] != 1:
-    					for k in range(board.start[i][j], board.width):
-    						if board.start[i][k] != 0:
-    							cost += 10
-    					for n in range(board.start[i][j], board.height):
-    						if board.start[j][n] != 0:
-    							cost += 10
-    					for path in board.pathWay:
-    						cost +=2.5
-    	return cost
+	def heuristics(board):
+		cost = 0
+		pathlength = 0.5
+		carcostX = 10
+		carcostY = 6
+		# loop over width to find coordinates of red car
+		for j in range(board.width):
+			if board.start[exit][j] == 1 and board.start[exit][j + 1] != 1:
+				for k in range(board.start[exit][j], board.width):
+					if board.start[exit][k] != 0:
+						cost += carcostX
+				for n in range(board.start[exit][j], board.height):
+					if board.start[j][n] != 0:
+						cost += carcostY
+				for path in board.pathWay:
+					cost += pathlength
+		return cost
 
     orientation = check_cars(chupachup)
     # initialize the starting board
@@ -507,13 +528,11 @@ def astar():
         for child in childrens:
         	counter += 1
         	childCost = cost_so_far[boarding] + 1
-
         	if not str(child.start) in archive_astar:
         		cost_so_far[child] = childCost
         		total = cost_so_far[child] + newheuristics(child)
         		priority.put( (total, child))
         		came_from[child] = boarding
-
         		archive_astar[str(child.start)] = (child.start)
         		if Won(child):
         			print "won \n"
@@ -522,7 +541,6 @@ def astar():
         			archive_astar[str(child.start)] = (child.start)
         			if counter % 1000 == 0:
         				print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
-####################################
 winning_board = astar()
 print "done"
 runtime = datetime.now() - tijd

@@ -4,11 +4,8 @@ import Listlist_Breadth_first_vizualize
 import Queue
 import random
 from datetime import datetime
-<<<<<<< HEAD
 import sys
-tijd = datetime.now()
-=======
->>>>>>> 4bc87156c8f846dbd90de3610a1bda9c06d8c14d
+
 
 # imput is in de vorm [[row1],[row1],[row3],[row4], etc]
 games = [
@@ -21,13 +18,7 @@ games = [
 [0,0,0,2,3,0],
 [0,0,0,0,0,0]],
 # game 1
-[
-[0,0,3,2,2,4],
-[0,0,3,0,0,4],
-[0,0,3,1,1,4],
-[0,0,0,5,6,6],
-[7,8,8,5,0,0],
-[7,0,0,5,9,9]],
+[[0,0,3,2,2,4],[0,0,3,0,0,4],[0,0,3,1,1,4],[0,0,0,5,6,6],[7,8,8,5,0,0],[7,0,0,5,9,9]],
 # game 2
 [[0,0, 2, 2, 3, 3],[ 0, 4, 4, 5, 5, 6],[ 0, 0, 1, 1, 7, 6],[ 8, 8, 9, 9, 7, 6],[10, 0, 0,11,12,12],[10, 0, 0,11,13,13]],
 # game 3
@@ -40,44 +31,26 @@ games = [
 [[ 2, 2, 3, 3, 4, 0, 0, 5, 0],[ 6, 7, 7, 7, 4, 8, 8, 5, 0],[ 6, 0, 9, 9,10,11, 0,12,12],[ 0, 0,13,14,10,11,15,15,15],[ 1, 1,13,14, 0, 0, 0, 0, 0],[ 0,16, 0,14,17,17,18,18,19],[20,16,21,21,22,23,23,23,19],[20, 0,24,24,22,25,25, 0,19],[20,26,26,26,22, 0, 0, 0 ,0]],
 # game 7
 [
-[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],
-[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],
-[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],
-[13,14, 0, 0, 0,15,11,16,16,17,17, 0],
-[13,14,18,18,18,15,11,19,19,19, 0, 0],
-[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],
-[22,22,22,23,20,21,24,28, 0,50,25,25],
-[26,26,26,23,27,27,24,28, 0,50,29,29],
-[30,30,31,32,32,32,24,33,33,33, 0,34],
-[ 0, 0,31,35,35,35,36, 0,37,37,38,34],
-[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],
-[ 0,41,41,42,42,42,36,43,43,49,38,40]]
+[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],[13,14, 0, 0, 0,15,11,16,16,17,17, 0],[13,14,18,18,18,15,11,19,19,19, 0, 0],[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],[22,22,22,23,20,21,24,28, 0,50,25,25],[26,26,26,23,27,27,24,28, 0,50,29,29],[30,30,31,32,32,32,24,33,33,33, 0,34],[ 0, 0,31,35,35,35,36, 0,37,37,38,34],[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],[ 0,41,41,42,42,42,36,43,43,49,38,40]]
 ]
 #index of games is the board you want, index 0 is a board used for testing
-<<<<<<< HEAD
-chupachup = games[5]
-=======
-chupachup = games[7]
->>>>>>> 4bc87156c8f846dbd90de3610a1bda9c06d8c14d
+game = games[6]
 
+# defines row of red car
 exit = 0
-for i in range(len(chupachup)):
-	if 1 in chupachup[i]:
+for i in range(len(game)):
+	if 1 in game[i]:
 		exit = i
 		break
-
-
-# board[row][colom]
-
-# accepteerd een grid en print het
-def koffie(z):
+# shows info of object
+def info(z):
 	print "steps:", len(z.pathWay), ", path:", z.pathWay
 	for i in range(len(z.start)):
 		row = str(z.start[i])
 		row.replace(" ", "")
 		print z.start[i]
 	print "\n"
-
+# returns winning board
 def Won(board):
 	condition = 0
 	for i in range(board.width):
@@ -89,7 +62,7 @@ def Won(board):
 		return True
 	elif condition == 0:
 		return False
-
+# returns a vertical move for all cars
 def moveVert(board, i, j, ori):
 	k = 0
 	if ori == "S":
@@ -106,7 +79,7 @@ def moveVert(board, i, j, ori):
 	temp.pathWay = board.pathWay[:]
 	temp.pathWay.append([board.start[i][j], ori])
 	return temp
-
+# moves cars horizontally
 def moveHor(board, i, j, ori):
 	k = 0
 	if ori == "E":
@@ -122,26 +95,19 @@ def moveHor(board, i, j, ori):
 	temp.pathWay = board.pathWay[:]
 	temp.pathWay.append([board.start[i][j], ori])
 	return temp
-
+# checks orientation cars where 
+#key is the car id and the length is the value
 def check_cars(board):
 	vertical = dict()
 	horizontal = dict()
-	# loop over the board to determine which cars are horizontal or vertical
-	# i loops through the rows
-	# j loops through the coloms in that row
 	for i in range(0, len(board)):
 		for j in range(0, len(board[0])):
-			# if there is a car on the current position
 			if board[i][j] != 0:
-				# if there is another row below that position
 				if i+1 < len(board):
-					# if the position underneat is has the same car on it
 					if board[i+1][j] == board[i][j]:
-						# if the car is not yet in the vertical dictionary
 						if not board[i][j] in vertical:
 							# add the id to the dictionary as key, value is the length (is updated later)
 							vertical[board[i][j]] = 0
-				# if there is another colom to the right of that position
 				if j+1 < len(board[0]):
 					# if the space to the right of the car is the same car
 					if board[i][j+1] == board[i][j]:
@@ -184,52 +150,39 @@ class Board(object):
 		self.horizontal = horizontal
 		# the pathWay to get to this board
 		self.pathWay = []
-	#### end __init__ function ####
 
 	def children(self):
 		# create an array to store the children
 		new_boards = []
-		# loop over the grid
 		for i in range(self.height):
 			for j in range(self.width):
-				# check orientation of car
+				# if car is vertical
 				if self.start[i][j] in self.vertical:
-					# see how far the other end of the car is so that position can be set to 0
-					# if the move is valid/ new position is still on the board
-					# -1 as it is 0 indexed
 					if i < self.height - 1:
-						# DOWN
 						# move the car down if possible
 						if self.start[i+1][j] == 0:
 							new_boards.append(moveVert(self, i, j, "S"))
 					if i > 0:
-						# UP
 						# Works the same as the move down
 						if self.start[i-1][j] == 0:
 							new_boards.append(moveVert(self, i, j, "N"))
 				# if the car found is orientated horizontally
 				if self.start[i][j] in self.horizontal:
 					# check the length of the car
-					# and thus which position to clear
-					# if a step right still is within the grid
 					if j + 1 < self.width:
-						# RIGHT
 						# if the position to the right is empty
 						if self.start[i][j+1] == 0:
 							new_boards.append(moveHor(self, i, j, "E"))
 					if j > 0:
-						# LEFT
 						# works the same as the move right
 						if self.start[i][j-1] == 0:
 							new_boards.append(moveHor(self, i, j, "W"))
 		return new_boards
 
-# Work in progress
-def simulation(speed, board, chupachup):
-	current_board = Board(chupachup, board.vertical, board.horizontal)
+def simulation(speed, board, game):
+	current_board = Board(game, board.vertical, board.horizontal)
 	anim_speed = speed
 	path = board.pathWay
-	# path = [[8,"S"],[8,"S"]]
 	counter = 1
 	anim = Listlist_Breadth_first_vizualize.RushHourVisualization(current_board, anim_speed)
 	for step in path:
@@ -266,17 +219,17 @@ def simulation(speed, board, chupachup):
 						if current_board.start[i][j] == step[0] and current_board.start[i][j+1] == 0:
 							current_board = moveHor(current_board, i, j, step[1])
 							break
+		# update current board
 		anim.update(current_board)
 	anim.done()
 	### end
 
-<<<<<<< HEAD
-def RandomStep(roof = 100000):
-=======
-def rs(roof = 10000):
->>>>>>> 4bc87156c8f846dbd90de3610a1bda9c06d8c14d
-	orientation = check_cars(chupachup)
-	grid = Board(chupachup, orientation[0], orientation[1])
+# random search algorithm
+def rs(roof = 100000):
+	# checks orientation of cars
+	orientation = check_cars(game)
+	# starting grid
+	grid = Board(game, orientation[0], orientation[1])
 	maximum = 0
 	for each in orientation[0]:
 		if each > maximum:
@@ -287,10 +240,13 @@ def rs(roof = 10000):
 	counter = 0
 	condition = True
 	while condition:
+		# stops if pathway exceeds roof
 		if len(grid.pathWay) > roof:
 			break
+		# picks random car
 		car = random.randint(1, maximum)
 		car = int(car)
+		# picks direction random
 		direction = random.randint(1, 2)
 		if car in orientation[0]:
 			if direction == 1:
@@ -304,6 +260,7 @@ def rs(roof = 10000):
 				direction= "W"
 		step = [int(car), direction]
 		if step[1] == "N":
+			
 			for i in range(grid.height):
 				for j in range(grid.width):
 					if i -1 >= 0:
@@ -337,54 +294,38 @@ def rs(roof = 10000):
 							break
 		else:
 			continue
+		# return grid when won
 		if Won(grid):
 			condition = False
 			return grid
 		counter += 1
 
 def bf():
-	###
-	# paths found:
-	#   board 1:
-	#       [[3, 'N'], [2, 'W'], [2, 'W'], [7, 'N'], [7, 'N'], [7, 'N'], [7, 'N'], [8, 'W'], [3, 'N'], [3, 'N'], [1, 'W'], [1, 'W'], [1, 'W'], [3, 'N'], [3, 'N'], [5, 'N'], [5, 'N'], [5, 'N'], [6, 'W'], [4, 'N'], [4, 'N'], [8, 'E'], [8, 'E'], [8, 'E'], [3, 'N'], [3, 'N'], [1, 'E'], [7, 'N'], [2, 'W'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'N'], [7, 'N'], [6, 'W'], [3, 'N'], [2, 'E'], [2, 'E'], [2, 'E'], [2, 'E'], [3, 'N'], [5, 'N'], [6, 'E'], [6, 'E'], [6, 'E'], [3, 'N'], [3, 'N'], [7, 'N'], [3, 'N'], [1, 'E'], [7, 'N'], [7, 'N'], [7, 'N'], [1, 'W'], [3, 'N'], [3, 'N'], [3, 'N'], [6, 'W'], [6, 'W'], [5, 'N'], [6, 'W'], [3, 'N'], [8, 'W'], [8, 'W'], [5, 'N'], [8, 'W'], [3, 'N'], [9, 'W'], [4, 'N'], [9, 'W'], [9, 'W'], [5, 'N'], [9, 'W'], [3, 'N']]
-	#   board2: time 3.302s
-	#       26 steps => [[2, 'W'], [2, 'W'], [3, 'W'], [3, 'W'], [4, 'W'], [5, 'W'], [6, 'N'], [1, 'W'], [7, 'N'], [7, 'N'], [9, 'E'], [9, 'E'], [11, 'N'], [11, 'N'], [12, 'W'], [12, 'W'], [12, 'W'], [11, 'N'], [13, 'W'], [13, 'W'], [13, 'W'], [11, 'N'], [9, 'W'], [6, 'N'], [6, 'N'], [6, 'N']]
-	#   board 3: time 2.42s(with prints)
-	#       34 steps => [[2, 'W'], [4, 'W'], [7, 'N'], [7, 'N'], [12, 'N'], [12, 'N'], [13, 'W'], [8, 'N'], [13, 'W'], [13, 'W'], [8, 'N'], [10, 'E'], [5, 'N'], [6, 'W'], [5, 'N'], [5, 'N'], [10, 'W'], [8, 'N'], [8, 'N'], [8, 'N'], [10, 'E'], [5, 'N'], [5, 'N'], [13, 'E'], [13, 'E'], [12, 'N'], [1, 'E'], [13, 'E'], [5, 'N'], [1, 'E'], [1, 'E'], [7, 'N'], [3, 'W'], [8, 'N']]
-	#   board 4: time 161.697s(with prints)
-	#       44 steps => [[2, 'N'], [3, 'W'], [5, 'N'], [9, 'W'], [9, 'W'], [9, 'W'], [4, 'N'], [4, 'N'], [6, 'W'], [7, 'N'], [7, 'N'], [17, 'E'], [17, 'E'], [19, 'N'], [21, 'W'], [22, 'W'], [14, 'N'], [13, 'E'], [4, 'N'], [4, 'N'], [9, 'E'], [8, 'E'], [9, 'E'], [8, 'E'], [9, 'E'], [8, 'E'], [9, 'E'], [8, 'E'], [5, 'N'], [3, 'E'], [2, 'N'], [10, 'N'], [10, 'N'], [1, 'W'], [12, 'N'], [12, 'N'], [12, 'N'], [12, 'N'], [15, 'E'], [4, 'N'], [18, 'N'], [20, 'W'], [16, 'N'], [11, 'N']]
-	#   board 5: time ?
-	#       ? steps => ?
-	#   board 6: time
-	#
-	###
-	# determine the cars and their orientation on the grid
-	# the dicts for vertical and horizontal cars are necessary to build the board object
-	# ones a board is made these dicts are inherited when children are made (self.vertical & self.horizontal)
-	orientation = check_cars(chupachup)
+	# checks orientation of cars
+	orientation = check_cars(game)
 	# create starting board
-	parent = Board(chupachup, orientation[0], orientation[1])
-	# archive the starting board
-	archive = dict()
-	archive[str(parent.start)] = str(parent.start)
-	# create queue, put start board in it
+	parent = Board(game, orientation[0], orientation[1])
+	# create archive
+	archive = set()
+	archive.add(str(parent.start))
+	# create queue
 	queue = Queue.Queue()
 	queue.put(parent)
-	# count the ammount of boards that have been worked through
+	# counter for boards
 	counter = 1
 	while not queue.empty():
+		# get first board
 		first = queue.get()
 		# create children
 		children = first.children()
-		winning_board = 0
 		won = 0
 		# check all the children for victors
 		for each in children:
 			# if the child is not yet in the archive
 			if not str(each.start) in archive:
 				# put the child in the archive
-				archive[str(each.start)] = str(each.start)
-				# if no cars are positioned to the right of the red car won == 0
+				archive.add(str(each.start))
+				# if no cars are blocking red car
 				if Won(each):
 					# return the winning board object
 					print "\nwon"
@@ -395,100 +336,72 @@ def bf():
 					# put the board in the queue
 					queue.put(each)
 			counter += 1
-			# modulo is used properly now
 			if counter % 50000 == 0:
 				print "counter:", counter/1000000.0, "million", ", queue:", queue.qsize(), ", archive size:", len(archive)
 			if queue.empty():
 				print "queue is empty"
 	print "done"
-	#end of while loop & bf algoritme
 
-
+# depth first search
 def df(depth = 100):
-	print depth
-	###
-	# determine the cars and their orientation on the grid
-	# the dicts for vertical and horizontal cars are necessary to build the board object
-	# ones a board is made these dicts are inherited when children are made (self.vertical & self.horizontal)
-	orientation = check_cars(chupachup)
+	depth = depth
+	# checks orientation of crs
+	orientation = check_cars(game)
 	# create starting board
-	parent = Board(chupachup, orientation[0], orientation[1])
-	"""
-	# indicate start and print 1st board
-	print "start\n"
-	for i in range(len(parent.start)):
-		print parent.start[i]
-	print "\n"
-	##
-	# create archive, put start board in it
-	"""
+	parent = Board(game, orientation[0], orientation[1])
+	# archive
 	archive = dict()
+	# archive start board
 	archive[str(parent.start)] = str(parent.start)
-	# create queue, put start board in it
+	# create stack
 	stack = []
+	# add parent node to stack
 	stack.append(parent)
-	counter = 1
+	# until stack empty
 	while not len(stack) == 0:
+		# grab parent
 		first = stack.pop(0)
 		# create children
 		children = first.children()
-		# print children
 		winning_board = 0
 		won = 0
+		# loop over children
 		for each in children:
+			# if child not in archive
 			if not str(each.start) in archive and len(each.pathWay) < depth:
 				archive[str(each.start)] = len(each.pathWay)
+				# return child
 				if Won(each):
 					print "\nwon"
 					return each
 				else:
+					# otherwise at to stack
 					stack.insert(0, each)
-					# print "queue", len(stack)
 			elif str(each.start) in archive and archive[str(each.start)] > len(each.pathWay):
 				archive[str(each.start)] = len(each.pathWay)
 				stack.insert(0,each)
-			counter += 1
-			if counter%10000 == 0:
-				print "counter", counter, "stack", len(stack), ", archive size:", len(archive)
 			if len(stack) == 0:
-				print "help"
-		# else:
-		# 	break
-
-	#end of while loop
-
-#check a pathway
-
-
-"""
-orientation = check_cars(chupachup)
-simulation(100, Board(chupachup, ori[entation[0], orientation[1]), chupachup)
-"""
-def astar():
-<<<<<<< HEAD
-
-
-# 2.5 carcostx = 1 en carcosty'= 2
-
-	def heuristic1988(board):
-		pathlength = 0.5
-		carcostX = 1
-		carcostY = 2
-=======
-	pathlength = 0.5
-	carcostX = 15
-	carcostY = 7
-
-	def heuristic1988(board):
->>>>>>> 4bc87156c8f846dbd90de3610a1bda9c06d8c14d
-		cost = 0
+				print "stack is empty"
 		
-		# loop over width to find coordinates of red car
+def astar():
+
+	# pathlength = 2.5,	carcostX = 6, carcostY = 10 with heuristics2 for solving board 5
+	# this solves 1,2,3,4,6 with shortest path pathlength = 0.5 carcostX = 1 carcostY = 2
+	pathlength = 0.5
+	carcostX = 1
+	carcostY = 2
+
+	def heuristic1(board):
+		cost = 0
+		# loop over width
 		for j in range(board.width):
+			# cars left of red car no cost
 			if board.start[exit][j] == 1:
 				cost = 0
+			# cars right from redcar extra cost
 			if board.start[exit][j] != 0:
 				cost += carcostX
+
 				for n in range(exit, board.height):
 					if board.start[n][j] != 0 and board.start[exit][j] != board.start[n][j]:
 						cost += carcostX
@@ -502,37 +415,37 @@ def astar():
 					elif board.start[exit-n][j] == 0:
 						cost -= carcostY / 2
 						break
+				# penalty for every step extra
 				for path in board.pathWay:
 					cost += pathlength
 		return cost
 
-	def heuristics(board):
+	def heuristics2(board):
 		cost = 0
-<<<<<<< HEAD
-		pathlength = 2.5
-		carcostX = 6
-		carcostY = 10
-=======
->>>>>>> 4bc87156c8f846dbd90de3610a1bda9c06d8c14d
-		# loop over width to find coordinates of red car
+		
+		# loop over width
 		for j in range(board.width):
+			# gets position of red car
 			if board.start[exit][j] == 1 and board.start[exit][j + 1] != 1:
+				# takes cars right from red car and adds penalty
 				for k in range(board.start[exit][j], board.width):
 					if board.start[exit][k] != 0:
 						cost += carcostX
+				# loops over cars vertical from red car and adds penalty
 				for n in range(board.start[exit][j], board.height):
 					if board.start[j][n] != 0:
 						cost += carcostY
+				# penalty for steps		
 				for path in board.pathWay:
 					cost += pathlength
 		return cost
 
-	orientation = check_cars(chupachup)
+	orientation = check_cars(game)
 	# initialize the starting board
-	boarding = Board(chupachup,orientation[0], orientation[1])
+	boarding = Board(game,orientation[0], orientation[1])
 	# create archive/ closed list
-	archive_astar = dict()
-	archive_astar[str(boarding.start)] = len(boarding.pathWay)
+	archive = set()
+	archive.add(str(boarding.start))
 	# create open list
 	priority = Queue.PriorityQueue()
 	# put starting board in queue
@@ -542,62 +455,48 @@ def astar():
 	came_from = {}
 	# calculates cost made so far
 	cost_so_far = {}
-	# starting board came from nowhere
 	came_from[boarding] = 0
-	# no costs either
 	cost_so_far[boarding] = 0
 	won = 0
 	childcost= 0
 	winning_board = 0
-	# until there are no more positions and more nodes to traverse
+	# until the queue is empty
 	while not priority.empty():
 		# get first board
 		score, boarding = priority.get()
 		# make children of that board
 		childrens = boarding.children()
-		# for each child that in archive
 		for child in childrens:
 			counter += 1
+			if counter % 10000 == 0:
+				print counter, len(archive)
 			childCost = cost_so_far[boarding] + 1
-			if not str(child.start) in archive_astar:
+			# if child not in archive
+			if not str(child.start) in archive:
 				cost_so_far[child] = childCost
-<<<<<<< HEAD
-				total = cost_so_far[child] + heuristic1988(child)
-=======
-				total = cost_so_far[child] + heuristics(child)
->>>>>>> 4bc87156c8f846dbd90de3610a1bda9c06d8c14d
+				# computes totalcosts
+				total = cost_so_far[child] + heuristic1(child)
+				# put in priority queue 
 				priority.put( (total, child))
+				# define pathway back
 				came_from[child] = boarding
-				archive_astar[str(child.start)] = (child.start)
+				# archive child
+				archive.add(str(child.start))
+				# if won
 				if Won(child):
-					print "won \n"
-<<<<<<< HEAD
-					print counter	
+					print "won \n"	
 					return child
-				else:
-					archive_astar[str(child.start)] = (child.start)
-					if counter % 1000 == 0:
-						print "counter", counter, "queue", priority.qsize(), ", archive size:", len(archive_astar)
-winning_board = astar()
-print "done"
-runtime = datetime.now() - tijd
-print runtime
-print len(winning_board.pathWay), winning_board.pathWay
-winning_board.pathWay = PathSweep(winning_board.pathWay)
-koffie(winning_board)
+				#else:
+					#archive.add(str(child.start))
+					#archive_astar[str(child.start)] = (child.start)
 
-simulation(0.3, winning_board, chupachup)
 tijd = datetime.now()
-=======
-					print "counter:", counter
-					print "path:", pathlength, "y:", carcostY, "x:", carcostX
-					return child
-				else:
-					archive_astar[str(child.start)] = (child.start)
-					if counter % 1000000 == 0:
-						print "counter:", counter/1000000, "million, queue:", priority.qsize(), ", archive size:", len(archive_astar)
-
-loops = 1000
+winning_board = df(24)
+runtime = datetime.now() - tijd
+print "time:", runtime
+info(winning_board)
+"""
+loops = 0
 tijd2 = datetime.now()
 x = 0
 y = 0
@@ -605,9 +504,9 @@ for i in range(loops):
 	print "loop", i+1
 	tijd = datetime.now()
 	if x == 0:
-		winning_board = rs(15000)
+		winning_board = df(80)
 	else:
-		winning_board = rs(x)
+		winning_board = df(80)
 	runtime = datetime.now() - tijd
 	if winning_board:
 		winning_board.pathWay = PathSweep(winning_board.pathWay)
@@ -618,11 +517,9 @@ for i in range(loops):
 			y = runtime
 			print y
 print y
-koffie(real)
+info(real)
 runtime2 = (datetime.now() - tijd2)
 print runtime2
-
-# koffie(winning_board)
-
-#simulation(0.3, winning_board, chupachup)
->>>>>>> 4bc87156c8f846dbd90de3610a1bda9c06d8c14d
+info(winning_board)
+"""
+#simulation(0.3, winning_board, game)

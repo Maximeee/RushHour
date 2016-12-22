@@ -30,11 +30,24 @@ games = [
 # game 6
 [[ 2, 2, 3, 3, 4, 0, 0, 5, 0],[ 6, 7, 7, 7, 4, 8, 8, 5, 0],[ 6, 0, 9, 9,10,11, 0,12,12],[ 0, 0,13,14,10,11,15,15,15],[ 1, 1,13,14, 0, 0, 0, 0, 0],[ 0,16, 0,14,17,17,18,18,19],[20,16,21,21,22,23,23,23,19],[20, 0,24,24,22,25,25, 0,19],[20,26,26,26,22, 0, 0, 0 ,0]],
 # game 7
-[
-[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],[13,14, 0, 0, 0,15,11,16,16,17,17, 0],[13,14,18,18,18,15,11,19,19,19, 0, 0],[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],[22,22,22,23,20,21,24,28, 0,50,25,25],[26,26,26,23,27,27,24,28, 0,50,29,29],[30,30,31,32,32,32,24,33,33,33, 0,34],[ 0, 0,31,35,35,35,36, 0,37,37,38,34],[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],[ 0,41,41,42,42,42,36,43,43,49,38,40]]
+[[ 2, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5],[ 2, 0, 0, 0, 0, 6, 3, 0, 0, 0, 7, 8],[ 9, 9, 9,10,10, 6,11,12,12, 0, 7, 8],[13,14, 0, 0, 0,15,11,16,16,17,17, 0],[13,14,18,18,18,15,11,19,19,19, 0, 0],[13,14, 1, 1,20,21, 0, 0, 0, 0, 0, 0],[22,22,22,23,20,21,24,28, 0,50,25,25],[26,26,26,23,27,27,24,28, 0,50,29,29],[30,30,31,32,32,32,24,33,33,33, 0,34],[ 0, 0,31,35,35,35,36, 0,37,37,38,34],[ 0, 0, 0, 0, 0, 0,36, 0, 0,39,38,40],[ 0,41,41,42,42,42,36,43,43,49,38,40]]
 ]
 #index of games is the board you want, index 0 is a board used for testing
-game = games[6]
+game = games[3]
+# paste pathway here to see the simulation without calculation
+calculate = True
+path_sim = []
+# 1 = astar, 
+# 2 = breadth first, 
+# 3 = depth limited search, 
+# 4 = random search (loops is amount of attempts at random search)
+algorithm = 4
+
+# loops for rs
+loops = 50
+
+# depth limit
+limit = 40
 
 # defines row of red car
 exit = 0
@@ -42,6 +55,7 @@ for i in range(len(game)):
 	if 1 in game[i]:
 		exit = i
 		break
+
 # shows info of object
 def info(z):
 	print "steps:", len(z.pathWay), ", path:", z.pathWay
@@ -122,6 +136,9 @@ def check_cars(board):
 				horizontal[board[i][j]] += 1
 	return vertical, horizontal
 
+# checks orientation of crs
+orientation = check_cars(game)
+
 # checks if following steps negate eachother
 def PathSweep(l):
 	length = len(l) - 2
@@ -179,10 +196,13 @@ class Board(object):
 							new_boards.append(moveHor(self, i, j, "W"))
 		return new_boards
 
-def simulation(speed, board, game):
+def simulation(speed, board):
 	current_board = Board(game, board.vertical, board.horizontal)
+	if board.start == current_board.start:
+		path = path_sim
+	else:
+		path = board.pathWay		
 	anim_speed = speed
-	path = board.pathWay
 	counter = 1
 	anim = Listlist_Breadth_first_vizualize.RushHourVisualization(current_board, anim_speed)
 	for step in path:
@@ -226,8 +246,7 @@ def simulation(speed, board, game):
 
 # random search algorithm
 def rs(roof = 100000):
-	# checks orientation of cars
-	orientation = check_cars(game)
+
 	# starting grid
 	grid = Board(game, orientation[0], orientation[1])
 	maximum = 0
@@ -301,8 +320,7 @@ def rs(roof = 100000):
 		counter += 1
 
 def bf():
-	# checks orientation of cars
-	orientation = check_cars(game)
+
 	# create starting board
 	parent = Board(game, orientation[0], orientation[1])
 	# create archive
@@ -343,10 +361,8 @@ def bf():
 	print "done"
 
 # depth first search
-def df(depth = 100):
-	depth = depth
-	# checks orientation of crs
-	orientation = check_cars(game)
+def dls():
+	depth = limit
 	# create starting board
 	parent = Board(game, orientation[0], orientation[1])
 	# archive
@@ -368,7 +384,7 @@ def df(depth = 100):
 		# loop over children
 		for each in children:
 			# if child not in archive
-			if not str(each.start) in archive and len(each.pathWay) < depth:
+			if not str(each.start) in archive and len(each.pathWay) < depth + 1:
 				archive[str(each.start)] = len(each.pathWay)
 				# return child
 				if Won(each):
@@ -387,9 +403,9 @@ def astar():
 
 	# pathlength = 2.5,	carcostX = 6, carcostY = 10 with heuristics2 for solving board 5
 	# this solves 1,2,3,4,6 with shortest path pathlength = 0.5 carcostX = 1 carcostY = 2
-	pathlength = 0.5
-	carcostX = 1
-	carcostY = 2
+	pathlength = 2.5
+	carcostX = 6
+	carcostY = 10
 
 	def heuristic1(board):
 		cost = 0
@@ -420,7 +436,7 @@ def astar():
 					cost += pathlength
 		return cost
 
-	def heuristics2(board):
+	def heuristic2(board):
 		cost = 0
 		
 		# loop over width
@@ -478,7 +494,7 @@ def astar():
 				total = cost_so_far[child] + heuristic1(child)
 				# put in priority queue 
 				priority.put( (total, child))
-				# define pathway back
+				# define pathway backs
 				came_from[child] = boarding
 				# archive child
 				archive.add(str(child.start))
@@ -490,36 +506,60 @@ def astar():
 					#archive.add(str(child.start))
 					#archive_astar[str(child.start)] = (child.start)
 
-tijd = datetime.now()
-winning_board = df(24)
-runtime = datetime.now() - tijd
-print "time:", runtime
-info(winning_board)
-"""
-loops = 0
-tijd2 = datetime.now()
-x = 0
-y = 0
-for i in range(loops):
-	print "loop", i+1
+if algorithm == 1:
+	print "astar" 
 	tijd = datetime.now()
-	if x == 0:
-		winning_board = df(80)
-	else:
-		winning_board = df(80)
+	winning_board = astar()
 	runtime = datetime.now() - tijd
-	if winning_board:
-		winning_board.pathWay = PathSweep(winning_board.pathWay)
-		if x == 0 or x > len(winning_board.pathWay):
-			real = winning_board
-			x = len(winning_board.pathWay)
-			print "steps:", x
-			y = runtime
-			print y
-print y
-info(real)
-runtime2 = (datetime.now() - tijd2)
-print runtime2
-info(winning_board)
-"""
-#simulation(0.3, winning_board, game)
+	print "time:", runtime
+	info(winning_board)
+elif algorithm == 2:
+	print "breadth first search"
+	tijd = datetime.now()
+	winning_board = bf()
+	runtime = datetime.now() - tijd
+	print "time:", runtime
+	info(winning_board)
+elif algorithm == 3:
+	print "depth limited search"
+	tijd = datetime.now()
+	winning_board = dls()
+	runtime = datetime.now() - tijd
+	print "time:", runtime
+	info(winning_board)
+elif algorithm == 4:
+	print "random search"
+	# run the random search "loops" times, store the best result.
+	#	all new results will be cut of at the length of the best result
+	tijd2 = datetime.now()
+	x = 0
+	y = 0
+	for i in range(loops):
+		print "loop", i+1
+		tijd = datetime.now()
+		if x == 0: 
+			# rs(x), x is the inital cut off length
+			winning_board = rs(15000)
+		else:
+			winning_board = rs()
+		runtime = datetime.now() - tijd
+		if winning_board:
+			winning_board.pathWay = PathSweep(winning_board.pathWay)
+			if x == 0 or x > len(winning_board.pathWay):
+				real = winning_board
+				x = len(winning_board.pathWay)
+				print "steps:", x
+				y = runtime
+				print y
+	print y
+	info(real)
+	runtime2 = (datetime.now() - tijd2)
+	print runtime2
+	winning_board = real
+	info(winning_board)
+if calculate:
+	simulation(0.3, winning_board)
+else:
+	if len(path_sim) > 0:
+		simulation(0.5, Board(game, orientation[0], orientation[1]))
+
